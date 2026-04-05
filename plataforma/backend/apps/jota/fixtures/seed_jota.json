@@ -1,0 +1,526 @@
+[
+  {
+    "model": "jota.jotasettings",
+    "pk": 1,
+    "fields": {
+      "is_enabled": true,
+      "bot_name": "Jota",
+      "welcome_message": "¡Hola! Soy **Jota**, tu asistente de ayuda de **ReEstructura.Gov**. Conozco los diez módulos de la plataforma:\n\n- **M5 · Base Legal** — normas y jurisprudencia aplicables.\n- **M6 · Diagnóstico** — DOFA, brechas, 4 interrogantes de la Cartilla.\n- **M7 · Análisis Financiero** — sostenibilidad de la planta.\n- **M8 · Procesos** — levantamiento de procesos y procedimientos.\n- **M9 · Estructura Orgánica** — organigrama, niveles jerárquicos, dependencias.\n- **M10 · Matriz de Cargas** — tiempos estándar, productividad.\n- **M11 · Planta de Personal** — actual/propuesta, nomenclatura CNSC.\n- **M12 · Manual de Funciones** — fichas por cargo, competencias, requisitos.\n- **M13 · Retén Social** — población protegida en supresión de empleos.\n- **M14 · Actos Administrativos** — resoluciones y decretos de reestructuración.\n\nPregúntame cómo hacer cualquier tarea.",
+      "fallback_message": "No encontré información exacta. Prueba reformulando con palabras como *entidad*, *reestructuración*, *diagnóstico*, *DOFA*, *matriz de cargas*, *tiempo estándar*, *planta actual*, *planta propuesta*, *nomenclatura*, *manual*, *competencias*, *requisitos*, *retén social*, *pre-pensionado*, *discapacidad*, *resolución de planta*, *decreto de reestructuración* o *supresión de cargos*.",
+      "suggested_questions": "¿Cómo creo una entidad?\n¿Cómo inicio una reestructuración?\n¿Cómo hago el diagnóstico institucional?\n¿Cómo levanto una actividad en la matriz de cargas?\n¿Cómo se calcula el tiempo estándar?\n¿Cómo creo la planta de personal?\n¿Cómo genero el manual de funciones?\n¿Cómo identifico a los pre-pensionados?\n¿Cómo genero la resolución de adopción de planta?",
+      "position": "bottom-right",
+      "primary_color": "#0e7490",
+      "updated_at": "2026-04-04T00:00:00Z"
+    }
+  },
+
+  { "model": "jota.jotaintent", "pk": 1, "fields": {
+    "name": "Qué es ReEstructura.Gov",
+    "slug": "que-es-la-plataforma",
+    "category": "General",
+    "keywords": "reestructura gov, reestructura.gov, plataforma reestructura, para que sirve esta plataforma, para que sirve reestructura, de que trata la plataforma",
+    "answer": "**ReEstructura.Gov** es una plataforma para acompañar los procesos de diseño y rediseño institucional de entidades públicas colombianas, siguiendo la Cartilla de Función Pública (2018), la Ley 489 de 1998, la Ley 909 de 2004 y el CPACA. Incluye módulos de **Diagnóstico**, **Matriz de Cargas**, **Planta de Personal**, **Manual de Funciones**, **Retén Social** y **Generador de Actos Administrativos**.",
+    "priority": 11, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 2, "fields": {
+    "name": "Cómo crear una entidad",
+    "slug": "crear-entidad",
+    "category": "Entidades",
+    "keywords": "crear entidad, crear una entidad, nueva entidad, registrar entidad, registrar una entidad, agregar entidad, añadir entidad, dar de alta entidad, alta entidad, hacer entidad, cargar entidad",
+    "answer": "Para crear una entidad:\n\n1. Ve a [Entidades](/entidades) desde el menú lateral.\n2. Haz clic en el botón **Nueva entidad**.\n3. Llena: **nombre**, **orden** (nacional, departamental, distrital o municipal), **categoría municipal** (si aplica), **naturaleza jurídica** y **norma de creación**.\n4. Guarda. La entidad aparecerá en el listado.\n5. Entra a su detalle para completar los insumos vigentes (estructura, planta, manual) y los 4 interrogantes del acuerdo inicial.\n\nDesde el **topbar** podrás seleccionarla como entidad activa para trabajar los módulos del estudio técnico.",
+    "priority": 18, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 3, "fields": {
+    "name": "Qué es una reestructuración",
+    "slug": "que-es-reestructuracion",
+    "category": "Reestructuraciones",
+    "keywords": "que es una reestructuracion, que es reestructuracion, rediseño institucional, expediente de estudio tecnico, proceso de rediseño institucional",
+    "answer": "Una **reestructuración** es un expediente de estudio técnico asociado a una entidad. Cada entidad puede tener varias (por ejemplo *Rediseño 2023*, *Rediseño 2026*). Los módulos de **Diagnóstico**, **Procesos**, **Matriz de Cargas**, **Planta**, **Manual**, **Retén Social** y **Actos** pertenecen a una reestructuración específica: necesitas seleccionar o crear una desde el **topbar** antes de trabajar.",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 4, "fields": {
+    "name": "Cómo crear una reestructuración",
+    "slug": "crear-reestructuracion",
+    "category": "Reestructuraciones",
+    "keywords": "crear reestructuracion, crear una reestructuracion, nueva reestructuracion, nuevo expediente, nuevo estudio tecnico, iniciar reestructuracion, iniciar rediseño, empezar reestructuracion",
+    "answer": "Para crear una reestructuración:\n\n1. Selecciona la **entidad** en el selector del **topbar**.\n2. Abre el selector de **reestructuración** (al lado del de entidad).\n3. Haz clic en **Crear nueva reestructuración**.\n4. Dale un **nombre** (ej. *Rediseño institucional 2026*), una **fecha de referencia** y una **descripción**.\n5. Guarda.\n\nA partir de ese momento todos los módulos del estudio técnico trabajarán dentro de esa reestructuración.",
+    "priority": 18, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 5, "fields": {
+    "name": "Cambiar entidad o reestructuración activa",
+    "slug": "cambiar-contexto",
+    "category": "Navegación",
+    "keywords": "cambiar entidad, cambiar de entidad, cambiar reestructuracion, cambiar de reestructuracion, seleccionar entidad, seleccionar reestructuracion, selector topbar, contexto activo, entidad activa, reestructuracion activa",
+    "answer": "En el **topbar** (barra superior) hay dos selectores: uno para la **entidad activa** y otro para la **reestructuración activa**. Haz clic sobre cualquiera para cambiarlo. Al cambiar la entidad, la reestructuración activa se limpia automáticamente (porque pertenece a una entidad específica). Los módulos reflejan el nuevo contexto al instante.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 6, "fields": {
+    "name": "Matriz de Cargas — módulo",
+    "slug": "matriz-cargas",
+    "category": "Módulo 10 — Cargas",
+    "keywords": "matriz, matriz de cargas, matriz de cargas de trabajo, cargas, cargas de trabajo, anexo 5, modulo cargas, modulo 10, modulo matriz",
+    "answer": "La **Matriz de Cargas de Trabajo** (Módulo 10) materializa el Anexo 5 de Función Pública. Se levanta actividad por actividad, por dependencia y por cargo, con frecuencia mensual y tiempos Tmin/TU/Tmax. La plataforma calcula el **Tiempo Estándar** y las **horas-hombre/mes** y es el insumo de la justificación técnica de la planta y del manual de funciones. Accede desde [Matriz de Cargas](/matrices).",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 7, "fields": {
+    "name": "Fórmula del tiempo estándar",
+    "slug": "formula-te",
+    "category": "Módulo 10 — Cargas",
+    "keywords": "formula tiempo estandar, tiempo estandar, calculo te, formula te, formula del te, factor fatiga, factor 1.07, calcular tiempo estandar, como se calcula el te, como calcular el tiempo estandar",
+    "answer": "La fórmula oficial del **Tiempo Estándar** (Instructivo Función Pública, 24/04/2024) es:\n\n**TE = [(Tmin + 4·TU + Tmax) / 6] × 1.07**\n\nDonde:\n- **Tmin**: tiempo mínimo observado para ejecutar la actividad.\n- **TU** : tiempo más usual (moda).\n- **Tmax**: tiempo máximo observado.\n- **1.07**: factor que incorpora el 7% de tiempo muerto, fatiga u ocio.\n\nLa jornada de referencia es **167 horas/mes** (44 h × 228 días / 12). ReEstructura.Gov aplica la fórmula automáticamente al guardar la actividad en la [Matriz de Cargas](/matrices).",
+    "priority": 18, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 8, "fields": {
+    "name": "Manual de funciones — módulo",
+    "slug": "manual-funciones",
+    "category": "Módulo 12 — Manual",
+    "keywords": "manual, funciones, manual de funciones, manual especifico de funciones, modulo manual, modulo 12, ficha de funciones, fichas de cargo, ficha por cargo, fichas de funciones",
+    "answer": "El **Manual Específico de Funciones y Competencias Laborales** (Módulo 12) se genera automáticamente desde el levantamiento de cargas. Entra a [Manual de funciones](/manual-funciones), selecciona una matriz y obtendrás una ficha por cada cargo con **propósito principal**, **funciones esenciales**, **competencias** y **requisitos mínimos**. Cada ficha puedes editarla e imprimirla.",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 9, "fields": {
+    "name": "Planta — comparar actual vs propuesta",
+    "slug": "planta-comparacion",
+    "category": "Módulo 11 — Planta",
+    "keywords": "comparar planta, comparar planta actual y propuesta, planta actual vs propuesta, delta cargos, delta planta, diferencia planta, cargos eliminados, cargos nuevos, numeral 3.9",
+    "answer": "Para comparar la planta actual con la propuesta:\n\n1. Asegúrate de tener creadas las dos plantas en la misma reestructuración ([Planta](/planta)), una tipo **ACTUAL** y otra tipo **PROPUESTA**.\n2. Haz clic en **Comparar** o entra a [/planta/comparar](/planta/comparar).\n3. Verás los **deltas** de cantidad y de costo mensual/anual agrupados por cargo (nivel, código, grado, denominación).\n\nEse comparativo es la base directa del numeral 3.9 de la exposición de motivos del estudio técnico.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 10, "fields": {
+    "name": "Actos administrativos — módulo",
+    "slug": "actos-administrativos",
+    "category": "Módulo 14 — Actos",
+    "keywords": "actos, acto, actos administrativos, generador de actos, generar acto, generar un acto, plantillas de actos, modulo actos, modulo 14, generador de actos administrativos",
+    "answer": "El módulo de [Actos administrativos](/actos) ofrece **plantillas** oficiales (Decreto, Ordenanza, Acuerdo, Resolución) con marcadores que se llenan automáticamente con el contexto de la entidad activa (nombre, norma de creación, estructura, planta, etc.). Elige la plantilla, haz clic en **Generar borrador**, edítalo y si los datos cambian puedes **Re-renderizar** para actualizar los marcadores sin perder tus ediciones manuales.",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 11, "fields": {
+    "name": "Retén social — módulo",
+    "slug": "reten-social",
+    "category": "Módulo 13 — Retén",
+    "keywords": "reten, reten social, modulo reten, modulo 13, sujetos de especial proteccion, proteccion laboral reforzada, poblacion protegida, ley 790 de 2002, decreto 190 de 2003",
+    "answer": "El **Retén Social** (Módulo 13) registra a los servidores con **protección laboral reforzada** en procesos de supresión de empleos: **pre-pensionados**, **madres/padres cabeza de familia**, **personas en situación de discapacidad**, **mujeres en embarazo o lactancia** y **aforados sindicales**. Marco legal: Ley 790/2002 (art. 12), Decreto 190/2003 y jurisprudencia **T-014/07**, **T-078/09** y Consejo de Estado **25000-23-25-000-2001-07679-02**. Accede desde [Retén social](/reten-social).",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 12, "fields": {
+    "name": "Diagnóstico institucional — módulo",
+    "slug": "diagnostico",
+    "category": "Módulo 6 — Diagnóstico",
+    "keywords": "diagnostico, diagnostico institucional, modulo diagnostico, modulo 6, fase 2 cartilla, fase previa, diagnostico organizacional, cuatro interrogantes, 4 interrogantes, interrogantes de la cartilla",
+    "answer": "El **Diagnóstico Institucional** (Módulo 6, Fase 2 de la Cartilla FP) cubre:\n\n- **Rol institucional**: misión, visión, competencias legales.\n- **DOFA** en 5 dimensiones: directiva, competitiva, técnica, tecnológica y talento humano.\n- **Marco legal** correlacionado con las decisiones del rediseño.\n- **Análisis de entornos**: económico, político, social, tecnológico.\n- **Evaluación de procesos**: ¿se requiere?, ¿la ejecuta la entidad?, ¿hay duplicidad? (numeral 3.4).\n\nAccede desde [Diagnóstico](/diagnostico).",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 13, "fields": {
+    "name": "Procesos y cadena de valor",
+    "slug": "procesos",
+    "category": "Módulo 8 — Procesos",
+    "keywords": "procesos, mapa de procesos, cadena de valor, modulo procesos, modulo 8, procesos misionales, procesos estrategicos, procesos de apoyo, procesos de evaluacion, procesos institucionales, procedimientos, levantamiento de procesos",
+    "answer": "En [Procesos](/procesos) se construye:\n\n- El **mapa de procesos** (estratégicos, misionales, de apoyo, de evaluación y control).\n- La **cadena de valor** (**Insumos → Procesos → Productos → Efectos → Impactos**).\n- La clasificación por el numeral 3.4: ¿se requiere?, ¿la ejecuta la entidad?, ¿hay duplicidad?\n\nLos procesos que no cumplen los tres criterios son candidatos a supresión, tercerización o rediseño.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 14, "fields": {
+    "name": "Análisis financiero — Ley 617",
+    "slug": "financiero",
+    "category": "Módulo 7 — Financiero",
+    "keywords": "financiero, analisis financiero, ley 617, ley 358, icld, gastos de funcionamiento, cumplimiento fiscal, indicador 617, categoria municipio, modulo 7, disponibilidad presupuestal, sostenibilidad planta",
+    "answer": "En [Análisis financiero](/financiero) registras los últimos años fiscales con **ICLD**, gastos de funcionamiento, personal y deuda. La plataforma calcula el indicador de la **Ley 617/2000** (gastos de funcionamiento / ICLD) y marca el cumplimiento según la **categoría del municipio**. Este análisis es insumo obligatorio para justificar aumentos de planta.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 15, "fields": {
+    "name": "Base legal y jurisprudencia",
+    "slug": "base-legal",
+    "category": "Módulo 5 — Base legal",
+    "keywords": "base legal, marco normativo, normativa, normas, normas aplicables, leyes, jurisprudencia, ley 489, ley 909, ley 790, cpaca, decreto 1083, decreto 785, decreto 2489, t-014, t-078, sentencias, modulo 5, modulo base legal",
+    "answer": "La [Base legal](/base-legal) contiene el catálogo de normas y jurisprudencia aplicables al rediseño institucional: **Ley 489/1998** (estructura del Estado), **Ley 790/2002** (retén), **Ley 909/2004** (empleo público), **CPACA (Ley 1437/2011)**, **Decreto 1083/2015**, **Decreto 785/2005** (nomenclatura territorial), **Decreto 2489/2006** (nomenclatura nacional) y las sentencias **T-014/07**, **T-078/09** y **0402-08** del Consejo de Estado. Es buscable por palabra clave.",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 16, "fields": {
+    "name": "Iniciar sesión / recordar usuario",
+    "slug": "recordar-usuario",
+    "category": "Acceso",
+    "keywords": "iniciar sesion, login, entrar, recordar usuario, guardar usuario, guardar contraseña, como entro",
+    "answer": "En la pantalla de [inicio de sesión](/login) ingresa tu usuario y contraseña. Marca la casilla **Recordar usuario** para que la próxima vez se autocomplete (la contraseña nunca se guarda). Para cerrar sesión, usa el menú de usuario del topbar.",
+    "priority": 10, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 17, "fields": {
+    "name": "No puedo guardar — contexto requerido",
+    "slug": "contexto-requerido",
+    "category": "Problemas comunes",
+    "keywords": "no puedo guardar, esta bloqueado, sin entidad activa, sin reestructuracion activa, error 403, debo seleccionar entidad, debo seleccionar reestructuracion, modulo bloqueado",
+    "answer": "Si un módulo aparece bloqueado o muestra *\"Debes seleccionar una entidad/reestructuración para continuar\"*, abre el **selector del topbar** y escoge (o crea) el contexto apropiado. Todo ReEstructura.Gov está aislado por **entidad + reestructuración**: sin ese contexto no se pueden ver ni crear datos.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 18, "fields": {
+    "name": "Estructura orgánica",
+    "slug": "estructura-organica",
+    "category": "Módulo 9 — Estructura",
+    "keywords": "estructura, estructura organica, organigrama, diseñar organigrama, rediseño organigrama, niveles jerarquicos, nivel jerarquico, dependencias, agrupacion funcional, arbol de dependencias, jerarquia de dependencias, modulo estructura, modulo 9",
+    "answer": "El **Módulo 9 · Estructura Orgánica** ([/estructura](/estructura)) permite **diseñar y rediseñar el organigrama institucional** de la entidad:\n\n- **Niveles jerárquicos** — despacho, secretarías, subsecretarías, direcciones, oficinas.\n- **Dependencias** — cada unidad con su dependencia padre y orden de presentación (se administran desde [Dependencias](/dependencias)).\n- **Agrupación funcional** — las dependencias se agrupan por afinidad misional, estratégica, de apoyo o de evaluación, siguiendo la Cartilla FP 2018 y la Ley 489/1998.\n\nEl árbol resultante alimenta automáticamente el [Manual de Funciones](/manual-funciones), la [Planta de Personal](/planta) y las plantillas de [Actos Administrativos](/actos) (decreto/ordenanza/acuerdo que modifica la estructura).",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 19, "fields": {
+    "name": "Diagnóstico — rol institucional",
+    "slug": "diag-rol-institucional",
+    "category": "Módulo 6 — Diagnóstico",
+    "keywords": "rol institucional, mision y vision, competencias legales de la entidad, objetivo misional, razon de ser de la entidad, encargo legal",
+    "answer": "En [Diagnóstico](/diagnostico) abre la sección **Rol institucional**. Documenta **misión**, **visión**, **competencias legales** asignadas y el **objetivo misional** de la entidad. Es el insumo para validar si la estructura actual responde al encargo legal (Cartilla FP 2018, numeral 3.1).",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 20, "fields": {
+    "name": "Diagnóstico — DOFA 5 dimensiones",
+    "slug": "diag-dofa",
+    "category": "Módulo 6 — Diagnóstico",
+    "keywords": "dofa, matriz dofa, debilidades oportunidades fortalezas amenazas, debilidades, oportunidades, fortalezas, amenazas, dimensiones dofa, dofa directiva, dofa competitiva, dofa tecnica, dofa tecnologica, dofa talento humano",
+    "answer": "La **DOFA** en ReEstructura.Gov se levanta en las **5 dimensiones** de la Cartilla FP:\n\n1. **Directiva** — liderazgo, planeación estratégica.\n2. **Competitiva** — posicionamiento frente al sector.\n3. **Técnica** — procesos, productos y servicios.\n4. **Tecnológica** — sistemas de información, infraestructura.\n5. **Talento humano** — competencias, cultura, clima.\n\nDesde [Diagnóstico](/diagnostico) abre la sección DOFA y agrega debilidades, oportunidades, fortalezas y amenazas por cada dimensión. Cada entrada queda trazable al marco legal.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 21, "fields": {
+    "name": "Diagnóstico — brechas y problemas",
+    "slug": "diag-brechas",
+    "category": "Módulo 6 — Diagnóstico",
+    "keywords": "brechas, problemas de la estructura, identificar problemas, analisis organizacional, duplicidad de funciones, vacios de competencia, problemas estructura actual",
+    "answer": "Para identificar **brechas y problemas** de la estructura actual, en [Diagnóstico](/diagnostico) relaciona cada debilidad de la DOFA con:\n\n1. El **proceso o dependencia** afectada.\n2. La **norma o competencia** incumplida.\n3. La **decisión** propuesta en el rediseño.\n\nApóyate en [Procesos](/procesos) para detectar duplicidades o procesos que la entidad no ejecuta.",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 22, "fields": {
+    "name": "Diagnóstico — evaluación de procesos",
+    "slug": "diag-evaluacion-procesos",
+    "category": "Módulo 6 — Diagnóstico",
+    "keywords": "evaluacion de procesos, evaluar procesos, evaluar procedimientos, diagnostico de procesos, tres interrogantes, numeral 3.4",
+    "answer": "La evaluación de procesos cruza [Diagnóstico](/diagnostico) con [Procesos](/procesos). Para cada proceso responde los tres interrogantes del **numeral 3.4** de la Cartilla FP:\n\n1. ¿**Se requiere**?\n2. ¿**La ejecuta la entidad**?\n3. ¿**Hay duplicidad** con otra dependencia o entidad?\n\nLos procesos que no cumplen los tres son candidatos a **supresión**, **tercerización** o **rediseño**.",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 23, "fields": {
+    "name": "Diagnóstico — análisis de entornos (PESTA)",
+    "slug": "diag-entornos",
+    "category": "Módulo 6 — Diagnóstico",
+    "keywords": "analisis de entornos, entornos, pesta, entorno economico, entorno politico, entorno social, entorno tecnologico, contexto externo",
+    "answer": "El **análisis de entornos** en [Diagnóstico](/diagnostico) cubre los ejes **económico**, **político**, **social** y **tecnológico** que afectan a la entidad. Cada entorno se describe con hechos verificables (normativa, indicadores, población atendida) que justifican los cambios de estructura y planta en el estudio técnico.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 24, "fields": {
+    "name": "Matriz — levantar actividad",
+    "slug": "matriz-levantar-actividad",
+    "category": "Módulo 10 — Cargas",
+    "keywords": "levantar actividad, registrar actividad, capturar actividad, nueva actividad, agregar actividad, levantamiento de cargas, como levanto la matriz, formulario 1, formulario 2, capturar carga",
+    "answer": "Para levantar una actividad en la [Matriz de Cargas](/matrices):\n\n1. Abre o crea una matriz dentro de la reestructuración activa.\n2. Elige la **dependencia** y el **cargo** que ejecuta la actividad.\n3. Agrega la actividad con su **descripción** y **frecuencia mensual** (cuántas veces al mes se ejecuta).\n4. Captura los tiempos **Tmin**, **TU** (más probable) y **Tmax** en minutos.\n5. Guarda.\n\nLa plataforma calcula automáticamente el **Tiempo Estándar** (TE) y las **horas-hombre/mes** de la actividad.",
+    "priority": 18, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 25, "fields": {
+    "name": "Matriz — distribución de actividades y tiempos",
+    "slug": "matriz-distribucion",
+    "category": "Módulo 10 — Cargas",
+    "keywords": "distribucion de actividades, distribucion de tiempos, reparto de tiempos, distribucion por cargo, distribucion por dependencia, distribucion de carga laboral",
+    "answer": "La [Matriz de Cargas](/matrices) muestra la **distribución de actividades y tiempos** por dependencia y por cargo. Al abrir una matriz verás, para cada cargo, la **suma de horas-hombre/mes** que demandan sus actividades y cómo se distribuye frente a la jornada de referencia (167 h/mes). Útil para detectar sobrecarga o subutilización.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 26, "fields": {
+    "name": "Matriz — indicadores de productividad",
+    "slug": "matriz-indicadores",
+    "category": "Módulo 10 — Cargas",
+    "keywords": "indicadores de productividad, productividad, indice de ocupacion, utilizacion del cargo, sobrecarga, subutilizacion, ocupacion",
+    "answer": "Desde la [Matriz de Cargas](/matrices) la plataforma calcula indicadores de **productividad y ocupación** por cargo y por dependencia:\n\n**Índice = horas-hombre demandadas / 167 h**\n\n- **> 100 %** → sobrecarga (requiere más cargos o rediseño de actividades).\n- **70 %–100 %** → ocupación adecuada.\n- **< 70 %** → subutilización (candidato a ajuste de planta).",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 27, "fields": {
+    "name": "Matriz — horas-hombre y jornada 167",
+    "slug": "matriz-horas-hombre",
+    "category": "Módulo 10 — Cargas",
+    "keywords": "horas hombre mes, horas mes, jornada 167, 167 horas, 44 horas semanales, 228 dias habiles, jornada de referencia",
+    "answer": "La **jornada de referencia** de la matriz es **167 horas/mes**, resultado de 44 h semanales × 228 días hábiles ÷ 12 meses (Instructivo FP 24/04/2024). Las **horas-hombre/mes** de una actividad = (TE en minutos × frecuencia mensual) / 60. La suma por cargo se compara contra las 167 h para calcular el índice de ocupación.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 28, "fields": {
+    "name": "Matriz — exportar a Excel",
+    "slug": "matriz-exportar",
+    "category": "Módulo 10 — Cargas",
+    "keywords": "exportar matriz, descargar matriz, matriz en excel, matriz en xlsx, exportar anexo 5, descargar cargas, bajar matriz",
+    "answer": "Dentro del detalle de una matriz en [Matriz de Cargas](/matrices) usa el botón **Exportar** para descargarla en formato Excel compatible con el Anexo 5 de Función Pública. El archivo conserva dependencia, cargo, actividad, frecuencia, Tmin/TU/Tmax, TE y horas-hombre/mes.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 29, "fields": {
+    "name": "Planta — crear planta de personal",
+    "slug": "planta-crear",
+    "category": "Módulo 11 — Planta",
+    "keywords": "planta, crear planta, crear planta de personal, planta de personal, nueva planta, nueva planta de personal, diseñar planta, rediseñar planta, cargar planta, registrar planta, modulo 11, modulo planta",
+    "answer": "Para crear una planta en [Planta de Personal](/planta):\n\n1. Con la reestructuración activa, haz clic en **Nueva planta**.\n2. Elige el tipo: **ACTUAL** (línea base) o **PROPUESTA** (rediseño).\n3. Agrega cada cargo con **nivel**, **código**, **grado**, **denominación** y **cantidad**.\n4. Guarda.\n5. Si es propuesta, úsala en el comparativo contra la actual en [/planta/comparar](/planta/comparar).\n\nLa planta es insumo directo del manual de funciones y de los actos administrativos.",
+    "priority": 18, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 30, "fields": {
+    "name": "Planta — nomenclatura y equivalencias",
+    "slug": "planta-nomenclatura",
+    "category": "Módulo 11 — Planta",
+    "keywords": "nomenclatura, nomenclatura de empleos, equivalencias, equivalencias cnsc, cnsc, decreto 785 de 2005, decreto 2489 de 2006, codigo de empleo, grado del empleo, denominacion del empleo, nivel del empleo",
+    "answer": "ReEstructura.Gov incluye el **catálogo oficial de nomenclatura** en [Nomenclatura](/nomenclatura):\n\n- **Decreto 785/2005** — orden territorial.\n- **Decreto 2489/2006** — orden nacional.\n\nAl crear un cargo en la planta selecciona **nivel** (directivo, asesor, profesional, técnico, asistencial), **código** y **grado**; la **denominación** se autocompleta desde el catálogo y queda homologada frente a CNSC.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 31, "fields": {
+    "name": "Planta — justificación técnica de cargos",
+    "slug": "planta-justificacion",
+    "category": "Módulo 11 — Planta",
+    "keywords": "justificacion tecnica, justificar cargo, sustentar cargo, necesidad del cargo, soporte del cargo, sustentacion de planta, por que crear un cargo",
+    "answer": "La **justificación técnica** de cada cargo de la planta propuesta se construye en tres capas trazables:\n\n1. **Cargas** — la [Matriz de Cargas](/matrices) demuestra las horas-hombre/mes necesarias.\n2. **Procesos** — el cargo ejecuta actividades de procesos vigentes (numeral 3.4 de la Cartilla).\n3. **Manual** — el [Manual de Funciones](/manual-funciones) describe propósito, funciones esenciales y requisitos.\n\nEsa trazabilidad es la que el estudio técnico presenta en el numeral 3.9.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 32, "fields": {
+    "name": "Planta — costo mensual y anual",
+    "slug": "planta-costo",
+    "category": "Módulo 11 — Planta",
+    "keywords": "costo planta, costo mensual planta, costo anual planta, cuanto cuesta la planta, gasto de personal, gasto de nomina, nomina entidad, salario del cargo, asignacion basica",
+    "answer": "En [Planta de Personal](/planta) cada cargo lleva **asignación básica mensual**. La plataforma suma el **costo mensual** y **anual** (incluyendo factor prestacional) de la planta completa. En **Comparar** ([/planta/comparar](/planta/comparar)) muestra los **deltas** entre planta actual y propuesta. Este cálculo alimenta el análisis de impacto financiero y el cumplimiento de la **Ley 617/2000**.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 33, "fields": {
+    "name": "Manual — propósito principal del cargo",
+    "slug": "manual-proposito",
+    "category": "Módulo 12 — Manual",
+    "keywords": "proposito principal, razon de ser del cargo, objetivo del cargo, para que existe el cargo, proposito del empleo",
+    "answer": "El **propósito principal** de un cargo responde a: ¿para qué existe ese empleo en la entidad? En [Manual de Funciones](/manual-funciones) la plataforma lo genera a partir del **nivel del cargo**, la **dependencia** y las **actividades** levantadas en la matriz. Puedes editarlo antes de imprimir.",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 34, "fields": {
+    "name": "Manual — funciones esenciales",
+    "slug": "manual-funciones-esenciales",
+    "category": "Módulo 12 — Manual",
+    "keywords": "funciones esenciales, funciones del cargo, actividades del cargo, funciones principales del empleo, funciones en la ficha",
+    "answer": "Las **funciones esenciales** de la ficha se alimentan directamente de las actividades del cargo registradas en la [Matriz de Cargas](/matrices). En [Manual de Funciones](/manual-funciones) la ficha las lista en orden de peso (horas-hombre/mes) y permite editarlas si la redacción técnica requiere pulido.",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 35, "fields": {
+    "name": "Manual — competencias laborales",
+    "slug": "manual-competencias",
+    "category": "Módulo 12 — Manual",
+    "keywords": "competencias laborales, competencias del cargo, competencias comunes, competencias comportamentales, competencias funcionales, decreto 815 de 2018, decreto 815",
+    "answer": "Las **competencias laborales** del manual se dividen en:\n\n1. **Comunes** — a todos los servidores públicos (orientación a resultados, compromiso institucional, etc.).\n2. **Comportamentales por nivel** — directivo, asesor, profesional, técnico, asistencial.\n3. **Funcionales** — específicas del empleo.\n\nReEstructura.Gov precarga (1) y (2) según el **Decreto 815/2018** y deja las funcionales editables por cargo en [Manual de Funciones](/manual-funciones).",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 36, "fields": {
+    "name": "Manual — requisitos mínimos",
+    "slug": "manual-requisitos",
+    "category": "Módulo 12 — Manual",
+    "keywords": "requisitos minimos, requisitos del cargo, estudios y experiencia, titulo profesional, nivel academico, experiencia laboral, equivalencias estudios experiencia",
+    "answer": "Los **requisitos mínimos** (estudios + experiencia) se proponen automáticamente desde el nivel y grado del empleo, siguiendo el **Decreto 785/2005** (territorial) o **2489/2006** (nacional). En [Manual de Funciones](/manual-funciones) puedes ajustarlos y aplicar las **equivalencias** entre estudio y experiencia autorizadas por la norma.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 37, "fields": {
+    "name": "Manual — imprimir o exportar ficha",
+    "slug": "manual-imprimir",
+    "category": "Módulo 12 — Manual",
+    "keywords": "imprimir manual, imprimir ficha, exportar manual, manual en pdf, ficha del cargo en pdf, descargar ficha",
+    "answer": "Dentro de [Manual de Funciones](/manual-funciones) abre la ficha del cargo y usa el botón **Imprimir**. El navegador abrirá el diálogo estándar con una vista optimizada; si eliges *Guardar como PDF* obtendrás la ficha completa (identificación, propósito, funciones, competencias y requisitos) lista para el expediente.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 38, "fields": {
+    "name": "Retén — pre-pensionados",
+    "slug": "reten-prepensionado",
+    "category": "Módulo 13 — Retén",
+    "keywords": "prepensionado, pre pensionado, pre-pensionado, tres años para pensionarse, 3 años pension, proximo a pensionarse, edad de pension, semanas cotizadas, articulo 12 ley 790",
+    "answer": "**Pre-pensionado** = servidor al que le faltan **3 años o menos** para cumplir los requisitos de pensión (edad + semanas/tiempo de servicio). En [Retén social](/reten-social) registra fecha de nacimiento, fecha de vinculación y semanas cotizadas; la plataforma marca automáticamente a los que califican.\n\n**Sustento legal**: Ley 790/2002 art. 12 y sentencias **T-014/07** y **T-078/09** de la Corte Constitucional.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 39, "fields": {
+    "name": "Retén — cabeza de familia",
+    "slug": "reten-cabeza-familia",
+    "category": "Módulo 13 — Retén",
+    "keywords": "madre cabeza de familia, padre cabeza de familia, cabeza de familia, ley 82 de 1993, ley 1232 de 2008, hijos dependientes",
+    "answer": "**Madre/padre cabeza de familia** (Ley 82/1993 modificada por Ley 1232/2008): persona soltera o casada con **hijos menores o con discapacidad** bajo su responsabilidad económica, afectiva y social **sin apoyo del otro progenitor**. En [Retén social](/reten-social) captura la declaración juramentada y los documentos de soporte (registros civiles, supervivencia, etc.).",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 40, "fields": {
+    "name": "Retén — personas en situación de discapacidad",
+    "slug": "reten-discapacidad",
+    "category": "Módulo 13 — Retén",
+    "keywords": "discapacidad, personas con discapacidad, situacion de discapacidad, ley 361 de 1997, estabilidad laboral reforzada, limitacion fisica, certificado de discapacidad",
+    "answer": "Las **personas en situación de discapacidad** están protegidas por la **Ley 361/1997** (estabilidad laboral reforzada). En [Retén social](/reten-social) carga el **certificado de discapacidad** (Junta de Calificación o EPS) con su porcentaje. **No pueden ser desvinculadas** en el proceso de supresión sin autorización previa del Ministerio del Trabajo.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 41, "fields": {
+    "name": "Retén — fuero sindical, embarazo y lactancia",
+    "slug": "reten-fuero-embarazo",
+    "category": "Módulo 13 — Retén",
+    "keywords": "fuero sindical, sindicalizado, embarazo, mujer embarazada, lactancia, fuero de maternidad, ley 1468, estabilidad reforzada mujer embarazada",
+    "answer": "Además de pre-pensionados, cabeza de familia y discapacidad, el retén cubre:\n\n- **Fuero sindical** — Código Sustantivo del Trabajo.\n- **Fuero de maternidad / lactancia** — Ley 1468/2011.\n\nRegístralos en [Retén social](/reten-social) adjuntando acto de inscripción sindical, certificado médico de embarazo o acta de nacimiento del menor lactante.",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 42, "fields": {
+    "name": "Actos — resolución de adopción de planta",
+    "slug": "actos-resolucion-planta",
+    "category": "Módulo 14 — Actos",
+    "keywords": "resolucion de adopcion de planta, resolucion de planta, adoptar planta, distribuir planta, distribucion de cargos, ubicacion de cargos en dependencias",
+    "answer": "La **resolución de adopción de planta** (o de distribución de cargos en dependencias) se genera desde [Actos administrativos](/actos):\n\n1. Elige la plantilla **Resolución — Adopción/Distribución de planta**.\n2. Haz clic en **Generar borrador**: la plataforma inyecta entidad, reestructuración, planta propuesta y cargos por dependencia en los marcadores.\n3. Edita el borrador.\n4. Expórtalo como parte del expediente.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 43, "fields": {
+    "name": "Actos — decreto de reestructuración",
+    "slug": "actos-decreto-reestructuracion",
+    "category": "Módulo 14 — Actos",
+    "keywords": "decreto de reestructuracion, decreto que modifica la estructura, modificar la estructura, acuerdo estructura, ordenanza estructura, modifica estructura organica",
+    "answer": "El **decreto/ordenanza/acuerdo que modifica la estructura** se arma con la plantilla *Decreto — Modifica estructura orgánica* en [Actos administrativos](/actos). Requiere tener cargados la [Estructura orgánica](/estructura) propuesta y el [Diagnóstico](/diagnostico) aprobado: los considerandos se nutren de ellos. Recuerda citar **Ley 489/1998** y la **norma habilitante específica** (alcalde, gobernador, concejo o asamblea, según el caso).",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 44, "fields": {
+    "name": "Actos — supresión y creación de cargos",
+    "slug": "actos-supresion-creacion",
+    "category": "Módulo 14 — Actos",
+    "keywords": "supresion de cargos, suprimir cargo, creacion de cargos, crear cargo, acto de supresion, acto de creacion de empleos, eliminar empleo, indemnizacion por supresion",
+    "answer": "Para generar el acto de **supresión y creación de cargos** usa la plantilla correspondiente en [Actos administrativos](/actos). El borrador se alimenta de:\n\n- El comparativo de [Planta → Comparar](/planta/comparar): cargos eliminados vs nuevos.\n- El [Retén social](/reten-social): para excluir a los protegidos de la supresión.\n\nIncluye los fundamentos **Ley 909/2004** y **Decreto 1083/2015** sobre procedimiento y pago indemnizatorio.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 45, "fields": {
+    "name": "Actos — marcadores y re-renderizar",
+    "slug": "actos-marcadores",
+    "category": "Módulo 14 — Actos",
+    "keywords": "marcadores de plantilla, variables plantilla, placeholders, rerenderizar borrador, regenerar borrador, actualizar borrador, volver a renderizar",
+    "answer": "Las plantillas de [Actos administrativos](/actos) usan **marcadores** como `{{entidad.nombre}}`, `{{reestructuracion.nombre}}`, `{{planta_propuesta.total_cargos}}`, etc. Si cambias datos de la entidad, la planta o el diagnóstico, abre el borrador y haz clic en **Re-renderizar**: la plataforma vuelve a inyectar los valores actuales **sin perder tus ediciones manuales** fuera de los marcadores.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 46, "fields": {
+    "name": "Flujo general del estudio técnico",
+    "slug": "flujo-estudio-tecnico",
+    "category": "Flujo general",
+    "keywords": "flujo del estudio tecnico, flujo completo, paso a paso estudio, orden de los modulos, como empezar un estudio tecnico, secuencia de trabajo, por donde empiezo",
+    "answer": "Flujo recomendado para un estudio técnico completo en ReEstructura.Gov:\n\n1. **Entidad** — registrar en [Entidades](/entidades).\n2. **Reestructuración** — crear el expediente desde el topbar.\n3. **Base legal** — revisar [Base legal](/base-legal).\n4. **Diagnóstico** — rol, DOFA, brechas, entornos en [Diagnóstico](/diagnostico).\n5. **Procesos** — mapa y cadena de valor en [Procesos](/procesos).\n6. **Financiero** — Ley 617 en [Análisis financiero](/financiero).\n7. **Estructura orgánica** — organigrama propuesto en [Estructura](/estructura).\n8. **Matriz de cargas** — levantamiento en [Matriz de Cargas](/matrices).\n9. **Planta** — actual y propuesta en [Planta](/planta).\n10. **Manual de funciones** — generar desde cargas en [Manual](/manual-funciones).\n11. **Retén social** — protegidos en [Retén](/reten-social).\n12. **Actos administrativos** — borradores en [Actos](/actos).",
+    "priority": 20, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 47, "fields": {
+    "name": "Saludo",
+    "slug": "saludo",
+    "category": "Social",
+    "keywords": "hola, buenos dias, buenas tardes, buenas noches, saludos, hey, que tal",
+    "answer": "¡Hola! Soy **Jota** 👋. Estoy aquí para orientarte en los seis módulos de ReEstructura.Gov: **Diagnóstico**, **Matriz de Cargas**, **Planta**, **Manual de Funciones**, **Retén Social** y **Actos Administrativos**. Puedes preguntarme, por ejemplo, *\"¿cómo creo una entidad?\"* o *\"¿cómo levanto una actividad en la matriz?\"*.",
+    "priority": 12, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 48, "fields": {
+    "name": "Agradecimiento",
+    "slug": "gracias",
+    "category": "Social",
+    "keywords": "gracias, muchas gracias, te agradezco, mil gracias",
+    "answer": "¡Con gusto! Si te surge otra duda sobre cualquier módulo de ReEstructura.Gov, aquí estoy.",
+    "priority": 10, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 49, "fields": {
+    "name": "Quién eres",
+    "slug": "quien-eres",
+    "category": "Social",
+    "keywords": "quien eres, que eres, como te llamas, tu nombre, eres un bot, eres humano",
+    "answer": "Soy **Jota**, el asistente de ayuda de **ReEstructura.Gov**. Conozco los seis módulos de la plataforma (Diagnóstico, Matriz de Cargas, Planta, Manual de Funciones, Retén Social y Actos Administrativos) y el marco legal aplicable (Ley 489/1998, Ley 790/2002, Ley 909/2004, CPACA, Decretos 785/2005, 1083/2015, 2489/2006 y jurisprudencia). Pregúntame lo que necesites.",
+    "priority": 12, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 50, "fields": {
+    "name": "Cerrar sesión",
+    "slug": "cerrar-sesion",
+    "category": "Acceso",
+    "keywords": "cerrar sesion, salir de la plataforma, logout, desconectarme",
+    "answer": "Para cerrar sesión haz clic en tu **nombre de usuario** en el topbar (arriba a la derecha) y elige **Cerrar sesión**. Volverás a la pantalla de [login](/login).",
+    "priority": 10, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 51, "fields": {
+    "name": "Ayuda general / menú de módulos",
+    "slug": "ayuda-general",
+    "category": "General",
+    "keywords": "ayuda, que puedes hacer, que sabes hacer, que modulos hay, menu de modulos, lista de modulos, funcionalidades de la plataforma, todos los modulos, modulos de la plataforma",
+    "answer": "ReEstructura.Gov tiene **10 módulos**, que puedes ver en el sidebar izquierdo:\n\n- **M5 · Base Legal** — [/base-legal](/base-legal). Marco normativo aplicable: Ley 489/1998, Ley 909/2004, CPACA, Cartilla Función Pública 2018, decretos de nomenclatura (785/2005, 2489/2006) y jurisprudencia.\n- **M6 · Diagnóstico** — [/diagnostico](/diagnostico). Análisis DOFA institucional, identificación de problemas, brechas organizacionales y los cuatro interrogantes de la Cartilla (Fase Previa).\n- **M7 · Análisis Financiero** — [/financiero](/financiero). Evaluación de disponibilidad presupuestal para la sostenibilidad de la planta de personal propuesta (Ley 617/2000).\n- **M8 · Procesos** — [/procesos](/procesos). Levantamiento y análisis de procesos y procedimientos institucionales actuales; mapa de procesos y cadena de valor.\n- **M9 · Estructura Orgánica** — [/estructura](/estructura). Diseño y rediseño del organigrama institucional, niveles jerárquicos, dependencias y su agrupación funcional.\n- **M10 · Matriz de Cargas** — [/matrices](/matrices). Cálculo de cargas de trabajo por cargo usando tiempos estándar, distribución de actividades e indicadores de productividad.\n- **M11 · Planta de Personal** — [/planta](/planta). Diseño de planta actual y propuesta, nomenclatura CNSC, equivalencias y justificación técnica de cargos.\n- **M12 · Manual de Funciones** — [/manual-funciones](/manual-funciones). Fichas de funciones por cargo, competencias laborales y requisitos mínimos de estudio y experiencia.\n- **M13 · Retén Social** — [/reten-social](/reten-social). Identificación de población protegida: pre-pensionados, madres/padres cabeza de familia y personas con discapacidad.\n- **M14 · Actos Administrativos** — [/actos](/actos). Generación de resoluciones, decretos de reestructuración y actos de supresión y creación de cargos.\n\nPregúntame por cualquiera de ellos (por ejemplo *\"¿cómo hago el diagnóstico?\"* o *\"¿cómo creo la planta?\"*) y te guío paso a paso.",
+    "priority": 11, "is_active": true,
+    "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }}
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "model": "actos.acttemplate",
+    "pk": 1,
+    "fields": {
+      "kind": "DECRETO",
+      "scope": "MUNICIPAL",
+      "topic": "PLANTA",
+      "name": "Decreto de adopción de planta de personal (Alcaldía)",
+      "description": "Modelo base para alcaldías, ajustable a categoría municipal.",
+      "body": "DECRETO No. ___ DE {today}\n\nPor el cual se adopta la planta de personal de la {entity_name} ({entity_acronym}).\n\nEL ALCALDE DE ___________, en ejercicio de sus facultades constitucionales y legales, en especial las conferidas por el artículo 315 de la Constitución Política, la Ley 136 de 1994, la Ley 909 de 2004 y el Decreto 785 de 2005,\n\nCONSIDERANDO:\n\nQue la entidad {entity_name}, de naturaleza {entity_legal_nature}, adelantó el estudio técnico de rediseño institucional conforme a la Guía de Función Pública (2018), identificando el siguiente problema: {problem_statement}\n\nQue el objetivo del rediseño es: {objectives}\n\nQue la propuesta es viable financieramente dentro de los límites de la Ley 617 de 2000 y cuenta con Certificado de Disponibilidad Presupuestal.\n\nQue se respeta el retén social (Ley 790 de 2002) y la jurisprudencia de estabilidad laboral reforzada (Corte Constitucional T-014/07 y T-078/09; Consejo de Estado 25000-23-25-000-2001-07679-02).\n\nDECRETA:\n\nARTÍCULO 1. Adoptar la planta de personal de {entity_name} conforme al anexo que hace parte integral del presente decreto.\n\nARTÍCULO 2. El presente decreto rige a partir de su publicación y deroga el acto administrativo {current_payroll_act}.\n\nPUBLÍQUESE, COMUNÍQUESE Y CÚMPLASE.\n\nDado en _______ a los ___ días del mes de ___ de {today}.\n\n______________________________\nALCALDE MUNICIPAL",
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "actos.acttemplate",
+    "pk": 2,
+    "fields": {
+      "kind": "ACUERDO",
+      "scope": "MUNICIPAL",
+      "topic": "ESTRUCTURA",
+      "name": "Acuerdo de modificación de estructura (Concejo Municipal)",
+      "description": "Proyecto de acuerdo para modificar la estructura orgánica de la administración municipal.",
+      "body": "ACUERDO No. ___ DE {today}\n\nPor el cual se modifica la estructura de la administración central del Municipio de {entity_name}.\n\nEL CONCEJO MUNICIPAL DE {entity_name}, en uso de sus atribuciones constitucionales y legales, en especial las conferidas por los artículos 313 numeral 6 y 315 numeral 7 de la Constitución Política, la Ley 136 de 1994 y la Ley 1551 de 2012,\n\nCONSIDERANDO:\n\nQue mediante {current_structure_act} se adoptó la estructura actual de la administración.\n\nQue con fundamento en el estudio técnico de rediseño institucional, que identifica el problema: {problem_statement}, se hace necesario modificar la estructura para atender los siguientes objetivos: {objectives}.\n\nQue el riesgo de no realizar esta modificación es: {risks}\n\nACUERDA:\n\nARTÍCULO 1. Modificar la estructura de la administración central del Municipio de {entity_name}, según el organigrama y las dependencias definidas en el anexo que hace parte integral del presente acuerdo.\n\nARTÍCULO 2. Facúltese al Alcalde Municipal para adoptar la planta de personal y el manual específico de funciones y competencias laborales derivados de esta estructura.\n\nARTÍCULO 3. El presente acuerdo rige a partir de su sanción y publicación.\n\nPUBLÍQUESE Y CÚMPLASE.",
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "actos.acttemplate",
+    "pk": 3,
+    "fields": {
+      "kind": "RESOLUCION",
+      "scope": "DESCENTRALIZADO",
+      "topic": "MANUAL",
+      "name": "Resolución de manual específico de funciones",
+      "description": "Manual específico de funciones y competencias laborales para entidad descentralizada.",
+      "body": "RESOLUCIÓN No. ___ DE {today}\n\nPor la cual se adopta el Manual Específico de Funciones y Competencias Laborales de {entity_name}.\n\nEL REPRESENTANTE LEGAL DE {entity_name}, en ejercicio de sus facultades legales y estatutarias, en especial las conferidas por la Ley 909 de 2004 y el Decreto 1083 de 2015,\n\nCONSIDERANDO:\n\nQue es necesario contar con un manual de funciones actualizado que responda a la estructura y planta adoptadas para la entidad.\n\nQue el estudio técnico de cargas de trabajo, elaborado según el Instructivo de Función Pública (24 de abril de 2024), arrojó los perfiles y propósitos principales consignados en el anexo.\n\nRESUELVE:\n\nARTÍCULO 1. Adoptar el Manual Específico de Funciones y Competencias Laborales de {entity_name} según el documento anexo que hace parte integral de la presente resolución.\n\nARTÍCULO 2. La presente resolución deroga el acto {current_manual_act} y rige a partir de su publicación.\n\nPUBLÍQUESE Y CÚMPLASE.",
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  }
+]

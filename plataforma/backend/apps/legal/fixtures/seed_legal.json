@@ -1,0 +1,282 @@
+[
+  {
+    "model": "legal.legalnorm",
+    "pk": 1,
+    "fields": {
+      "kind": "CONSTITUCION",
+      "reference": "Constitución Política de Colombia",
+      "title": "Principios de la función administrativa y autonomía territorial",
+      "year": 1991,
+      "summary": "Art. 209 principios de la función administrativa; art. 287 autonomía territorial; arts. 300-7 y 313-6 competencia de asambleas y concejos sobre estructura.",
+      "key_articles": "Arts. 209, 287, 300-7, 313-6, 315",
+      "applies_to": "Todas las entidades públicas",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 2,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 489 de 1998",
+      "title": "Estructura y funcionamiento de la administración pública",
+      "year": 1998,
+      "summary": "Principios de organización administrativa. Art. 52 causales de supresión; art. 54 modificación de estructura.",
+      "key_articles": "Art. 3 (principios), Art. 52 (causales de supresión), Art. 54 (modificación de estructura)",
+      "applies_to": "Todas",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 3,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 790 de 2002",
+      "title": "Programa de Renovación de la Administración Pública",
+      "year": 2002,
+      "summary": "Fusión y supresión de entidades nacionales. Art. 12 retén social (protección especial).",
+      "key_articles": "Art. 12 (retén social)",
+      "applies_to": "Orden Nacional y, por remisión jurisprudencial, territoriales",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 4,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 909 de 2004",
+      "title": "Empleo público, carrera administrativa y gerencia pública",
+      "year": 2004,
+      "summary": "Art. 19 levantamiento de cargas como sustento de la planta; art. 21 empleos temporales; art. 44 derecho preferencial de incorporación en reestructuración.",
+      "key_articles": "Arts. 19, 21, 44",
+      "applies_to": "Todas",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 5,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 1437 de 2011 (CPACA)",
+      "title": "Código de Procedimiento Administrativo y de lo Contencioso Administrativo",
+      "year": 2011,
+      "summary": "Procedimiento para la expedición de actos administrativos: motivación, publicidad, notificaciones, recursos y control judicial.",
+      "key_articles": "Libro Primero — procedimiento administrativo",
+      "applies_to": "Todas",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 6,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 617 de 2000",
+      "title": "Racionalización del gasto público territorial",
+      "year": 2000,
+      "summary": "Límites al gasto de funcionamiento de departamentos, distritos y municipios por categoría. Exige certificación de cumplimiento antes de modificar planta.",
+      "key_articles": "Arts. 3, 6, 10, 11 (límites por categoría)",
+      "applies_to": "Territoriales",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 7,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 358 de 1997",
+      "title": "Capacidad de endeudamiento territorial",
+      "year": 1997,
+      "summary": "Indicadores de solvencia y sostenibilidad para que las entidades territoriales contraigan nuevo endeudamiento.",
+      "key_articles": "Arts. 2-6",
+      "applies_to": "Territoriales",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 8,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 550 de 1999",
+      "title": "Acuerdos de reestructuración de pasivos",
+      "year": 1999,
+      "summary": "Marco para entidades territoriales en crisis fiscal. Requiere concepto favorable del Ministerio de Hacienda.",
+      "key_articles": "Arts. 5-58",
+      "applies_to": "Territoriales en crisis fiscal",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 9,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 1551 de 2012",
+      "title": "Modernización de la organización y funcionamiento de municipios",
+      "year": 2012,
+      "summary": "Municipios de categoría 5ª y 6ª pueden solicitar acompañamiento gratuito de la ESAP en procesos de reestructuración.",
+      "key_articles": "Art. 30",
+      "applies_to": "Municipios 5ª y 6ª",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 10,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 1083 de 2015",
+      "title": "Decreto Único Reglamentario del Sector de Función Pública",
+      "year": 2015,
+      "summary": "Compila normativa de empleo público. Arts. 2.2.2.2.1 niveles jerárquicos; 2.2.2.5.1 equivalencias del manual (nacional); parágrafo 2.2.12.1 concepto previo DAFP.",
+      "key_articles": "2.2.2.2.1, 2.2.2.5.1, 2.2.12.1",
+      "applies_to": "Todas",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 11,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 785 de 2005",
+      "title": "Nomenclatura y clasificación de empleos — orden territorial",
+      "year": 2005,
+      "summary": "Niveles y denominaciones aplicables a entidades territoriales. Art. 25 equivalencias del manual de funciones.",
+      "key_articles": "Arts. 3-25",
+      "applies_to": "Territoriales",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 12,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 2489 de 2006",
+      "title": "Nomenclatura de empleos — orden nacional",
+      "year": 2006,
+      "summary": "Denominaciones, códigos y grados del orden nacional.",
+      "key_articles": "",
+      "applies_to": "Orden Nacional",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 13,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 254 de 2000",
+      "title": "Régimen de supresión y liquidación de entidades públicas",
+      "year": 2000,
+      "summary": "Procedimiento para la supresión/liquidación de entidades del orden nacional, extensible por analogía a territoriales.",
+      "key_articles": "",
+      "applies_to": "Nacional (extensible a territoriales)",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 14,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 1105 de 2006",
+      "title": "Modificaciones al régimen de liquidación de entidades",
+      "year": 2006,
+      "summary": "Ajustes al Decreto 254 de 2000.",
+      "key_articles": "",
+      "applies_to": "Entidades en liquidación",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 15,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 190 de 2003",
+      "title": "Reglamentación del retén social (Ley 790/2002)",
+      "year": 2003,
+      "summary": "Identifica sujetos de protección y procedimiento para aplicar el retén social en supresión de empleos.",
+      "key_articles": "",
+      "applies_to": "Procesos de supresión",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 16,
+    "fields": {
+      "kind": "SENTENCIA_CE",
+      "reference": "Consejo de Estado 25000-23-25-000-2001-07679-02(0402-08)",
+      "title": "Criterios sobre supresión de empleos y retén social",
+      "year": 2008,
+      "summary": "Fija criterios de obligatoria aplicación para validar supresiones de empleos y garantizar la protección del retén social.",
+      "key_articles": "",
+      "applies_to": "Procesos de supresión de empleos",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 17,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional T-014 de 2007",
+      "title": "Estabilidad laboral reforzada en procesos de reestructuración",
+      "year": 2007,
+      "summary": "Protección reforzada de trabajadores en condiciones especiales frente a supresiones de cargos.",
+      "key_articles": "",
+      "applies_to": "Procesos de supresión de empleos",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 18,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional T-078 de 2009",
+      "title": "Protección a sujetos de especial protección en supresión de cargos",
+      "year": 2009,
+      "summary": "Refuerza las garantías para madres cabeza de familia, personas con discapacidad y pre-pensionados en procesos de reestructuración.",
+      "key_articles": "",
+      "applies_to": "Procesos de supresión de empleos",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 19,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 142 de 1994",
+      "title": "Régimen de servicios públicos domiciliarios",
+      "year": 1994,
+      "summary": "Aplica al rediseño de empresas oficiales de servicios públicos domiciliarios.",
+      "key_articles": "",
+      "applies_to": "Empresas oficiales de servicios públicos domiciliarios",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 20,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 4 de 1992",
+      "title": "Régimen salarial y prestacional de empleados públicos",
+      "year": 1992,
+      "summary": "Marco para fijar la escala salarial.",
+      "key_articles": "",
+      "applies_to": "Todas",
+      "url": ""
+    }
+  }
+]

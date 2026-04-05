@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 250 250 252;
+  --foreground: 15 23 42;
+}
+
+html,
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+}
+
+/* Scroll suave en contenedores de grid */
+.grid-scroll {
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.grid-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.grid-scroll::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.2);
+  border-radius: 999px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Estilos para impresión y "Guardar como PDF" desde el navegador.   */
+/* Oculta el shell (sidebar, topbar, widgets, botones con clase      */
+/* .print-hide) y convierte el contenido principal en un documento   */
+/* limpio apto para imprimir o guardar como PDF.                     */
+/* ---------------------------------------------------------------- */
+@media print {
+  @page {
+    size: A4;
+    margin: 18mm 14mm 18mm 14mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Oculta sidebar, topbar, widget flotante Jota y cualquier
+     elemento marcado como .print-hide o con la clase utility
+     print:hidden que ya se usa en algunas páginas. */
+  aside,
+  nav,
+  header.topbar,
+  .print-hide,
+  .print\:hidden,
+  [data-print-hide],
+  [data-jota-widget] {
+    display: none !important;
+  }
+
+  /* Neutraliza el layout flex/grid global para que el main ocupe
+     todo el ancho de la hoja. */
+  body > div,
+  body > div > div,
+  main {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+  }
+
+  /* Tablas legibles: bordes y sin colores de fondo que consuman
+     tinta a menos que estén explícitamente marcados. */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto;
+  }
+  thead { display: table-header-group; }
+  tr { page-break-inside: avoid; }
+  th, td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 4px 6px !important;
+    font-size: 10pt !important;
+  }
+
+  h1 { font-size: 18pt !important; }
+  h2 { font-size: 14pt !important; }
+  h3 { font-size: 12pt !important; }
+  p, li, td, th { font-size: 10pt !important; }
+
+  a { color: #0f172a !important; text-decoration: none !important; }
+  a[href]::after { content: ''; }
+
+  /* Evita que botones aparezcan en el PDF (cinturón + tirantes
+     junto con .print-hide). */
+  button { display: none !important; }
+}
