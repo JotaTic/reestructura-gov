@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 
 from apps.common.mixins import RestructuringScopedMixin
-from apps.common.exports import export_response
+from apps.common.exports import export_response, EXPORT_RENDERERS
 from apps.common.module_exports import export_process_map
 
 from .models import ProcessMap, Process, ValueChainLink
@@ -16,7 +16,8 @@ class ProcessMapViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
     search_fields = ['name']
     ordering_fields = ['reference_date', 'name']
 
-    @action(detail=True, methods=['get'], url_path=r'export/(?P<fmt>xlsx|docx)')
+    @action(detail=True, methods=['get'], url_path=r'export/(?P<fmt>xlsx|docx)',
+            renderer_classes=EXPORT_RENDERERS)
     def export(self, request, pk=None, fmt=None):
         pm = self.get_object()
         title, meta, sections, base, ctx = export_process_map(pm)

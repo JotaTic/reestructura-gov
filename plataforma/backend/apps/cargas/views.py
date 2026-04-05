@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from apps.common.mixins import RestructuringScopedMixin
+from apps.common.exports import EXPORT_RENDERERS
 
 from .models import WorkloadMatrix, WorkloadEntry
 from .serializers import WorkloadMatrixSerializer, WorkloadEntrySerializer
@@ -33,7 +34,8 @@ class WorkloadMatrixViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
     def functions_manual(self, request, pk=None):
         return Response(build_functions_manual(self.get_object()))
 
-    @action(detail=True, methods=['get'], url_path='exportar-xlsx')
+    @action(detail=True, methods=['get'], url_path='exportar-xlsx',
+            renderer_classes=EXPORT_RENDERERS)
     def export_xlsx(self, request, pk=None):
         matrix = self.get_object()
         content = export_to_xlsx(matrix)
@@ -45,7 +47,8 @@ class WorkloadMatrixViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
         response['Content-Disposition'] = f'attachment; filename="{filename}"'
         return response
 
-    @action(detail=True, methods=['get'], url_path=r'export/(?P<fmt>xlsx|docx)')
+    @action(detail=True, methods=['get'], url_path=r'export/(?P<fmt>xlsx|docx)',
+            renderer_classes=EXPORT_RENDERERS)
     def export(self, request, pk=None, fmt=None):
         """
         Export genérico de la matriz en XLSX o DOCX usando el helper común.
@@ -69,7 +72,8 @@ class WorkloadMatrixViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
         title, meta, sections, base, ctx = export_matrix_docx(matrix)
         return export_response(fmt, title, meta, sections, base, ctx)
 
-    @action(detail=True, methods=['get'], url_path=r'manual-funciones/export/(?P<fmt>xlsx|docx)')
+    @action(detail=True, methods=['get'], url_path=r'manual-funciones/export/(?P<fmt>xlsx|docx)',
+            renderer_classes=EXPORT_RENDERERS)
     def export_manual(self, request, pk=None, fmt=None):
         """M12 — Manual de funciones exportable (XLSX/DOCX) a partir de la matriz."""
         from apps.common.exports import export_response

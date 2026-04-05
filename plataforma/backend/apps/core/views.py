@@ -14,7 +14,7 @@ class CsrfExemptSessionAuth(SessionAuthentication):
         return  # noop
 
 from apps.common.mixins import EntityScopedMixin
-from apps.common.exports import export_response
+from apps.common.exports import export_response, EXPORT_RENDERERS
 from apps.common.module_exports import export_structure
 
 from .models import Entity, Department, TimelineActivity, Restructuring
@@ -43,7 +43,8 @@ class EntityViewSet(viewsets.ModelViewSet):
         qs = entity.restructurings.all()
         return Response(RestructuringSerializer(qs, many=True).data)
 
-    @action(detail=True, methods=['get'], url_path=r'export-estructura/(?P<fmt>xlsx|docx)')
+    @action(detail=True, methods=['get'], url_path=r'export-estructura/(?P<fmt>xlsx|docx)',
+            renderer_classes=EXPORT_RENDERERS)
     def export_structure(self, request, pk=None, fmt=None):
         """M9 — Estructura orgánica: árbol de dependencias de la entidad."""
         entity = self.get_object()
