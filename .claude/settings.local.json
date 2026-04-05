@@ -65,7 +65,10 @@
       "Read(//c/jota/desarrollos/reestructuracion/plataforma/backend/apps/$app/**)",
       "Bash(done)",
       "Bash(cd /tmp)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(.venv/Scripts/python.exe scripts/generate_user_manual.py)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
