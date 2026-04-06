@@ -101,7 +101,7 @@ export default function SimuladorPage() {
     setLoading(true);
     Promise.all([
       api.get<Paginated<Scenario>>("/simulador/"),
-      api.get<Paginated<PayrollPlan>>("/plantas/"),
+      api.get<Paginated<PayrollPlan>>("/planes/"),
     ])
       .then(([scenResp, planResp]) => {
         setScenarios(scenResp.results);

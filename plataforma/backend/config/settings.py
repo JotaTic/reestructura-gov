@@ -164,7 +164,13 @@ CSRF_TRUSTED_ORIGINS = config(
     default='http://localhost:3000,http://127.0.0.1:3000',
     cast=Csv(),
 )
-# En desarrollo, permitir cookies cross-site (Next.js → Django en puertos distintos).
+# Cookies
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = False  # el frontend debe leerla para el header X-CSRFToken
+
+# En producción (HTTPS), activar cookies seguras.
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -39,7 +39,7 @@ function Inner() {
     setLoading(true);
     Promise.all([
       api.get<Paginated<Procedure>>("/procedimientos/", { page_size: 100 }),
-      api.get<Paginated<ProcessMap>>("/process-maps/", { page_size: 50 }),
+      api.get<Paginated<ProcessMap>>("/mapas-procesos/", { page_size: 50 }),
     ])
       .then(([p, pm]) => {
         setProcedures(p.results);

@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: reestructura_db
+    environment:
+      POSTGRES_DB: reestructura
+      POSTGRES_USER: reestructura
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-reestructura_prod}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reestructura"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: reestructura_backend
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: "0"
+      DJANGO_ALLOWED_HOSTS: "reestructuracion.corpofuturo.org,localhost,127.0.0.1,backend"
+      DATABASE_URL: postgres://reestructura:${DB_PASSWORD:-reestructura_prod}@db:5432/reestructura
+      CORS_ALLOWED_ORIGINS: "https://reestructuracion.corpofuturo.org"
+      CSRF_TRUSTED_ORIGINS: "https://reestructuracion.corpofuturo.org"
+    volumes:
+      - backend_media:/app/media
+      - backend_static:/app/staticfiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             python manage.py loaddata apps/nomenclatura/fixtures/decreto_785_2005.json || true &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+
+  frontend:
+    build: ./frontend
+    container_name: reestructura_frontend
+    environment:
+      NEXT_PUBLIC_API_URL: https://reestructuracion.corpofuturo.org/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    command: sh -c "npm run build && npm run start"
+
+volumes:
+  pgdata:
+  backend_media:
+  backend_static:
