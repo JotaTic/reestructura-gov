@@ -80,6 +80,17 @@ class EmployeeViewSet(EntityScopedMixin, viewsets.ModelViewSet):
         result = import_sigep_excel(file, entity)
         return Response(result, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['post'], url_path='upload-cv', parser_classes=[MultiPartParser])
+    def upload_cv(self, request, pk=None):
+        """Carga la hoja de vida (CV) del empleado como archivo adjunto."""
+        employee = self.get_object()
+        file = request.FILES.get('file')
+        if not file:
+            return Response({'detail': 'Archivo requerido.'}, status=400)
+        employee.cv_file = file
+        employee.save(update_fields=['cv_file'])
+        return Response({'detail': 'Hoja de vida cargada.', 'url': employee.cv_file.url})
+
     @action(
         detail=True, methods=['get'],
         url_path=r'export-cv/(?P<fmt>docx)',

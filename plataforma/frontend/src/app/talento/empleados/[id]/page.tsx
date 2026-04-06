@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
@@ -12,7 +12,7 @@ import type {
   EmployeeEvaluation,
   EmploymentRecord,
 } from "@/types";
-import { ArrowLeft, IdCard } from "lucide-react";
+import { ArrowLeft, IdCard, Upload } from "lucide-react";
 
 type Tab = "basica" | "estudios" | "experiencia" | "capacitacion" | "evaluaciones" | "empleos";
 
@@ -31,6 +31,11 @@ export default function EmpleadoDetailPage() {
   const [data, setData] = useState<EmployeeHojaDeVida | null>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("basica");
+  const [showCvUpload, setShowCvUpload] = useState(false);
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [uploadingCv, setUploadingCv] = useState(false);
+  const [cvResult, setCvResult] = useState<Record<string, unknown> | null>(null);
+  const cvFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -40,6 +45,25 @@ export default function EmpleadoDetailPage() {
       .then(setData)
       .finally(() => setLoading(false));
   }, [id]);
+
+  const handleCvUpload = async () => {
+    if (!cvFile) return;
+    setUploadingCv(true);
+    setCvResult(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", cvFile);
+      const result = await api.postForm<Record<string, unknown>>(
+        `/empleados/${id}/upload-cv/`,
+        formData
+      );
+      setCvResult(result);
+    } catch (e: unknown) {
+      setCvResult({ error: e instanceof Error ? e.message : "Error al subir CV" });
+    } finally {
+      setUploadingCv(false);
+    }
+  };
 
   if (loading) return <div className="p-6 text-sm text-slate-500">Cargando hoja de vida...</div>;
   if (!data) return <div className="p-6 text-sm text-red-500">No se pudo cargar la hoja de vida.</div>;
@@ -64,7 +88,56 @@ export default function EmpleadoDetailPage() {
             Pre-pensionado
           </span>
         )}
+        <button
+          onClick={() => setShowCvUpload(true)}
+          className="ml-auto flex items-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+        >
+          <Upload size={14} /> Subir CV
+        </button>
       </div>
+
+      {/* Modal subir CV */}
+      {showCvUpload && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+            <h2 className="mb-4 text-base font-semibold text-slate-800">Subir hoja de vida (CV)</h2>
+            <p className="mb-3 text-sm text-slate-600">
+              Adjunta el archivo de hoja de vida del empleado (PDF, DOCX, etc.).
+            </p>
+            <input
+              ref={cvFileRef}
+              type="file"
+              accept=".pdf,.docx,.doc"
+              className="mb-4 block w-full text-sm text-slate-600"
+              onChange={(e) => setCvFile(e.target.files?.[0] ?? null)}
+            />
+            {cvResult && (
+              <div className="mb-4 rounded bg-slate-50 p-3 text-xs text-slate-700">
+                {cvResult.error ? (
+                  <p className="text-red-600">{String(cvResult.error)}</p>
+                ) : (
+                  <p className="text-green-700">CV subido correctamente.{cvResult.url ? ` Archivo: ${String(cvResult.url)}` : ""}</p>
+                )}
+              </div>
+            )}
+            <div className="flex gap-2">
+              <button
+                onClick={handleCvUpload}
+                disabled={!cvFile || uploadingCv}
+                className="rounded-md bg-brand-600 px-4 py-1.5 text-sm text-white hover:bg-brand-700 disabled:opacity-50"
+              >
+                {uploadingCv ? "Subiendo…" : "Subir"}
+              </button>
+              <button
+                onClick={() => { setShowCvUpload(false); setCvFile(null); setCvResult(null); }}
+                className="rounded-md border px-4 py-1.5 text-sm text-slate-600 hover:bg-slate-50"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Resumen rápido */}
       <div className="mb-4 grid grid-cols-3 gap-3 text-sm">

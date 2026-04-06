@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
@@ -12,7 +12,7 @@ import type {
   PayrollPlan,
   PayrollPosition,
 } from "@/types";
-import { ArrowLeft, Plus, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, FileSpreadsheet, Plus, Save, Trash2 } from "lucide-react";
 import { RequireContext } from "@/components/context/RequireContext";
 import { ExportBar } from "@/components/ui/ExportBar";
 
@@ -43,6 +43,11 @@ function Inner() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [nomenclature, setNomenclature] = useState<JobNomenclature[]>([]);
   const [saving, setSaving] = useState(false);
+  const [showImport, setShowImport] = useState(false);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<Record<string, unknown> | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {
     const p = await api.get<PayrollPlan>(`/planes/${planId}/`);
@@ -123,6 +128,26 @@ function Inner() {
     }
   };
 
+  const handleImportXlsx = async () => {
+    if (!importFile) return;
+    setImporting(true);
+    setImportResult(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", importFile);
+      const result = await api.postForm<Record<string, unknown>>(
+        `/planes/${planId}/importar-xlsx/`,
+        formData
+      );
+      setImportResult(result);
+      load();
+    } catch (e: unknown) {
+      setImportResult({ error: e instanceof Error ? e.message : "Error al importar" });
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const totals = useMemo(() => {
     let qty = 0;
     let monthly = 0;
@@ -157,6 +182,12 @@ function Inner() {
             docxPath={`/planes/${plan.id}/export/docx/`}
           />
           <button
+            onClick={() => setShowImport(true)}
+            className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+          >
+            <FileSpreadsheet size={14} /> Importar Excel
+          </button>
+          <button
             onClick={saveAll}
             disabled={saving}
             className="inline-flex items-center gap-1 rounded-md bg-brand-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-800 disabled:bg-slate-400"
@@ -165,6 +196,66 @@ function Inner() {
           </button>
         </div>
       </div>
+
+      {/* Modal importar Excel */}
+      {showImport && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+            <h2 className="mb-4 text-base font-semibold text-slate-800">Importar Planta desde Excel</h2>
+            <p className="mb-3 text-sm text-slate-600">
+              Adjunta un archivo <strong>.xlsx</strong> con los cargos de la planta.
+            </p>
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".xlsx"
+              className="mb-4 block w-full text-sm text-slate-600"
+              onChange={(e) => setImportFile(e.target.files?.[0] ?? null)}
+            />
+            {importResult && (
+              <div className="mb-4 rounded bg-slate-50 p-3 text-xs text-slate-700">
+                {importResult.error ? (
+                  <p className="text-red-600">{String(importResult.error)}</p>
+                ) : (
+                  <>
+                    {importResult.created !== undefined && (
+                      <p>Cargos creados: <strong>{String(importResult.created)}</strong></p>
+                    )}
+                    {importResult.updated !== undefined && (
+                      <p>Cargos actualizados: <strong>{String(importResult.updated)}</strong></p>
+                    )}
+                    {Array.isArray(importResult.errors) && importResult.errors.length > 0 && (
+                      <div className="mt-1 text-red-600">
+                        {(importResult.errors as string[]).map((err, i) => <p key={i}>{err}</p>)}
+                      </div>
+                    )}
+                    {Array.isArray(importResult.warnings) && importResult.warnings.length > 0 && (
+                      <div className="mt-1 text-amber-700">
+                        {(importResult.warnings as string[]).map((w, i) => <p key={i}>{w}</p>)}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+            <div className="flex gap-2">
+              <button
+                onClick={handleImportXlsx}
+                disabled={!importFile || importing}
+                className="rounded-md bg-brand-600 px-4 py-1.5 text-sm text-white hover:bg-brand-700 disabled:opacity-50"
+              >
+                {importing ? "Importando…" : "Importar"}
+              </button>
+              <button
+                onClick={() => { setShowImport(false); setImportFile(null); setImportResult(null); }}
+                className="rounded-md border px-4 py-1.5 text-sm text-slate-600 hover:bg-slate-50"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-3 sm:grid-cols-3">
         <Stat label="Cargos" value={totals.qty.toString()} />

@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from apps.common.mixins import RestructuringScopedMixin
@@ -14,6 +15,7 @@ from .services import (
     export_to_xlsx,
     build_functions_manual,
 )
+from .import_service import import_workload_xlsx
 
 
 class WorkloadMatrixViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
@@ -46,6 +48,17 @@ class WorkloadMatrixViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
         filename = f'matriz_{matrix.entity.acronym or "entidad"}_{matrix.reference_date}.xlsx'
         response['Content-Disposition'] = f'attachment; filename="{filename}"'
         return response
+
+    @action(detail=True, methods=['post'], url_path='importar-xlsx', parser_classes=[MultiPartParser])
+    def importar_xlsx(self, request, pk=None):
+        """Importa entradas de cargas de trabajo desde un archivo Excel (.xlsx)."""
+        matrix = self.get_object()
+        file = request.FILES.get('file')
+        if not file:
+            return Response({'detail': 'Se requiere un archivo en el campo "file".'}, status=status.HTTP_400_BAD_REQUEST)
+        result = import_workload_xlsx(file, matrix)
+        http_status = status.HTTP_201_CREATED if not result['errors'] else status.HTTP_207_MULTI_STATUS
+        return Response(result, status=http_status)
 
     @action(detail=True, methods=['get'], url_path=r'export/(?P<fmt>xlsx|docx)',
             renderer_classes=EXPORT_RENDERERS)

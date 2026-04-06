@@ -1,5 +1,6 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from apps.common.mixins import RestructuringScopedMixin
@@ -9,6 +10,7 @@ from apps.common.module_exports import export_payroll_plan
 from .models import PayrollPlan, PayrollPosition
 from .serializers import PayrollPlanSerializer, PayrollPositionSerializer
 from .services import compare_plans
+from .import_service import import_payroll_xlsx
 
 
 class PayrollPlanViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
@@ -43,6 +45,17 @@ class PayrollPlanViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
         except ValueError as e:
             return Response({'detail': str(e)}, status=400)
         return Response(data)
+
+    @action(detail=True, methods=['post'], url_path='importar-xlsx', parser_classes=[MultiPartParser])
+    def importar_xlsx(self, request, pk=None):
+        """Importa cargos de planta desde un archivo Excel (.xlsx)."""
+        plan = self.get_object()
+        file = request.FILES.get('file')
+        if not file:
+            return Response({'detail': 'Se requiere un archivo en el campo "file".'}, status=status.HTTP_400_BAD_REQUEST)
+        result = import_payroll_xlsx(file, plan)
+        http_status = status.HTTP_201_CREATED if not result['errors'] else status.HTTP_207_MULTI_STATUS
+        return Response(result, status=http_status)
 
     @action(detail=True, methods=['get'], url_path='costo-real')
     def costo_real(self, request, pk=None):

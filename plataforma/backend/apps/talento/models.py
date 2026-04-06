@@ -44,6 +44,7 @@ class Employee(AuditedModel):
     email = models.EmailField('Correo electrónico', blank=True)
     phone = models.CharField('Teléfono', max_length=30, blank=True)
     address = models.CharField('Dirección', max_length=255, blank=True)
+    cv_file = models.FileField('Hoja de vida', upload_to='hojas_de_vida/', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Empleado'
