@@ -20,6 +20,11 @@ class Procedure(AuditedModel):
         related_name='procedures',
         verbose_name='Proceso',
     )
+    kind = models.CharField(
+        'Tipo', max_length=10,
+        choices=[('CURRENT', 'Vigente'), ('PROPOSED', 'Propuesto')],
+        default='CURRENT',
+    )
     code = models.CharField('Código', max_length=32)
     name = models.CharField('Nombre', max_length=255)
     version = models.CharField('Versión', max_length=32, default='1.0')

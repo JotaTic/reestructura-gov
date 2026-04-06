@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import type { LegalMandate, MandateGapReport, Paginated } from "@/types";
-import { Gavel, Plus } from "lucide-react";
+import type { LegalMandate, MandateGapReport, MandateCompliance, Paginated, Process, CoverageLevel } from "@/types";
+import { Gavel, Plus, Grid3x3 } from "lucide-react";
 import { RequireContext } from "@/components/context/RequireContext";
 import { useContextStore } from "@/stores/contextStore";
 
@@ -23,6 +23,8 @@ const KIND_LABELS: Record<string, string> = {
   OTRO: "Otro",
 };
 
+type ActiveTab = "list" | "matrix";
+
 function Inner() {
   const activeEntity = useContextStore((s) => s.activeEntity)!;
   const version = useContextStore((s) => s.version);
@@ -41,6 +43,14 @@ function Inner() {
   const [loadingGap, setLoadingGap] = useState(false);
   const [showGap, setShowGap] = useState(false);
 
+  // Tab state
+  const [activeTab, setActiveTab] = useState<ActiveTab>("list");
+
+  // Matrix state
+  const [processes, setProcesses] = useState<Process[]>([]);
+  const [compliances, setCompliances] = useState<MandateCompliance[]>([]);
+  const [loadingMatrix, setLoadingMatrix] = useState(false);
+
   const load = () => {
     setLoading(true);
     api
@@ -54,6 +64,22 @@ function Inner() {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeEntity.id, version]);
+
+  // Load matrix data when switching to matrix tab
+  useEffect(() => {
+    if (activeTab !== "matrix") return;
+    setLoadingMatrix(true);
+    Promise.all([
+      api.get<Paginated<Process>>("/procesos/", { page_size: 200 }),
+      api.get<Paginated<MandateCompliance>>("/mandato-cumplimiento/", { page_size: 5000 }),
+    ])
+      .then(([p, c]) => {
+        setProcesses(p.results);
+        setCompliances(c.results);
+      })
+      .catch((e) => setError(e instanceof Error ? e.message : "Error cargando matriz"))
+      .finally(() => setLoadingMatrix(false));
+  }, [activeTab]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,6 +113,50 @@ function Inner() {
     }
   };
 
+  // Coverage matrix helpers
+  const getCompliance = (mandateId: number, processId: number): MandateCompliance | undefined =>
+    compliances.find((c) => c.mandate === mandateId && c.process === processId);
+
+  const handleCoverageChange = async (mandateId: number, processId: number, value: string) => {
+    setError(null);
+    const existing = getCompliance(mandateId, processId);
+    try {
+      if (value === "" && existing) {
+        // Remove compliance
+        await api.delete(`/mandato-cumplimiento/${existing.id}/`);
+        setCompliances((prev) => prev.filter((c) => c.id !== existing.id));
+      } else if (value !== "") {
+        if (existing) {
+          const updated = await api.put<MandateCompliance>(`/mandato-cumplimiento/${existing.id}/`, {
+            mandate: mandateId,
+            process: processId,
+            coverage: value as CoverageLevel,
+            notes: existing.notes,
+          });
+          setCompliances((prev) => prev.map((c) => (c.id === existing.id ? updated : c)));
+        } else {
+          const created = await api.post<MandateCompliance>("/mandato-cumplimiento/", {
+            mandate: mandateId,
+            process: processId,
+            coverage: value as CoverageLevel,
+            notes: "",
+          });
+          setCompliances((prev) => [...prev, created]);
+        }
+      }
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error al actualizar cobertura");
+    }
+  };
+
+  // Coverage summary calculation
+  const coveredMandates = mandates.filter((m) =>
+    compliances.some((c) => c.mandate === m.id && (c.coverage === "FULL" || c.coverage === "PARTIAL"))
+  );
+  const coveragePct = mandates.length > 0
+    ? Math.round((coveredMandates.length / mandates.length) * 100)
+    : 0;
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
@@ -111,6 +181,32 @@ function Inner() {
             <Plus size={16} /> Nuevo mandato
           </button>
         </div>
+      </div>
+
+      {/* Tab selector */}
+      <div className="flex gap-1 rounded-lg bg-slate-100 p-1 w-fit">
+        <button
+          onClick={() => setActiveTab("list")}
+          className={
+            "flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-medium transition-colors " +
+            (activeTab === "list"
+              ? "bg-white text-brand-700 shadow-sm"
+              : "text-slate-600 hover:text-slate-900")
+          }
+        >
+          Listado
+        </button>
+        <button
+          onClick={() => setActiveTab("matrix")}
+          className={
+            "flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-medium transition-colors " +
+            (activeTab === "matrix"
+              ? "bg-white text-brand-700 shadow-sm"
+              : "text-slate-600 hover:text-slate-900")
+          }
+        >
+          <Grid3x3 size={14} /> Matriz de Cobertura
+        </button>
       </div>
 
       {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>}
@@ -252,44 +348,145 @@ function Inner() {
         </div>
       )}
 
-      {loading ? (
-        <div className="py-8 text-center text-sm text-slate-500">Cargando mandatos...</div>
-      ) : mandates.length === 0 ? (
-        <div className="rounded-lg border-2 border-dashed p-12 text-center">
-          <Gavel className="mx-auto mb-3 text-slate-300" size={40} />
-          <p className="text-sm font-medium text-slate-600">No hay mandatos legales registrados</p>
-        </div>
-      ) : (
-        <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-xs text-slate-500 uppercase tracking-wide">
-              <tr>
-                <th className="px-4 py-3 text-left">Norma</th>
-                <th className="px-4 py-3 text-left">Art.</th>
-                <th className="px-4 py-3 text-left">Tipo</th>
-                <th className="px-4 py-3 text-left">Texto</th>
-                <th className="px-4 py-3 text-center">Const.</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {mandates.map((m) => (
-                <tr key={m.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-900">{m.norm}</td>
-                  <td className="px-4 py-3 text-slate-500">{m.article || "—"}</td>
-                  <td className="px-4 py-3">
-                    <span className="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
-                      {KIND_LABELS[m.kind] || m.kind}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-slate-600 max-w-xs truncate">{m.mandate_text}</td>
-                  <td className="px-4 py-3 text-center text-xs">
-                    {m.is_constitutional ? "Sí" : "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {/* LISTADO TAB */}
+      {activeTab === "list" && (
+        <>
+          {loading ? (
+            <div className="py-8 text-center text-sm text-slate-500">Cargando mandatos...</div>
+          ) : mandates.length === 0 ? (
+            <div className="rounded-lg border-2 border-dashed p-12 text-center">
+              <Gavel className="mx-auto mb-3 text-slate-300" size={40} />
+              <p className="text-sm font-medium text-slate-600">No hay mandatos legales registrados</p>
+            </div>
+          ) : (
+            <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 text-xs text-slate-500 uppercase tracking-wide">
+                  <tr>
+                    <th className="px-4 py-3 text-left">Norma</th>
+                    <th className="px-4 py-3 text-left">Art.</th>
+                    <th className="px-4 py-3 text-left">Tipo</th>
+                    <th className="px-4 py-3 text-left">Texto</th>
+                    <th className="px-4 py-3 text-center">Const.</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {mandates.map((m) => (
+                    <tr key={m.id} className="hover:bg-slate-50">
+                      <td className="px-4 py-3 font-medium text-slate-900">{m.norm}</td>
+                      <td className="px-4 py-3 text-slate-500">{m.article || "—"}</td>
+                      <td className="px-4 py-3">
+                        <span className="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
+                          {KIND_LABELS[m.kind] || m.kind}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-slate-600 max-w-xs truncate">{m.mandate_text}</td>
+                      <td className="px-4 py-3 text-center text-xs">
+                        {m.is_constitutional ? "Sí" : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* MATRIX TAB */}
+      {activeTab === "matrix" && (
+        <>
+          {/* Coverage summary */}
+          <div className="rounded-lg border border-slate-200 bg-white p-4">
+            <div className="flex items-center gap-4">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-brand-700">{coveragePct}%</p>
+                <p className="text-xs text-slate-500">de mandatos cubiertos</p>
+              </div>
+              <div className="h-8 w-px bg-slate-200" />
+              <div className="text-center">
+                <p className="text-lg font-semibold text-slate-700">{coveredMandates.length}</p>
+                <p className="text-xs text-slate-500">con cobertura</p>
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-semibold text-slate-700">{mandates.length - coveredMandates.length}</p>
+                <p className="text-xs text-slate-500">sin cobertura</p>
+              </div>
+            </div>
+          </div>
+
+          {loadingMatrix ? (
+            <div className="py-8 text-center text-sm text-slate-500">Cargando matriz...</div>
+          ) : processes.length === 0 ? (
+            <div className="rounded-lg border-2 border-dashed p-8 text-center text-sm text-slate-500">
+              No hay procesos registrados. Crea procesos desde el módulo de Procesos.
+            </div>
+          ) : mandates.length === 0 ? (
+            <div className="rounded-lg border-2 border-dashed p-8 text-center text-sm text-slate-500">
+              No hay mandatos registrados.
+            </div>
+          ) : (
+            <div className="overflow-x-auto rounded-lg border bg-white shadow-sm">
+              <table className="text-xs">
+                <thead className="bg-slate-50">
+                  <tr>
+                    <th className="sticky left-0 z-10 bg-slate-50 px-3 py-2 text-left text-[10px] uppercase text-slate-500 min-w-[200px] border-r">
+                      Mandato
+                    </th>
+                    {processes.map((p) => (
+                      <th
+                        key={p.id}
+                        className="px-2 py-2 text-center text-[10px] uppercase text-slate-500 min-w-[90px]"
+                        title={p.name}
+                      >
+                        <div className="truncate max-w-[80px]">{p.code || p.name?.slice(0, 10)}</div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {mandates.map((m) => (
+                    <tr key={m.id} className="hover:bg-slate-50">
+                      <td
+                        className="sticky left-0 z-10 bg-white px-3 py-2 text-slate-700 border-r min-w-[200px]"
+                        title={m.mandate_text}
+                      >
+                        <div className="font-medium">{m.norm}{m.article ? ` art.${m.article}` : ""}</div>
+                        <div className="truncate text-slate-400 max-w-[190px]">{m.mandate_text}</div>
+                      </td>
+                      {processes.map((p) => {
+                        const comp = getCompliance(m.id, p.id!);
+                        return (
+                          <td key={p.id} className="px-1 py-1 text-center">
+                            <select
+                              value={comp?.coverage || ""}
+                              onChange={(e) => handleCoverageChange(m.id, p.id!, e.target.value)}
+                              className={
+                                "w-full rounded border px-1 py-0.5 text-[10px] " +
+                                (comp?.coverage === "FULL"
+                                  ? "bg-green-50 text-green-700 border-green-200"
+                                  : comp?.coverage === "PARTIAL"
+                                  ? "bg-amber-50 text-amber-700 border-amber-200"
+                                  : comp?.coverage === "NONE"
+                                  ? "bg-red-50 text-red-700 border-red-200"
+                                  : "bg-white text-slate-400 border-slate-200")
+                              }
+                            >
+                              <option value="">—</option>
+                              <option value="FULL">Plena</option>
+                              <option value="PARTIAL">Parcial</option>
+                              <option value="NONE">Ninguna</option>
+                            </select>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

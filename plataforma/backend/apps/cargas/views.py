@@ -4,11 +4,11 @@ from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
-from apps.common.mixins import RestructuringScopedMixin
+from apps.common.mixins import EntityScopedMixin, RestructuringScopedMixin
 from apps.common.exports import EXPORT_RENDERERS
 
-from .models import WorkloadMatrix, WorkloadEntry
-from .serializers import WorkloadMatrixSerializer, WorkloadEntrySerializer
+from .models import WorkloadMatrix, WorkloadEntry, ManualFuncionesOverride
+from .serializers import WorkloadMatrixSerializer, WorkloadEntrySerializer, ManualFuncionesOverrideSerializer
 from .services import (
     consolidate_by_level,
     consolidate_by_job,
@@ -129,3 +129,13 @@ class WorkloadEntryViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
             {'created': created, 'updated': updated, 'errors': errors},
             status=status.HTTP_200_OK if not errors else status.HTTP_207_MULTI_STATUS,
         )
+
+
+class ManualFuncionesOverrideViewSet(EntityScopedMixin, viewsets.ModelViewSet):
+    """CRUD de ajustes manuales al manual de funciones."""
+
+    queryset = ManualFuncionesOverride.objects.select_related('entity', 'restructuring')
+    serializer_class = ManualFuncionesOverrideSerializer
+    filterset_fields = ['restructuring', 'job_code', 'job_grade']
+    search_fields = ['job_code', 'custom_purpose']
+    ordering_fields = ['job_code', 'created_at']

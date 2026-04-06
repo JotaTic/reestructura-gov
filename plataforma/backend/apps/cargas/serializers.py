@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import WorkloadMatrix, WorkloadEntry
+from apps.common.audit import AuditedSerializerMixin
+from .models import WorkloadMatrix, WorkloadEntry, ManualFuncionesOverride
 
 
 class WorkloadEntrySerializer(serializers.ModelSerializer):
@@ -37,3 +38,17 @@ class WorkloadMatrixSerializer(serializers.ModelSerializer):
 class BulkEntriesSerializer(serializers.Serializer):
     """Permite guardar muchas filas de una sola vez desde el grid del frontend."""
     entries = WorkloadEntrySerializer(many=True)
+
+
+class ManualFuncionesOverrideSerializer(AuditedSerializerMixin, serializers.ModelSerializer):
+    entity_name = serializers.CharField(source='entity.name', read_only=True)
+
+    class Meta:
+        model = ManualFuncionesOverride
+        fields = [
+            'id', 'entity', 'entity_name', 'restructuring',
+            'job_code', 'job_grade',
+            'custom_purpose', 'custom_functions', 'custom_requirements',
+            'created_at', 'updated_at',
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at', 'entity_name']

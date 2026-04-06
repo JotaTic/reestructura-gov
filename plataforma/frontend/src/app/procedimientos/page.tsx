@@ -4,9 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import type { Procedure, ProcessMap, Paginated } from "@/types";
-import { ListOrdered, Plus, Upload } from "lucide-react";
+import { ListOrdered, Plus, Upload, Copy } from "lucide-react";
 import { RequireContext } from "@/components/context/RequireContext";
 import { useContextStore } from "@/stores/contextStore";
+
+type KindFilter = "ALL" | "CURRENT" | "PROPOSED";
 
 export default function ProcedimientosPage() {
   return (
@@ -26,6 +28,7 @@ function Inner() {
   const [processMaps, setProcessMaps] = useState<ProcessMap[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [kindFilter, setKindFilter] = useState<KindFilter>("ALL");
 
   // Import state
   const [showImport, setShowImport] = useState(false);
@@ -35,10 +38,15 @@ function Inner() {
   const [importResult, setImportResult] = useState<Record<string, unknown> | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  // Clone state
+  const [cloning, setCloning] = useState<number | null>(null);
+
   const load = () => {
     setLoading(true);
+    const params: Record<string, string | number> = { page_size: 100 };
+    if (kindFilter !== "ALL") params.kind = kindFilter;
     Promise.all([
-      api.get<Paginated<Procedure>>("/procedimientos/", { page_size: 100 }),
+      api.get<Paginated<Procedure>>("/procedimientos/", params),
       api.get<Paginated<ProcessMap>>("/mapas-procesos/", { page_size: 50 }),
     ])
       .then(([p, pm]) => {
@@ -52,7 +60,7 @@ function Inner() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeEntity.id, activeRestructuring.id, version]);
+  }, [activeEntity.id, activeRestructuring.id, version, kindFilter]);
 
   const handleImport = async () => {
     if (!importFile || !importProcess) return;
@@ -75,12 +83,30 @@ function Inner() {
     }
   };
 
+  const handleClone = async (procedureId: number) => {
+    setCloning(procedureId);
+    setError(null);
+    try {
+      await api.post(`/procedimientos/${procedureId}/clonar-propuesto/`, {});
+      load();
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error al clonar procedimiento");
+    } finally {
+      setCloning(null);
+    }
+  };
+
   // Collect all processes from process maps
   const allProcesses: { id: number; name: string; mapName: string }[] = [];
   processMaps.forEach((pm) => {
-    // We don't have processes here, so just show process maps
     allProcesses.push({ id: pm.id, name: pm.name, mapName: pm.name });
   });
+
+  const kindTabs: { key: KindFilter; label: string }[] = [
+    { key: "ALL", label: "Todos" },
+    { key: "CURRENT", label: "Vigentes" },
+    { key: "PROPOSED", label: "Propuestos" },
+  ];
 
   return (
     <div className="space-y-6 p-6">
@@ -98,6 +124,24 @@ function Inner() {
         >
           <Upload size={16} /> Importar DOCX
         </button>
+      </div>
+
+      {/* Kind filter tabs */}
+      <div className="flex gap-1 rounded-lg bg-slate-100 p-1 w-fit">
+        {kindTabs.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setKindFilter(tab.key)}
+            className={
+              "rounded-md px-4 py-1.5 text-sm font-medium transition-colors " +
+              (kindFilter === tab.key
+                ? "bg-white text-brand-700 shadow-sm"
+                : "text-slate-600 hover:text-slate-900")
+            }
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>}
@@ -188,12 +232,23 @@ function Inner() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => router.push(`/procedimientos/${p.id}`)}
-                      className="rounded bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 hover:bg-brand-100"
-                    >
-                      Ver pasos
-                    </button>
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => handleClone(p.id)}
+                        disabled={cloning === p.id}
+                        className="inline-flex items-center gap-1 rounded bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100 disabled:opacity-50"
+                        title="Clonar como propuesto"
+                      >
+                        <Copy size={13} />
+                        {cloning === p.id ? "Clonando..." : "Clonar"}
+                      </button>
+                      <button
+                        onClick={() => router.push(`/procedimientos/${p.id}`)}
+                        className="rounded bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 hover:bg-brand-100"
+                      >
+                        Ver pasos
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

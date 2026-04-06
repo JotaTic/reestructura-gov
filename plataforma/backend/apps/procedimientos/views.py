@@ -25,7 +25,7 @@ class ProcedureViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
     entity_field = 'process__process_map__entity'
     restructuring_field = 'process__process_map__restructuring'
     search_fields = ['name', 'code']
-    filterset_fields = ['process']
+    filterset_fields = ['process', 'kind']
 
     def perform_create(self, serializer):
         # Override: no inyectamos entity/restructuring (se resuelven via process)
@@ -55,6 +55,22 @@ class ProcedureViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
             return Response({'detail': 'El campo "process" debe ser un entero.'}, status=400)
         result = parse_procedure_docx(file, process_id)
         return Response(result, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], url_path='clonar-propuesto')
+    def clonar_propuesto(self, request, pk=None):
+        """Clone procedure as PROPOSED with all its steps."""
+        original = self.get_object()
+        from .models import ProcedureStep
+        steps = list(ProcedureStep.objects.filter(procedure=original).order_by('order'))
+        original.pk = None
+        original.kind = 'PROPOSED'
+        original.name = f"{original.name} (Propuesto)"
+        original.save()
+        for step in steps:
+            step.pk = None
+            step.procedure = original
+            step.save()
+        return Response(ProcedureSerializer(original, context={'request': request}).data, status=201)
 
     @action(detail=False, methods=['get'], url_path='derivar-cargas')
     def derivar_cargas(self, request):

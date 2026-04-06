@@ -32,6 +32,18 @@ class LegalMandateViewSet(EntityScopedMixin, viewsets.ModelViewSet):
         result = gap_report(entity)
         return Response(result)
 
+    @action(detail=False, methods=['get'], url_path='matriz-cobertura')
+    def matriz_cobertura(self, request):
+        """Returns mandate x process coverage matrix."""
+        from apps.core.models import Entity
+        entity_id = self.get_active_entity_id()
+        try:
+            entity = Entity.objects.get(pk=entity_id)
+        except Entity.DoesNotExist:
+            return Response({'detail': 'Entidad no encontrada.'}, status=404)
+        report = gap_report(entity)
+        return Response(report)
+
 
 class MandateComplianceViewSet(viewsets.ModelViewSet):
     """CRUD de cumplimiento de mandatos."""

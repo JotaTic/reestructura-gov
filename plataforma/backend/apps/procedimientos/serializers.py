@@ -26,7 +26,7 @@ class ProcedureSerializer(AuditedSerializerMixin, serializers.ModelSerializer):
     class Meta:
         model = Procedure
         fields = [
-            'id', 'process', 'process_name', 'code', 'name', 'version',
+            'id', 'process', 'process_name', 'code', 'name', 'kind', 'version',
             'objective', 'scope', 'inputs_text', 'outputs_text', 'last_updated',
             'steps_count', 'created_at', 'updated_at',
         ]

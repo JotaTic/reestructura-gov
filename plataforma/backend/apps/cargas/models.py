@@ -14,6 +14,7 @@ from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from apps.common.audit import AuditedModel
 from apps.core.models import Entity, Department
 from apps.nomenclatura.models import HierarchyLevel
 
@@ -147,3 +148,30 @@ class WorkloadEntry(models.Model):
 
     def __str__(self) -> str:
         return f'{self.department} — {self.activity[:50]}'
+
+
+class ManualFuncionesOverride(AuditedModel):
+    """Override for auto-generated functions manual entries."""
+
+    entity = models.ForeignKey(
+        'core.Entity',
+        on_delete=models.CASCADE,
+        related_name='manual_overrides',
+    )
+    restructuring = models.ForeignKey(
+        'core.Restructuring',
+        on_delete=models.CASCADE,
+        related_name='manual_overrides',
+    )
+    job_code = models.CharField('Código', max_length=8)
+    job_grade = models.CharField('Grado', max_length=8, blank=True, default='')
+    custom_purpose = models.TextField('Propósito personalizado', blank=True, default='')
+    custom_functions = models.JSONField('Funciones personalizadas', default=list)
+    custom_requirements = models.JSONField('Requisitos personalizados', default=dict)
+
+    class Meta:
+        verbose_name = 'Ajuste manual de funciones'
+        unique_together = [('entity', 'restructuring', 'job_code', 'job_grade')]
+
+    def __str__(self) -> str:
+        return f'{self.entity} — {self.job_code} ({self.job_grade})'
