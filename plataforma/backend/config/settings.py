@@ -169,8 +169,10 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = False  # el frontend debe leerla para el header X-CSRFToken
 
-# En producción (HTTPS), activar cookies seguras.
-if not DEBUG:
+# En producción con HTTPS, activar cookies seguras.
+# Solo se activan si el servidor realmente usa HTTPS (proxy SSL).
+_USE_HTTPS = config('USE_HTTPS', default='0') == '1'
+if _USE_HTTPS:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

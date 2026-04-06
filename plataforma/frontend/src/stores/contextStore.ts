@@ -85,6 +85,7 @@ export const useContextStore = create<ContextState>()(
       // Persistimos únicamente lo que queremos recordar entre sesiones.
       // Nunca la contraseña; el usuario sí, solo si activó "Recordar".
       partialize: (state) => ({
+        user: state.user,
         activeEntity: state.activeEntity,
         activeRestructuring: state.activeRestructuring,
         rememberedUsername: state.rememberedUsername,
