@@ -72,6 +72,20 @@ class ScenarioViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
         return Response(ScenarioSerializer(scenario, context={'request': request}).data,
                         status=status.HTTP_201_CREATED)
 
+    @action(detail=True, methods=['get'], url_path='posiciones')
+    def posiciones(self, request, pk=None):
+        """
+        GET /api/simulador/<id>/posiciones/
+        List positions of the scenario's cloned plan.
+        """
+        scenario = self.get_object()
+        if not scenario.payroll_plan:
+            return Response([])
+        from apps.planta.models import PayrollPosition
+        from apps.planta.serializers import PayrollPositionSerializer
+        positions = PayrollPosition.objects.filter(plan=scenario.payroll_plan)
+        return Response(PayrollPositionSerializer(positions, many=True).data)
+
     @action(detail=False, methods=['post'], url_path='comparar')
     def comparar(self, request):
         """

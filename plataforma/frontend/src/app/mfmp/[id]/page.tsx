@@ -24,7 +24,7 @@ import { RequireContext } from "@/components/context/RequireContext";
 import { useContextStore } from "@/stores/contextStore";
 import Link from "next/link";
 
-type Tab = "matriz" | "ley617" | "ley358" | "simulacion" | "escenarios" | "importar";
+type Tab = "matriz" | "graficas" | "ley617" | "ley358" | "simulacion" | "escenarios" | "importar";
 
 export default function MFMPDetailPage() {
   return (
@@ -117,10 +117,10 @@ function Inner() {
 
   useEffect(() => {
     if (!mfmp) return;
-    if (tab === "matriz" && !matrix) {
+    if ((tab === "matriz" || tab === "graficas") && !matrix) {
       api.get<Record<string, unknown>>(`/mfmp/${id}/matriz/`).then(setMatrix).catch(() => {});
     }
-    if (tab === "ley617" && !ley617) {
+    if ((tab === "ley617" || tab === "graficas") && !ley617) {
       api
         .get<Record<string, MFMPLawByYear>>(`/mfmp/${id}/ley-617/`)
         .then(setLey617)
@@ -204,9 +204,10 @@ function Inner() {
 
   const TABS: { id: Tab; label: string }[] = [
     { id: "matriz", label: "Matriz" },
+    { id: "graficas", label: "Graficas" },
     { id: "ley617", label: "Ley 617" },
     { id: "ley358", label: "Ley 358" },
-    { id: "simulacion", label: "Simulación" },
+    { id: "simulacion", label: "Simulacion" },
     { id: "escenarios", label: "Escenarios" },
     { id: "importar", label: "Importar FUT" },
   ];
@@ -273,6 +274,9 @@ function Inner() {
         {tab === "matriz" && (
           <MatrizTab matrix={matrix as MatrixData | null} mfmp={mfmp} />
         )}
+        {tab === "graficas" && (
+          <GraficasTab matrix={matrix as MatrixData | null} ley617={ley617} mfmp={mfmp} />
+        )}
         {tab === "ley617" && (
           <Ley617Tab data={ley617} mfmp={mfmp} />
         )}
@@ -311,6 +315,123 @@ function Inner() {
 // Sub-components
 // ---------------------------------------------------------------------------
 
+function GraficasTab({
+  matrix,
+  ley617,
+  mfmp,
+}: {
+  matrix: MatrixData | null;
+  ley617: Record<string, MFMPLawByYear> | null;
+  mfmp: MFMP;
+}) {
+  if (!matrix) {
+    return <div className="py-4 text-sm text-slate-400">Cargando datos...</div>;
+  }
+
+  const years = matrix.years ?? [];
+  const incomes = years.map((y) => matrix.totals?.income?.[String(y)] ?? 0);
+  const expenses = years.map((y) => matrix.totals?.expense?.[String(y)] ?? 0);
+  const maxVal = Math.max(...incomes, ...expenses, 1);
+
+  // Ley 617 ratios
+  const ley617Years = ley617 ? Object.keys(ley617).sort() : [];
+
+  return (
+    <div className="space-y-8">
+      {/* Income vs Expenses bar chart */}
+      <section>
+        <h3 className="mb-4 text-sm font-semibold text-slate-700">
+          Ingresos vs Gastos por Ano
+        </h3>
+        <div className="space-y-3">
+          {years.map((y, i) => {
+            const incPct = (incomes[i] / maxVal) * 100;
+            const expPct = (expenses[i] / maxVal) * 100;
+            return (
+              <div key={y} className="flex items-center gap-3">
+                <span className="w-12 text-right text-xs font-medium text-slate-600">{y}</span>
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="h-5 rounded-r bg-emerald-500 transition-all"
+                      style={{ width: `${Math.max(incPct, 0.5)}%` }}
+                    />
+                    <span className="text-[10px] text-slate-500">${fmt(incomes[i])}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="h-5 rounded-r bg-red-400 transition-all"
+                      style={{ width: `${Math.max(expPct, 0.5)}%` }}
+                    />
+                    <span className="text-[10px] text-slate-500">${fmt(expenses[i])}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-3 flex gap-4 text-[10px] text-slate-500">
+          <span className="flex items-center gap-1">
+            <span className="inline-block h-2.5 w-2.5 rounded bg-emerald-500" /> Ingresos
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="inline-block h-2.5 w-2.5 rounded bg-red-400" /> Gastos
+          </span>
+        </div>
+      </section>
+
+      {/* Ley 617 ratio chart */}
+      {ley617Years.length > 0 && ley617 && (
+        <section>
+          <h3 className="mb-4 text-sm font-semibold text-slate-700">
+            Ley 617 — Ratio Funcionamiento / ICLD por Ano
+          </h3>
+          <div className="space-y-2">
+            {ley617Years.map((yr) => {
+              const d = ley617[yr];
+              const ratio = (d.ratio ?? 0) * 100;
+              const limit = (d.limit ?? 0) * 100;
+              const compliant = d.compliant !== false;
+              return (
+                <div key={yr} className="flex items-center gap-3">
+                  <span className="w-12 text-right text-xs font-medium text-slate-600">{yr}</span>
+                  <div className="relative flex-1 h-6 rounded bg-slate-100">
+                    {/* Limit marker */}
+                    <div
+                      className="absolute top-0 h-full w-0.5 bg-slate-400 z-10"
+                      style={{ left: `${Math.min(limit, 100)}%` }}
+                      title={`Limite: ${limit.toFixed(1)}%`}
+                    />
+                    {/* Ratio bar */}
+                    <div
+                      className={`h-full rounded transition-all ${compliant ? "bg-emerald-500" : "bg-red-500"}`}
+                      style={{ width: `${Math.min(ratio, 100)}%` }}
+                    />
+                  </div>
+                  <span className={`w-16 text-right text-[10px] font-semibold ${compliant ? "text-emerald-700" : "text-red-700"}`}>
+                    {ratio.toFixed(1)}%
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="mt-2 flex gap-4 text-[10px] text-slate-500">
+            <span className="flex items-center gap-1">
+              <span className="inline-block h-2.5 w-2.5 rounded bg-emerald-500" /> Cumple
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="inline-block h-2.5 w-2.5 rounded bg-red-500" /> No cumple
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="inline-block h-2.5 w-0.5 bg-slate-400" /> Limite
+            </span>
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
 interface MatrixData {
   years: number[];
   income_by_concept: Record<string, Record<string, number>>;
@@ -320,40 +441,122 @@ interface MatrixData {
 }
 
 function MatrizTab({ matrix, mfmp }: { matrix: MatrixData | null; mfmp: MFMP }) {
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState<string | null>(null);
+  const [editError, setEditError] = useState<string | null>(null);
+
   if (!matrix) {
     return <div className="py-4 text-sm text-slate-400">Cargando matriz...</div>;
   }
   const years = matrix.years ?? [];
 
+  const handleCellSave = async (
+    type: "income" | "expense",
+    concept: string,
+    year: number,
+    value: string,
+    currentValue: number,
+  ) => {
+    const parsed = parseFloat(value.replace(/[^0-9.-]/g, "")) || 0;
+    if (parsed === currentValue) return;
+
+    const key = `${type}-${concept}-${year}`;
+    setSaving(key);
+    setEditError(null);
+
+    try {
+      const endpoint = type === "income" ? "/mfmp-ingresos/" : "/mfmp-gastos/";
+      // Try to find existing record
+      const existing = await api.get<Paginated<{ id: number; amount: number }>>(`${endpoint}`, {
+        mfmp: mfmp.id,
+        year,
+        concept,
+      });
+      if (existing.results.length > 0) {
+        await api.patch(`${endpoint}${existing.results[0].id}/`, { amount: parsed });
+      } else {
+        await api.post(endpoint, { mfmp: mfmp.id, year, concept, amount: parsed });
+      }
+      // Update local matrix data
+      const section = type === "income" ? matrix.income_by_concept : matrix.expense_by_concept;
+      if (section[concept]) {
+        section[concept][String(year)] = parsed;
+      }
+      // Recalculate totals
+      const totalsSection = type === "income" ? matrix.totals.income : matrix.totals.expense;
+      let yearTotal = 0;
+      const concepts = type === "income" ? matrix.income_by_concept : matrix.expense_by_concept;
+      for (const c of Object.values(concepts)) {
+        yearTotal += c[String(year)] ?? 0;
+      }
+      totalsSection[String(year)] = yearTotal;
+    } catch (e: unknown) {
+      setEditError(e instanceof Error ? e.message : "Error al guardar");
+    } finally {
+      setSaving(null);
+    }
+  };
+
   return (
     <div className="space-y-6 overflow-x-auto">
+      <div className="flex items-center justify-between">
+        <div />
+        <button
+          onClick={() => setEditing(!editing)}
+          className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+            editing
+              ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
+              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+          }`}
+        >
+          {editing ? "Modo lectura" : "Editar valores"}
+        </button>
+      </div>
+
+      {editError && (
+        <div className="rounded-md bg-red-50 p-2 text-xs text-red-700">{editError}</div>
+      )}
+
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase text-slate-500 tracking-wide">Totales Ingresos</h3>
+        <h3 className="mb-2 text-xs font-semibold uppercase text-slate-500 tracking-wide">Totales</h3>
         <table className="text-xs w-full">
           <thead>
             <tr>
-              <th className="text-left py-1 pr-4 text-slate-500">Año</th>
+              <th className="text-left py-1 pr-4 text-slate-500">Concepto</th>
               {years.map((y) => (
                 <th key={y} className="text-right py-1 px-2 text-slate-500">{y}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            <tr className="border-t">
-              <td className="py-1 pr-4 font-medium text-slate-700">Total ingresos</td>
+            <tr className="border-t bg-emerald-50">
+              <td className="py-1 pr-4 font-medium text-emerald-700">Total ingresos</td>
               {years.map((y) => (
-                <td key={y} className="text-right py-1 px-2 text-slate-900">
+                <td key={y} className="text-right py-1 px-2 font-semibold text-emerald-900">
                   ${fmt(matrix.totals?.income?.[String(y)])}
                 </td>
               ))}
             </tr>
-            <tr>
-              <td className="py-1 pr-4 font-medium text-slate-700">Total gastos</td>
+            <tr className="bg-red-50">
+              <td className="py-1 pr-4 font-medium text-red-700">Total gastos</td>
               {years.map((y) => (
-                <td key={y} className="text-right py-1 px-2 text-slate-900">
+                <td key={y} className="text-right py-1 px-2 font-semibold text-red-900">
                   ${fmt(matrix.totals?.expense?.[String(y)])}
                 </td>
               ))}
+            </tr>
+            <tr className="border-t">
+              <td className="py-1 pr-4 font-medium text-slate-700">Balance</td>
+              {years.map((y) => {
+                const inc = matrix.totals?.income?.[String(y)] ?? 0;
+                const exp = matrix.totals?.expense?.[String(y)] ?? 0;
+                const balance = inc - exp;
+                return (
+                  <td key={y} className={`text-right py-1 px-2 font-semibold ${balance >= 0 ? "text-emerald-700" : "text-red-700"}`}>
+                    ${fmt(balance)}
+                  </td>
+                );
+              })}
             </tr>
           </tbody>
         </table>
@@ -374,11 +577,24 @@ function MatrizTab({ matrix, mfmp }: { matrix: MatrixData | null; mfmp: MFMP }) 
             {Object.entries(matrix.income_by_concept ?? {}).map(([concept, yearAmounts]) => (
               <tr key={concept} className="border-t">
                 <td className="py-1 pr-4 text-slate-600">{concept.replace(/_/g, " ")}</td>
-                {years.map((y) => (
-                  <td key={y} className="text-right py-1 px-2">
-                    ${fmt(yearAmounts[String(y)] ?? 0)}
-                  </td>
-                ))}
+                {years.map((y) => {
+                  const val = yearAmounts[String(y)] ?? 0;
+                  const key = `income-${concept}-${y}`;
+                  return (
+                    <td key={y} className="text-right py-1 px-1">
+                      {editing ? (
+                        <input
+                          type="text"
+                          defaultValue={val}
+                          onBlur={(e) => handleCellSave("income", concept, y, e.target.value, val)}
+                          className={`w-24 rounded border px-1 py-0.5 text-right text-xs ${saving === key ? "bg-yellow-50 border-yellow-300" : "border-slate-200"}`}
+                        />
+                      ) : (
+                        `$${fmt(val)}`
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
@@ -400,11 +616,24 @@ function MatrizTab({ matrix, mfmp }: { matrix: MatrixData | null; mfmp: MFMP }) 
             {Object.entries(matrix.expense_by_concept ?? {}).map(([concept, yearAmounts]) => (
               <tr key={concept} className="border-t">
                 <td className="py-1 pr-4 text-slate-600">{concept.replace(/_/g, " ")}</td>
-                {years.map((y) => (
-                  <td key={y} className="text-right py-1 px-2">
-                    ${fmt(yearAmounts[String(y)] ?? 0)}
-                  </td>
-                ))}
+                {years.map((y) => {
+                  const val = yearAmounts[String(y)] ?? 0;
+                  const key = `expense-${concept}-${y}`;
+                  return (
+                    <td key={y} className="text-right py-1 px-1">
+                      {editing ? (
+                        <input
+                          type="text"
+                          defaultValue={val}
+                          onBlur={(e) => handleCellSave("expense", concept, y, e.target.value, val)}
+                          className={`w-24 rounded border px-1 py-0.5 text-right text-xs ${saving === key ? "bg-yellow-50 border-yellow-300" : "border-slate-200"}`}
+                        />
+                      ) : (
+                        `$${fmt(val)}`
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

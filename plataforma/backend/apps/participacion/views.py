@@ -1,9 +1,10 @@
 from rest_framework import viewsets
 
 from apps.common.mixins import EntityScopedMixin, RestructuringScopedMixin
-from .models import PersonnelCommittee, CommitteeMeeting, UnionCommunication
+from .models import PersonnelCommittee, CommitteeMember, CommitteeMeeting, UnionCommunication
 from .serializers import (
     PersonnelCommitteeSerializer,
+    CommitteeMemberSerializer,
     CommitteeMeetingSerializer,
     UnionCommunicationSerializer,
 )
@@ -18,6 +19,25 @@ class PersonnelCommitteeViewSet(EntityScopedMixin, viewsets.ModelViewSet):
     serializer_class = PersonnelCommitteeSerializer
     search_fields = ['name']
     ordering_fields = ['name', 'created_at']
+
+
+class CommitteeMemberViewSet(viewsets.ModelViewSet):
+    """
+    Miembros de Comisión de Personal.
+    Filterable por ?committee=<id>.
+    """
+    queryset = CommitteeMember.objects.select_related('committee').all()
+    serializer_class = CommitteeMemberSerializer
+    filterset_fields = ['committee', 'member_type', 'active']
+    search_fields = ['name', 'position']
+    ordering_fields = ['name', 'start_date']
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        committee_id = self.request.query_params.get('committee')
+        if committee_id:
+            qs = qs.filter(committee_id=committee_id)
+        return qs
 
 
 class CommitteeMeetingViewSet(viewsets.ModelViewSet):

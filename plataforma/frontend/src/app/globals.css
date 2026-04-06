@@ -101,3 +101,12 @@ body {
      junto con .print-hide). */
   button { display: none !important; }
 }
+
+/* ---------------------------------------------------------------- */
+/* Sprint 11 — Responsive: tablas scroll horizontal en móvil.       */
+/* ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .overflow-x-auto table {
+    min-width: 600px;
+  }
+}

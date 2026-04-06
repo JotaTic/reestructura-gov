@@ -12,6 +12,25 @@ from apps.core.models import Entity
 from .models import ActDraft, ActTemplate
 
 
+def render_act_content(draft: ActDraft) -> str:
+    """Return the draft content with placeholders resolved from entity/restructuring."""
+    replacements = {
+        '{entity_name}': draft.entity.name if draft.entity else '',
+        '{restructuring_name}': draft.restructuring.name if draft.restructuring else '',
+        '{date}': draft.issue_date.isoformat() if draft.issue_date else date.today().isoformat(),
+        '{act_number}': draft.act_number or '[SIN NÚMERO]',
+        '{signed_by}': draft.signed_by or '[POR DEFINIR]',
+        '{entity_nit}': draft.entity.nit if draft.entity else '',
+        '{entity_acronym}': draft.entity.acronym if draft.entity else '',
+        '{today}': date.today().isoformat(),
+        '{today_long}': date.today().strftime('%d de %B de %Y'),
+    }
+    content = draft.content
+    for placeholder, value in replacements.items():
+        content = content.replace(placeholder, value)
+    return content
+
+
 class _SafeDict(dict):
     def __missing__(self, key: str) -> str:
         return '[' + key + ']'

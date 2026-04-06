@@ -6,7 +6,7 @@ import Link from "next/link";
 import { api } from "@/lib/api";
 import { useContextStore } from "@/stores/contextStore";
 import type { Entity, Notification, Paginated, Restructuring } from "@/types";
-import { Bell, Building2, ChevronDown, Layers, LogOut, Plus, User } from "lucide-react";
+import { Bell, Building2, ChevronDown, Layers, LogOut, Plus, Search, User } from "lucide-react";
 
 export function Topbar() {
   const router = useRouter();
@@ -31,6 +31,9 @@ export function Topbar() {
     reference_date: new Date().toISOString().slice(0, 10),
     description: "",
   });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<{ type: string; id: number; label: string; url: string }[]>([]);
+  const [showSearch, setShowSearch] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -97,6 +100,25 @@ export function Topbar() {
       .then(setRestrs)
       .catch(() => setRestrs([]));
   }, [activeEntity]);
+
+  // Global search debounce
+  useEffect(() => {
+    if (searchQuery.length < 2) {
+      setSearchResults([]);
+      setShowSearch(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      api
+        .get<{ results: { type: string; id: number; label: string; url: string }[] }>("/buscar/", { q: searchQuery })
+        .then((d) => {
+          setSearchResults(d.results);
+          setShowSearch(d.results.length > 0);
+        })
+        .catch(() => {});
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const selectEntity = (e: Entity) => {
     setActiveEntity(e);
@@ -264,6 +286,45 @@ export function Topbar() {
       )}
 
       <div className="flex-1" />
+
+      {/* Global search */}
+      <div className="relative hidden sm:block">
+        <div className="relative">
+          <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => { if (searchResults.length > 0) setShowSearch(true); }}
+            onBlur={() => setTimeout(() => setShowSearch(false), 200)}
+            placeholder="Buscar empleados, dependencias..."
+            className="w-56 rounded-md border border-slate-200 bg-slate-50 py-1.5 pl-8 pr-3 text-xs text-slate-700 placeholder:text-slate-400 focus:border-brand-300 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-300 lg:w-72"
+          />
+        </div>
+        {showSearch && searchResults.length > 0 && (
+          <div className="absolute left-0 top-full z-40 mt-1 w-80 rounded-md border border-slate-200 bg-white shadow-lg">
+            <div className="max-h-64 overflow-y-auto p-1">
+              {searchResults.map((r, i) => (
+                <Link
+                  key={`${r.type}-${r.id}-${i}`}
+                  href={r.url}
+                  onClick={() => { setShowSearch(false); setSearchQuery(""); }}
+                  className="flex items-center gap-2 rounded px-3 py-2 text-xs hover:bg-slate-50"
+                >
+                  <span className={`rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase ${
+                    r.type === "employee" ? "bg-blue-100 text-blue-700" :
+                    r.type === "department" ? "bg-emerald-100 text-emerald-700" :
+                    "bg-amber-100 text-amber-700"
+                  }`}>
+                    {r.type === "employee" ? "Empleado" : r.type === "department" ? "Dependencia" : "Mandato"}
+                  </span>
+                  <span className="text-slate-800">{r.label}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Campana de notificaciones */}
       <div className="relative">

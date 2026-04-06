@@ -6,9 +6,11 @@ import type {
   EligibilityBulkResult,
   EligibilityCostEstimate,
   EligibilityStatus,
+  Employee,
+  Paginated,
   PromotionEligibility,
 } from "@/types";
-import { GraduationCap, DollarSign, Search } from "lucide-react";
+import { GraduationCap, DollarSign, Download, Search, User } from "lucide-react";
 import { RequireContext } from "@/components/context/RequireContext";
 
 const LEVELS = ["ASISTENCIAL", "TECNICO", "PROFESIONAL", "ASESOR", "DIRECTIVO"];
@@ -28,6 +30,7 @@ export default function ElegibilidadPage() {
 }
 
 function Inner() {
+  const [mode, setMode] = useState<"bulk" | "individual">("bulk");
   const [fromLevel, setFromLevel] = useState("TECNICO");
   const [toLevel, setToLevel] = useState("PROFESIONAL");
   const [loading, setLoading] = useState(false);
@@ -35,6 +38,50 @@ function Inner() {
   const [costResult, setCostResult] = useState<EligibilityCostEstimate | null>(null);
   const [costLoading, setCostLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Individual mode
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [selectedEmployee, setSelectedEmployee] = useState<string>("");
+  const [individualResults, setIndividualResults] = useState<Record<string, PromotionEligibility> | null>(null);
+  const [individualLoading, setIndividualLoading] = useState(false);
+
+  const loadEmployees = async () => {
+    try {
+      const data = await api.get<Paginated<Employee>>("/empleados/");
+      setEmployees(data.results);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const analyzeIndividual = async () => {
+    if (!selectedEmployee) return;
+    setIndividualLoading(true);
+    setError(null);
+    setIndividualResults(null);
+    const targetLevels = ["DIRECTIVO", "ASESOR", "PROFESIONAL", "TECNICO"];
+    try {
+      const results: Record<string, PromotionEligibility> = {};
+      await Promise.all(
+        targetLevels.map(async (level) => {
+          const data = await api.post<PromotionEligibility>(
+            "/analisis/elegibilidad/analizar-individual/",
+            { employee_id: parseInt(selectedEmployee), target_level: level }
+          );
+          results[level] = data;
+        })
+      );
+      setIndividualResults(results);
+    } catch {
+      setError("Error al analizar elegibilidad individual.");
+    } finally {
+      setIndividualLoading(false);
+    }
+  };
+
+  const exportExcel = () => {
+    window.open(api.downloadUrl("/analisis/elegibilidad/bulk/export/"), "_blank");
+  };
 
   const analyze = async () => {
     setLoading(true);
@@ -89,8 +136,101 @@ function Inner() {
         </div>
       </div>
 
+      {/* Mode toggle */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => { setMode("bulk"); setIndividualResults(null); }}
+          className={`rounded-md px-4 py-2 text-sm font-medium ${mode === "bulk" ? "bg-brand-700 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+        >
+          <Search size={14} className="mr-1 inline" />
+          Análisis masivo
+        </button>
+        <button
+          onClick={() => { setMode("individual"); setResult(null); setCostResult(null); if (employees.length === 0) loadEmployees(); }}
+          className={`rounded-md px-4 py-2 text-sm font-medium ${mode === "individual" ? "bg-brand-700 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+        >
+          <User size={14} className="mr-1 inline" />
+          Análisis individual
+        </button>
+      </div>
+
+      {/* Individual mode */}
+      {mode === "individual" && (
+        <div className="rounded-lg border border-slate-200 bg-white p-5">
+          <h2 className="mb-4 text-sm font-semibold text-slate-700">Análisis individual por empleado</h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-medium text-slate-700 mb-1">Empleado</label>
+              <select
+                value={selectedEmployee}
+                onChange={(e) => setSelectedEmployee(e.target.value)}
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+              >
+                <option value="">— Seleccionar empleado —</option>
+                {employees.map((emp) => (
+                  <option key={emp.id} value={emp.id}>
+                    {emp.full_name} ({emp.id_number})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-end">
+              <button
+                onClick={analyzeIndividual}
+                disabled={!selectedEmployee || individualLoading}
+                className="inline-flex items-center gap-2 rounded-md bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-800 disabled:opacity-50"
+              >
+                <Search size={14} />
+                {individualLoading ? "Analizando…" : "Analizar todos los niveles"}
+              </button>
+            </div>
+          </div>
+
+          {individualResults && (
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {Object.entries(individualResults).map(([level, result]) => (
+                <div
+                  key={level}
+                  className={`rounded-lg border p-4 ${
+                    result.status === "ELEGIBLE"
+                      ? "border-emerald-200 bg-emerald-50"
+                      : result.status === "ELEGIBLE_POR_EQUIVALENCIA"
+                      ? "border-blue-200 bg-blue-50"
+                      : "border-red-200 bg-red-50"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-slate-800">{level}</h4>
+                    <span className={`rounded px-2 py-0.5 text-[10px] font-semibold ${statusColor[result.status]}`}>
+                      {result.status.replace(/_/g, " ")}
+                    </span>
+                  </div>
+                  {result.matched_education && (
+                    <p className="text-xs text-slate-600">Educación: {result.matched_education}</p>
+                  )}
+                  <p className="text-xs text-slate-600">
+                    Experiencia pública: {result.total_public_experience_years.toFixed(1)} años
+                  </p>
+                  {result.gap.length > 0 && (
+                    <div className="mt-1">
+                      <p className="text-[10px] font-medium text-red-700">Brechas:</p>
+                      {result.gap.map((g, i) => (
+                        <p key={i} className="text-[10px] text-red-600">• {g}</p>
+                      ))}
+                    </div>
+                  )}
+                  {result.equivalence_applied && (
+                    <p className="mt-1 text-[10px] text-blue-700">Equivalencia: {result.equivalence_applied}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Wizard de selección */}
-      <div className="rounded-lg border border-slate-200 bg-white p-5">
+      {mode === "bulk" && <div className="rounded-lg border border-slate-200 bg-white p-5">
         <h2 className="mb-4 text-sm font-semibold text-slate-700">Parámetros de análisis</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
@@ -136,7 +276,7 @@ function Inner() {
             </button>
           </div>
         </div>
-      </div>
+      </div>}
 
       {error && (
         <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-800">
@@ -144,8 +284,19 @@ function Inner() {
         </div>
       )}
 
-      {result && (
+      {mode === "bulk" && result && (
         <>
+          {/* Export button */}
+          <div className="flex justify-end">
+            <button
+              onClick={exportExcel}
+              className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            >
+              <Download size={14} />
+              Exportar a Excel
+            </button>
+          </div>
+
           {/* Resumen */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[

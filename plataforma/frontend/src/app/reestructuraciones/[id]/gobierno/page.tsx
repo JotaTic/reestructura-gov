@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Workflow, CheckCircle, XCircle, Clock } from "lucide-react";
+import { ArrowLeft, Download, Workflow, CheckCircle, XCircle, Clock, History, User } from "lucide-react";
 import { api } from "@/lib/api";
 import { RequireContext } from "@/components/context/RequireContext";
 import type { Restructuring, WorkflowTransition, RestructuringStatus } from "@/types";
@@ -55,6 +55,16 @@ function Inner() {
   const [executing, setExecuting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [history, setHistory] = useState<{
+    id: number;
+    action: string;
+    action_display: string;
+    user: string | null;
+    at: string;
+    before_status: string | null;
+    after_status: string | null;
+  }[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -69,6 +79,16 @@ function Inner() {
       setError(e instanceof Error ? e.message : "Error al cargar");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadHistory = async () => {
+    try {
+      const data = await api.get<typeof history>(`/reestructuraciones/${id}/historial/`);
+      setHistory(data);
+      setShowHistory(true);
+    } catch {
+      // silently fail
     }
   };
 
@@ -111,11 +131,31 @@ function Inner() {
         >
           <ArrowLeft size={14} /> Volver a reestructuraciones
         </Link>
-        <div className="mt-2 flex items-center gap-3">
-          <Workflow className="text-brand-700" size={24} />
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">Gobierno del Proceso</h1>
-            <p className="text-sm text-slate-600">{restr.name} · {restr.status_display}</p>
+        <div className="mt-2 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Workflow className="text-brand-700" size={24} />
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">Gobierno del Proceso</h1>
+              <p className="text-sm text-slate-600">{restr.name} · {restr.status_display}</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={loadHistory}
+              className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              <History size={14} />
+              Historial
+            </button>
+            <a
+              href={api.downloadUrl(`/reestructuraciones/${id}/estudio-tecnico/`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-md bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-800"
+            >
+              <Download size={14} />
+              Generar Estudio Tecnico
+            </a>
           </div>
         </div>
       </div>
@@ -227,6 +267,69 @@ function Inner() {
           </div>
         )}
       </div>
+
+      {/* Historial de transiciones */}
+      {showHistory && (
+        <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+              <History size={16} /> Historial de cambios
+            </h2>
+            <button
+              onClick={() => setShowHistory(false)}
+              className="text-xs text-slate-400 hover:text-slate-600"
+            >
+              Cerrar
+            </button>
+          </div>
+          {history.length === 0 ? (
+            <p className="text-sm text-slate-500">No hay cambios registrados.</p>
+          ) : (
+            <div className="space-y-2">
+              {history.map((h) => (
+                <div
+                  key={h.id}
+                  className="flex items-start gap-3 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3"
+                >
+                  <div className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
+                    h.action === "UPDATE" ? "bg-blue-100 text-blue-600" :
+                    h.action === "CREATE" ? "bg-emerald-100 text-emerald-600" :
+                    "bg-slate-100 text-slate-500"
+                  }`}>
+                    {h.action === "UPDATE" ? <History size={12} /> : <CheckCircle size={12} />}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-slate-800">
+                        {h.action_display}
+                      </span>
+                      {h.before_status && h.after_status && h.before_status !== h.after_status && (
+                        <span className="text-[10px] text-slate-500">
+                          {STATUS_LABELS[h.before_status as RestructuringStatus] ?? h.before_status}
+                          {" → "}
+                          <span className="font-semibold text-brand-700">
+                            {STATUS_LABELS[h.after_status as RestructuringStatus] ?? h.after_status}
+                          </span>
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-0.5 flex items-center gap-3 text-[10px] text-slate-400">
+                      {h.user && (
+                        <span className="flex items-center gap-1">
+                          <User size={10} /> {h.user}
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1">
+                        <Clock size={10} /> {new Date(h.at).toLocaleString("es-CO")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

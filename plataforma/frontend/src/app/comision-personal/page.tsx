@@ -1,11 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Plus, ChevronDown, ChevronRight, X } from "lucide-react";
+import { Users, Plus, ChevronDown, ChevronRight, X, Trash2, Upload } from "lucide-react";
 import { api } from "@/lib/api";
 import { RequireContext } from "@/components/context/RequireContext";
 import { useContextStore } from "@/stores/contextStore";
 import type { PersonnelCommittee, CommitteeMeeting, Paginated } from "@/types";
+
+interface CommitteeMemberRecord {
+  id: number;
+  committee: number;
+  name: string;
+  position: string;
+  member_type: "EMPLOYEE_REP" | "ENTITY_REP";
+  member_type_display: string;
+  start_date: string;
+  end_date: string | null;
+  active: boolean;
+}
 
 export default function ComisionPersonalPage() {
   return (
@@ -32,6 +44,74 @@ function Inner() {
     minutes_text: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [members, setMembers] = useState<CommitteeMemberRecord[]>([]);
+  const [showMemberForm, setShowMemberForm] = useState(false);
+  const [memberForm, setMemberForm] = useState({
+    committee: 0,
+    name: "",
+    position: "",
+    member_type: "EMPLOYEE_REP" as "EMPLOYEE_REP" | "ENTITY_REP",
+    start_date: new Date().toISOString().slice(0, 10),
+  });
+
+  const loadMembers = async (committeeId: number) => {
+    try {
+      const data = await api.get<Paginated<CommitteeMemberRecord>>(
+        `/comision-miembros/?committee=${committeeId}`
+      );
+      setMembers(data.results);
+    } catch {
+      // ignore
+    }
+  };
+
+  const handleCreateMember = async () => {
+    setError(null);
+    try {
+      await api.post("/comision-miembros/", memberForm);
+      setShowMemberForm(false);
+      setMemberForm({ committee: 0, name: "", position: "", member_type: "EMPLOYEE_REP", start_date: new Date().toISOString().slice(0, 10) });
+      if (expandedId) await loadMembers(expandedId);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Error al crear miembro");
+    }
+  };
+
+  const handleDeleteMember = async (memberId: number) => {
+    if (!confirm("¿Eliminar este miembro?")) return;
+    await api.delete(`/comision-miembros/${memberId}/`);
+    if (expandedId) await loadMembers(expandedId);
+  };
+
+  const handleUploadMinutes = async (meetingId: number, file: File) => {
+    const formData = new FormData();
+    formData.append("minutes_file", file);
+    try {
+      await api.postForm(`/comision-reuniones/${meetingId}/`, formData);
+      if (expandedId) await loadMeetings(expandedId);
+    } catch {
+      // Try PATCH via form
+      try {
+        const { API_URL } = await import("@/lib/api");
+        const headers: Record<string, string> = {};
+        const csrfMatch = document.cookie.match(/csrftoken=([^;]+)/);
+        if (csrfMatch) headers["X-CSRFToken"] = csrfMatch[1];
+        const activeEntity = useContextStore.getState().activeEntity;
+        if (activeEntity) headers["X-Entity-Id"] = String(activeEntity.id);
+        const fd = new FormData();
+        fd.append("minutes_file", file);
+        await fetch(`${API_URL}/comision-reuniones/${meetingId}/`, {
+          method: "PATCH",
+          credentials: "include",
+          headers,
+          body: fd,
+        });
+        if (expandedId) await loadMeetings(expandedId);
+      } catch {
+        // ignore
+      }
+    }
+  };
 
   const load = async () => {
     setLoading(true);
@@ -63,7 +143,7 @@ function Inner() {
       setExpandedId(null);
     } else {
       setExpandedId(id);
-      await loadMeetings(id);
+      await Promise.all([loadMeetings(id), loadMembers(id)]);
     }
   };
 
@@ -200,19 +280,53 @@ function Inner() {
 
               {expandedId === c.id && (
                 <div className="border-t border-slate-100 px-5 py-3">
-                  {/* Miembros */}
-                  {c.members_json.length > 0 && (
-                    <div className="mb-3">
-                      <p className="mb-1 text-[11px] font-semibold text-slate-500 uppercase">Miembros</p>
-                      <div className="flex flex-wrap gap-2">
-                        {c.members_json.map((m, i) => (
-                          <span key={i} className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">
-                            {m.name} · {m.role}
-                          </span>
-                        ))}
-                      </div>
+                  {/* Miembros (structured records) */}
+                  <div className="mb-4">
+                    <div className="mb-2 flex items-center justify-between">
+                      <p className="text-[11px] font-semibold text-slate-500 uppercase">Miembros</p>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMemberForm({ ...memberForm, committee: c.id });
+                          setShowMemberForm(true);
+                        }}
+                        className="rounded bg-brand-100 px-2 py-0.5 text-[10px] text-brand-700 hover:bg-brand-200"
+                      >
+                        + Agregar miembro
+                      </button>
                     </div>
-                  )}
+                    {members.filter((m) => m.committee === c.id).length === 0 && c.members_json.length === 0 ? (
+                      <p className="text-xs text-slate-400">Sin miembros registrados.</p>
+                    ) : (
+                      <div className="space-y-1">
+                        {members.filter((m) => m.committee === c.id).map((m) => (
+                          <div key={m.id} className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-1.5">
+                            <div>
+                              <span className="text-xs font-medium text-slate-800">{m.name}</span>
+                              <span className="ml-2 text-[10px] text-slate-500">{m.position}</span>
+                              <span className={`ml-2 rounded px-1.5 py-0.5 text-[9px] font-semibold ${m.member_type === "EMPLOYEE_REP" ? "bg-blue-100 text-blue-700" : "bg-purple-100 text-purple-700"}`}>
+                                {m.member_type_display}
+                              </span>
+                              {!m.active && <span className="ml-2 rounded bg-slate-200 px-1.5 py-0.5 text-[9px] text-slate-500">Inactivo</span>}
+                            </div>
+                            <button onClick={() => handleDeleteMember(m.id)} className="text-red-500 hover:text-red-700">
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        ))}
+                        {/* Legacy JSON members */}
+                        {c.members_json.length > 0 && members.filter((m) => m.committee === c.id).length === 0 && (
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            {c.members_json.map((m, i) => (
+                              <span key={i} className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-700">
+                                {m.name} · {m.role}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
 
                   {/* Reuniones */}
                   <p className="mb-2 text-[11px] font-semibold text-slate-500 uppercase">Reuniones</p>
@@ -226,19 +340,43 @@ function Inner() {
                           <div key={mtg.id} className="rounded-lg border border-slate-100 bg-slate-50 p-3">
                             <div className="flex items-center justify-between">
                               <p className="text-xs font-semibold text-slate-700">{mtg.date}</p>
-                              {mtg.restructuring && (
-                                <span className="text-[10px] bg-brand-100 text-brand-700 rounded px-2 py-0.5">
-                                  Restr. #{mtg.restructuring}
-                                </span>
-                              )}
+                              <div className="flex items-center gap-2">
+                                {mtg.restructuring && (
+                                  <span className="text-[10px] bg-brand-100 text-brand-700 rounded px-2 py-0.5">
+                                    Restr. #{mtg.restructuring}
+                                  </span>
+                                )}
+                                <label className="flex cursor-pointer items-center gap-1 rounded bg-slate-200 px-2 py-0.5 text-[10px] text-slate-600 hover:bg-slate-300">
+                                  <Upload size={10} /> Acta PDF
+                                  <input
+                                    type="file"
+                                    accept=".pdf,.doc,.docx"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) handleUploadMinutes(mtg.id, file);
+                                    }}
+                                  />
+                                </label>
+                              </div>
                             </div>
                             {mtg.agenda && (
                               <p className="mt-1 text-[11px] text-slate-600">
-                                <span className="font-medium">Orden del día:</span> {mtg.agenda}
+                                <span className="font-medium">Orden del dia:</span> {mtg.agenda}
                               </p>
                             )}
                             {mtg.minutes_text && (
-                              <p className="mt-1 text-[11px] text-slate-500">{mtg.minutes_text.slice(0, 150)}{mtg.minutes_text.length > 150 ? "…" : ""}</p>
+                              <p className="mt-1 text-[11px] text-slate-500">{mtg.minutes_text.slice(0, 150)}{mtg.minutes_text.length > 150 ? "..." : ""}</p>
+                            )}
+                            {String((mtg as unknown as Record<string, unknown>).minutes_file || "") !== "" && (
+                              <a
+                                href={String((mtg as unknown as Record<string, unknown>).minutes_file)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-1 inline-block text-[10px] text-brand-700 hover:underline"
+                              >
+                                Descargar acta adjunta
+                              </a>
                             )}
                           </div>
                         ))}
@@ -251,7 +389,72 @@ function Inner() {
         </div>
       )}
 
-      {/* Modal nueva reunión */}
+      {/* Modal nuevo miembro */}
+      {showMemberForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-slate-800">Agregar miembro</h3>
+              <button onClick={() => setShowMemberForm(false)}><X size={16} className="text-slate-400" /></button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="text-[11px] text-slate-500">Nombre *</label>
+                <input
+                  value={memberForm.name}
+                  onChange={(e) => setMemberForm({ ...memberForm, name: e.target.value })}
+                  className="mt-0.5 w-full rounded border border-slate-300 px-2 py-1 text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-[11px] text-slate-500">Cargo *</label>
+                <input
+                  value={memberForm.position}
+                  onChange={(e) => setMemberForm({ ...memberForm, position: e.target.value })}
+                  className="mt-0.5 w-full rounded border border-slate-300 px-2 py-1 text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-[11px] text-slate-500">Tipo</label>
+                <select
+                  value={memberForm.member_type}
+                  onChange={(e) => setMemberForm({ ...memberForm, member_type: e.target.value as "EMPLOYEE_REP" | "ENTITY_REP" })}
+                  className="mt-0.5 w-full rounded border border-slate-300 px-2 py-1 text-sm"
+                >
+                  <option value="EMPLOYEE_REP">Representante empleados</option>
+                  <option value="ENTITY_REP">Representante entidad</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-[11px] text-slate-500">Fecha de inicio *</label>
+                <input
+                  type="date"
+                  value={memberForm.start_date}
+                  onChange={(e) => setMemberForm({ ...memberForm, start_date: e.target.value })}
+                  className="mt-0.5 w-full rounded border border-slate-300 px-2 py-1 text-sm"
+                />
+              </div>
+            </div>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                onClick={() => setShowMemberForm(false)}
+                className="rounded px-3 py-1 text-xs text-slate-600 hover:bg-slate-100"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleCreateMember}
+                disabled={!memberForm.name || !memberForm.position || !memberForm.committee}
+                className="rounded bg-brand-700 px-4 py-1.5 text-xs font-medium text-white hover:bg-brand-800 disabled:opacity-50"
+              >
+                Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal nueva reunion */}
       {showMeetingForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">

@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
 import type { ActDraft, ActStatus } from "@/types";
-import { ArrowLeft, CheckCircle2, RefreshCw, Save } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Eye, RefreshCw, Save } from "lucide-react";
 import { RequireContext } from "@/components/context/RequireContext";
 import { ExportBar } from "@/components/ui/ExportBar";
 
@@ -15,6 +15,13 @@ const STATUS: { value: ActStatus; label: string }[] = [
   { value: "ISSUED", label: "Expedido" },
   { value: "ARCHIVED", label: "Archivado" },
 ];
+
+const STATUS_COLORS: Record<ActStatus, string> = {
+  DRAFT: "bg-slate-100 text-slate-700",
+  REVIEW: "bg-amber-100 text-amber-800",
+  ISSUED: "bg-emerald-100 text-emerald-800",
+  ARCHIVED: "bg-slate-200 text-slate-600",
+};
 
 export default function ActDraftEditor() {
   return (
@@ -31,6 +38,8 @@ function Inner() {
   const [draft, setDraft] = useState<ActDraft | null>(null);
   const [saving, setSaving] = useState(false);
   const [ok, setOk] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewContent, setPreviewContent] = useState<string>("");
 
   const load = async () => {
     const d = await api.get<ActDraft>(`/actos/${draftId}/`);
@@ -73,6 +82,18 @@ function Inner() {
     setDraft(updated);
   };
 
+  const openPreview = async () => {
+    const data = await api.get<{ rendered_content: string; title: string }>(`/actos/${draftId}/preview/`);
+    setPreviewContent(data.rendered_content);
+    setShowPreview(true);
+  };
+
+  const changeStatus = async (newStatus: ActStatus) => {
+    if (!draft) return;
+    const updated = await api.patch<ActDraft>(`/actos/${draftId}/`, { status: newStatus });
+    setDraft(updated);
+  };
+
   if (!draft) return <p className="text-sm text-slate-500">Cargando…</p>;
 
   return (
@@ -86,8 +107,49 @@ function Inner() {
           <p className="text-sm text-slate-600">
             {draft.kind_display} · {draft.topic_display} · {draft.entity_name}
           </p>
+          <span className={`mt-1 inline-block rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${STATUS_COLORS[draft.status]}`}>
+            {draft.status_display}
+          </span>
         </div>
         <div className="flex flex-wrap gap-2">
+          {draft.status === "DRAFT" && (
+            <button
+              onClick={() => changeStatus("REVIEW")}
+              className="inline-flex items-center gap-1 rounded-md border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-800 hover:bg-amber-100"
+            >
+              Enviar a revision
+            </button>
+          )}
+          {draft.status === "REVIEW" && (
+            <button
+              onClick={() => changeStatus("ISSUED")}
+              className="inline-flex items-center gap-1 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-800 hover:bg-emerald-100"
+            >
+              Expedir
+            </button>
+          )}
+          {(draft.status === "ISSUED" || draft.status === "REVIEW") && (
+            <button
+              onClick={() => changeStatus("DRAFT")}
+              className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            >
+              Devolver a borrador
+            </button>
+          )}
+          {draft.status === "ISSUED" && (
+            <button
+              onClick={() => changeStatus("ARCHIVED")}
+              className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100"
+            >
+              Archivar
+            </button>
+          )}
+          <button
+            onClick={openPreview}
+            className="inline-flex items-center gap-1 rounded-md border border-brand-300 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-100"
+          >
+            <Eye size={14} /> Vista previa
+          </button>
           <ExportBar
             xlsxPath={`/actos/${draftId}/export/xlsx/`}
             docxPath={`/actos/${draftId}/export/docx/`}
@@ -172,6 +234,26 @@ function Inner() {
           style={{ whiteSpace: "pre-wrap" }}
         />
       </div>
+
+      {/* Preview modal */}
+      {showPreview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-slate-900">Vista previa: {draft.title}</h2>
+              <button
+                onClick={() => setShowPreview(false)}
+                className="rounded-md border border-slate-300 px-3 py-1 text-xs text-slate-700 hover:bg-slate-100"
+              >
+                Cerrar
+              </button>
+            </div>
+            <div className="prose prose-sm max-w-none whitespace-pre-wrap rounded-md border border-slate-200 bg-slate-50 p-4 font-serif text-[13px] leading-relaxed text-slate-800">
+              {previewContent}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

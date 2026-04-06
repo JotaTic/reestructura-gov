@@ -125,9 +125,53 @@ function Inner() {
         </div>
       </div>
 
+      {/* Dashboard summary */}
+      {!loading && rows.length > 0 && (() => {
+        const byType: Record<string, number> = {};
+        const today = new Date();
+        const thirtyDays = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+        let expiringSoon = 0;
+        rows.filter((r) => r.active).forEach((r) => {
+          const label = r.protection_type_display || r.protection_type;
+          byType[label] = (byType[label] || 0) + 1;
+          if (r.protection_end) {
+            const endDate = new Date(r.protection_end);
+            if (endDate <= thirtyDays && endDate >= today) {
+              expiringSoon++;
+            }
+          }
+        });
+        return (
+          <div className="rounded-lg border border-slate-200 bg-white p-4">
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-brand-700">{activos}</div>
+                <div className="text-[10px] uppercase text-slate-500">Protegidos activos</div>
+              </div>
+              <div className="h-10 w-px bg-slate-200" />
+              {Object.entries(byType).map(([label, count]) => (
+                <div key={label} className="rounded-md bg-slate-50 px-3 py-1.5 text-center">
+                  <div className="text-sm font-semibold text-slate-800">{count}</div>
+                  <div className="text-[9px] text-slate-500">{label}</div>
+                </div>
+              ))}
+              {expiringSoon > 0 && (
+                <>
+                  <div className="h-10 w-px bg-slate-200" />
+                  <div className="rounded-md bg-red-50 border border-red-200 px-3 py-1.5 text-center">
+                    <div className="text-sm font-bold text-red-700">{expiringSoon}</div>
+                    <div className="text-[9px] text-red-600">Vencen en 30 dias</div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
       <div className="flex flex-wrap items-end gap-3 rounded-lg border border-slate-200 bg-white p-4">
         <div className="text-xs text-slate-600">
-          <strong className="text-slate-900 text-lg">{activos}</strong> empleados con protección vigente
+          <strong className="text-slate-900 text-lg">{activos}</strong> empleados con proteccion vigente
         </div>
         <div className="flex-1" />
         <div className="flex gap-2">

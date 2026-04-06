@@ -8,7 +8,7 @@ from apps.core.models import Entity, Restructuring
 
 from .models import ActTemplate, ActDraft
 from .serializers import ActTemplateSerializer, ActDraftSerializer
-from .services import build_context, create_draft_from_template, render_template
+from .services import build_context, create_draft_from_template, render_template, render_act_content
 
 
 class ActTemplateViewSet(viewsets.ModelViewSet):
@@ -47,6 +47,13 @@ class ActDraftViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
     filterset_fields = ['kind', 'topic', 'status']
     search_fields = ['title', 'act_number']
     ordering_fields = ['updated_at', 'issue_date', 'title']
+
+    @action(detail=True, methods=['get'], url_path='preview')
+    def preview(self, request, pk=None):
+        """Return rendered content with placeholders resolved."""
+        draft = self.get_object()
+        rendered = render_act_content(draft)
+        return Response({'rendered_content': rendered, 'title': draft.title})
 
     @action(detail=True, methods=['post'], url_path='re-renderizar')
     def rerender(self, request, pk=None):

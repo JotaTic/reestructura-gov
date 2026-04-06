@@ -11,6 +11,7 @@ from .views import (
     logout_view,
     me_context,
 )
+from .views_search import global_search
 from .views_admin import (
     AdminUserViewSet,
     GroupViewSet,
@@ -35,4 +36,5 @@ urlpatterns = [
     path('auth/login/', login_view, name='auth-login'),
     path('auth/logout/', logout_view, name='auth-logout'),
     path('me/context/', me_context, name='me-context'),
+    path('buscar/', global_search, name='global-search'),
 ] + router.urls + [path('superadmin/', include(admin_router.urls))]

@@ -37,6 +37,38 @@ class PersonnelCommittee(AuditedModel):
         return f'{self.entity.acronym or self.entity.name} — {self.name}'
 
 
+class CommitteeMember(AuditedModel):
+    """Miembro individual de una Comisión de Personal."""
+
+    committee = models.ForeignKey(
+        PersonnelCommittee,
+        on_delete=models.CASCADE,
+        related_name='member_records',
+        verbose_name='Comisión',
+    )
+    name = models.CharField('Nombre', max_length=255)
+    position = models.CharField('Cargo', max_length=255)
+    member_type = models.CharField(
+        'Tipo de representante',
+        max_length=20,
+        choices=[
+            ('EMPLOYEE_REP', 'Representante empleados'),
+            ('ENTITY_REP', 'Representante entidad'),
+        ],
+    )
+    start_date = models.DateField('Fecha de inicio')
+    end_date = models.DateField('Fecha de fin', null=True, blank=True)
+    active = models.BooleanField('Activo', default=True)
+
+    class Meta:
+        verbose_name = 'Miembro de comisión'
+        verbose_name_plural = 'Miembros de comisión'
+        ordering = ['committee', '-active', 'name']
+
+    def __str__(self) -> str:
+        return f'{self.name} — {self.get_member_type_display()}'
+
+
 class CommitteeMeeting(AuditedModel):
     """Reunión de la Comisión de Personal."""
 
@@ -64,6 +96,12 @@ class CommitteeMeeting(AuditedModel):
         on_delete=models.SET_NULL,
         related_name='committee_minutes',
         verbose_name='Documento del acta',
+    )
+    minutes_file = models.FileField(
+        'Archivo del acta',
+        upload_to='actas/',
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -116,5 +154,6 @@ class UnionCommunication(AuditedModel):
 
 
 register_audit_model('participacion.PersonnelCommittee')
+register_audit_model('participacion.CommitteeMember')
 register_audit_model('participacion.CommitteeMeeting')
 register_audit_model('participacion.UnionCommunication')

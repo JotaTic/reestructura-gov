@@ -147,6 +147,35 @@ class RestructuringViewSet(EntityScopedMixin, viewsets.ModelViewSet):
 
         return Response(result)
 
+    @action(detail=True, methods=['get'], url_path='historial')
+    def historial(self, request, pk=None):
+        """
+        GET /api/reestructuraciones/<id>/historial/
+        Returns ChangeLog entries for this restructuring (status transitions).
+        """
+        restr = self.get_object()
+        from apps.common.models import ChangeLog
+        logs = (
+            ChangeLog.objects
+            .filter(model='restructuring', object_id=str(restr.id))
+            .select_related('user')
+            .order_by('-at')[:50]
+        )
+        data = []
+        for log in logs:
+            before_status = (log.before_json or {}).get('status')
+            after_status = (log.after_json or {}).get('status')
+            data.append({
+                'id': log.id,
+                'action': log.action,
+                'action_display': log.get_action_display(),
+                'user': log.user.username if log.user else None,
+                'at': log.at.isoformat(),
+                'before_status': before_status,
+                'after_status': after_status,
+            })
+        return Response(data)
+
 
 class DepartmentViewSet(EntityScopedMixin, viewsets.ModelViewSet):
     queryset = Department.objects.select_related('entity', 'parent').all()

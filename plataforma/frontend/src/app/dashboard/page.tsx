@@ -154,26 +154,62 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* By status */}
-      {Object.keys(summary.by_status).length > 0 && (
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-          <h2 className="mb-3 text-sm font-semibold text-slate-700">
-            Distribución por estado
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {Object.entries(summary.by_status).map(([status, count]) => (
-              <span
-                key={status}
-                className={`rounded-full px-2 py-1 text-xs font-semibold ${
-                  STATUS_COLORS[status] || "bg-slate-100 text-slate-700"
-                }`}
-              >
-                {status.replace(/_/g, " ")} ({count})
-              </span>
-            ))}
+      {/* Quick access cards */}
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: "Simulador", href: "/simulador", icon: TrendingUp, color: "bg-indigo-50 text-indigo-700", desc: "Escenarios de planta" },
+          { label: "Elegibilidad", href: "/analisis/elegibilidad", icon: Users, color: "bg-emerald-50 text-emerald-700", desc: "Motor de nivelación" },
+          { label: "Planta", href: "/planta", icon: Building2, color: "bg-blue-50 text-blue-700", desc: "Planes de personal" },
+          { label: "Financiero", href: "/financiero", icon: TrendingUp, color: "bg-amber-50 text-amber-700", desc: "Análisis Ley 617" },
+        ].map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="group rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:border-brand-300 hover:shadow-md transition"
+          >
+            <div className="flex items-center gap-3">
+              <div className={`rounded-lg p-2 ${item.color}`}>
+                <item.icon size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-900 group-hover:text-brand-700">{item.label}</p>
+                <p className="text-[10px] text-slate-500">{item.desc}</p>
+              </div>
+              <ArrowRight size={14} className="ml-auto text-slate-300 group-hover:text-brand-500" />
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* By status — horizontal bar chart */}
+      {Object.keys(summary.by_status).length > 0 && (() => {
+        const maxCount = Math.max(...Object.values(summary.by_status), 1);
+        return (
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 className="mb-3 text-sm font-semibold text-slate-700">
+              Reestructuraciones por estado
+            </h2>
+            <div className="space-y-2">
+              {Object.entries(summary.by_status).map(([status, count]) => (
+                <div key={status} className="flex items-center gap-3">
+                  <span className="w-40 truncate text-xs text-slate-600">
+                    {status.replace(/_/g, " ")}
+                  </span>
+                  <div className="flex-1 h-5 rounded-full bg-slate-100 overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all ${
+                        STATUS_COLORS[status]?.replace("text-", "bg-").split(" ")[0] || "bg-brand-500"
+                      }`}
+                      style={{ width: `${(count / maxCount) * 100}%`, minWidth: count > 0 ? "12px" : "0" }}
+                    />
+                  </div>
+                  <span className="w-8 text-right text-xs font-bold text-slate-700">{count}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Tabla de reestructuraciones activas */}
       <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -253,6 +289,104 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Cost comparison and Law 617 compliance */}
+      {per_restructuring.length > 0 && (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {/* Cost comparison bars */}
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 className="mb-3 text-sm font-semibold text-slate-700">
+              Comparación de costos anuales
+            </h2>
+            <div className="space-y-3">
+              {per_restructuring.map((d) => {
+                const maxCost = Math.max(d.cost_current, d.cost_proposed, 1);
+                return (
+                  <div key={d.restructuring_id}>
+                    <p className="text-[10px] font-medium text-slate-600 mb-1 truncate">{d.name}</p>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="w-14 text-[10px] text-slate-500">Actual</span>
+                        <div className="flex-1 h-4 rounded bg-slate-100 overflow-hidden">
+                          <div
+                            className="h-full rounded bg-slate-400"
+                            style={{ width: `${(d.cost_current / maxCost) * 100}%` }}
+                          />
+                        </div>
+                        <span className="w-24 text-right text-[10px] text-slate-600">${d.cost_current.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-14 text-[10px] text-slate-500">Propuesto</span>
+                        <div className="flex-1 h-4 rounded bg-slate-100 overflow-hidden">
+                          <div
+                            className={`h-full rounded ${d.cost_delta <= 0 ? "bg-emerald-500" : "bg-red-400"}`}
+                            style={{ width: `${(d.cost_proposed / maxCost) * 100}%` }}
+                          />
+                        </div>
+                        <span className="w-24 text-right text-[10px] text-slate-600">${d.cost_proposed.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Law 617 compliance indicator */}
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 className="mb-3 text-sm font-semibold text-slate-700">
+              Cumplimiento Ley 617
+            </h2>
+            <div className="space-y-3">
+              {per_restructuring.map((d) => (
+                <div key={d.restructuring_id} className="flex items-center gap-3">
+                  <div className="flex-1 truncate">
+                    <p className="text-xs font-medium text-slate-700 truncate">{d.name}</p>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <div className="text-center">
+                      <div
+                        className={`mx-auto h-6 w-6 rounded-full flex items-center justify-center ${
+                          d.law_617_current === null
+                            ? "bg-slate-200"
+                            : d.law_617_current
+                            ? "bg-emerald-500"
+                            : "bg-red-500"
+                        }`}
+                      >
+                        {d.law_617_current !== null && (
+                          d.law_617_current
+                            ? <CheckCircle2 size={14} className="text-white" />
+                            : <AlertTriangle size={12} className="text-white" />
+                        )}
+                      </div>
+                      <p className="text-[9px] text-slate-400 mt-0.5">Actual</p>
+                    </div>
+                    <div className="text-center">
+                      <div
+                        className={`mx-auto h-6 w-6 rounded-full flex items-center justify-center ${
+                          d.law_617_projected === null
+                            ? "bg-slate-200"
+                            : d.law_617_projected
+                            ? "bg-emerald-500"
+                            : "bg-red-500"
+                        }`}
+                      >
+                        {d.law_617_projected !== null && (
+                          d.law_617_projected
+                            ? <CheckCircle2 size={14} className="text-white" />
+                            : <AlertTriangle size={12} className="text-white" />
+                        )}
+                      </div>
+                      <p className="text-[9px] text-slate-400 mt-0.5">Prop.</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Consultas próximas a vencer */}
       {summary.upcoming_consultations.length > 0 && (

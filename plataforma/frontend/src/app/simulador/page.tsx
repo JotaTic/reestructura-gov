@@ -6,14 +6,16 @@ import {
   ChevronDown,
   ChevronRight,
   Copy,
+  Edit3,
   GitCompare,
   Play,
   Plus,
+  Save,
   X,
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { useContextStore } from "@/stores/contextStore";
-import type { Paginated, PayrollPlan, Scenario, ScenarioComparison, ScenarioMetrics } from "@/types";
+import type { Paginated, PayrollPlan, PayrollPosition, Scenario, ScenarioComparison, ScenarioMetrics } from "@/types";
 
 function MetricsCard({ metrics }: { metrics: ScenarioMetrics }) {
   return (
@@ -86,6 +88,64 @@ export default function SimuladorPage() {
   const [selected, setSelected] = useState<number[]>([]);
   const [comparison, setComparison] = useState<ScenarioComparison | null>(null);
   const [expandedMetrics, setExpandedMetrics] = useState<number | null>(null);
+
+  // Edición inline de posiciones
+  const [editingPositions, setEditingPositions] = useState<number | null>(null);
+  const [positions, setPositions] = useState<PayrollPosition[]>([]);
+  const [positionsLoading, setPositionsLoading] = useState(false);
+  const [editedRows, setEditedRows] = useState<Record<number, Partial<PayrollPosition>>>({});
+  const [savingPos, setSavingPos] = useState<number | null>(null);
+
+  const loadPositions = async (scenarioId: number) => {
+    if (editingPositions === scenarioId) {
+      setEditingPositions(null);
+      return;
+    }
+    setPositionsLoading(true);
+    try {
+      const data = await api.get<PayrollPosition[]>(`/simulador/${scenarioId}/posiciones/`);
+      setPositions(data);
+      setEditedRows({});
+      setEditingPositions(scenarioId);
+    } catch {
+      alert("Error cargando posiciones.");
+    } finally {
+      setPositionsLoading(false);
+    }
+  };
+
+  const updateEditedRow = (posId: number, field: string, value: string | number) => {
+    setEditedRows((prev) => ({
+      ...prev,
+      [posId]: { ...prev[posId], [field]: value },
+    }));
+  };
+
+  const savePosition = async (pos: PayrollPosition, scenarioId: number) => {
+    const edits = editedRows[pos.id!];
+    if (!edits) return;
+    setSavingPos(pos.id!);
+    try {
+      await api.put(`/cargos-planta/${pos.id!}/`, {
+        ...pos,
+        ...edits,
+      });
+      // Refresh positions
+      const data = await api.get<PayrollPosition[]>(`/simulador/${scenarioId}/posiciones/`);
+      setPositions(data);
+      setEditedRows((prev) => {
+        const next = { ...prev };
+        delete next[pos.id!];
+        return next;
+      });
+      // Re-evaluate
+      await evaluate(scenarioId);
+    } catch {
+      alert("Error guardando la posición.");
+    } finally {
+      setSavingPos(null);
+    }
+  };
 
   // Modal clonar
   const [showClone, setShowClone] = useState(false);
@@ -279,6 +339,14 @@ export default function SimuladorPage() {
                     <Play size={12} />
                     Evaluar
                   </button>
+                  <button
+                    onClick={() => loadPositions(s.id)}
+                    disabled={positionsLoading}
+                    className="inline-flex items-center gap-1 rounded-md border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100"
+                  >
+                    <Edit3 size={12} />
+                    {editingPositions === s.id ? "Cerrar posiciones" : "Editar posiciones"}
+                  </button>
                   {hasMetrics && (
                     <button
                       onClick={() =>
@@ -298,6 +366,88 @@ export default function SimuladorPage() {
                 </div>
               </div>
               {isExpanded && metrics && <MetricsCard metrics={metrics} />}
+
+              {/* Inline positions editor */}
+              {editingPositions === s.id && (
+                <div className="mt-3 border-t border-slate-100 pt-3">
+                  <h4 className="mb-2 text-xs font-semibold text-slate-700">
+                    Posiciones del escenario ({positions.length})
+                  </h4>
+                  {positions.length === 0 ? (
+                    <p className="text-xs text-slate-400">No hay posiciones en este escenario.</p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead className="bg-slate-50 text-[10px] uppercase text-slate-500">
+                          <tr>
+                            <th className="p-2 text-left">Denominación</th>
+                            <th className="p-2 text-left">Código</th>
+                            <th className="p-2 text-left">Grado</th>
+                            <th className="p-2 text-left">Nivel</th>
+                            <th className="p-2 text-right">Cantidad</th>
+                            <th className="p-2 text-right">Salario mensual</th>
+                            <th className="p-2 text-right">Total mensual</th>
+                            <th className="p-2"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {positions.map((pos) => {
+                            const edits = editedRows[pos.id!] || {};
+                            const hasEdits = Object.keys(edits).length > 0;
+                            return (
+                              <tr key={pos.id} className="border-t border-slate-100">
+                                <td className="p-1">
+                                  <input
+                                    value={edits.denomination ?? pos.denomination}
+                                    onChange={(e) => updateEditedRow(pos.id!, "denomination", e.target.value)}
+                                    className="w-full rounded border border-slate-200 px-2 py-1 text-xs"
+                                  />
+                                </td>
+                                <td className="p-1 text-slate-600">{pos.code}</td>
+                                <td className="p-1 text-slate-600">{pos.grade}</td>
+                                <td className="p-1 text-slate-600">{pos.hierarchy_level_display}</td>
+                                <td className="p-1">
+                                  <input
+                                    type="number"
+                                    min={0}
+                                    value={edits.quantity ?? pos.quantity}
+                                    onChange={(e) => updateEditedRow(pos.id!, "quantity", parseInt(e.target.value) || 0)}
+                                    className="w-20 rounded border border-slate-200 px-2 py-1 text-right text-xs"
+                                  />
+                                </td>
+                                <td className="p-1">
+                                  <input
+                                    type="number"
+                                    min={0}
+                                    value={edits.monthly_salary ?? pos.monthly_salary}
+                                    onChange={(e) => updateEditedRow(pos.id!, "monthly_salary", parseFloat(e.target.value) || 0)}
+                                    className="w-28 rounded border border-slate-200 px-2 py-1 text-right text-xs"
+                                  />
+                                </td>
+                                <td className="p-1 text-right text-slate-600">
+                                  ${Number(pos.total_monthly ?? 0).toLocaleString()}
+                                </td>
+                                <td className="p-1">
+                                  {hasEdits && (
+                                    <button
+                                      onClick={() => savePosition(pos, s.id)}
+                                      disabled={savingPos === pos.id}
+                                      className="inline-flex items-center gap-1 rounded bg-brand-700 px-2 py-1 text-[10px] font-medium text-white hover:bg-brand-800 disabled:opacity-50"
+                                    >
+                                      <Save size={10} />
+                                      {savingPos === pos.id ? "…" : "Guardar"}
+                                    </button>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           );
         })}

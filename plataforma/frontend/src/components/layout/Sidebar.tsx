@@ -77,6 +77,7 @@ const nav: NavItem[] = [
   { href: "/reestructuraciones", label: "Gobierno", icon: Workflow, section: "Gobierno", badge: "SP5" },
   { href: "/consultas", label: "Consultas", icon: Mail, badge: "SP5" },
   { href: "/comision-personal", label: "Comisión Personal", icon: Users, badge: "SP5" },
+  { href: "/comunicaciones-sindicales", label: "Comunicaciones sindicales", icon: Mail, badge: "SP5" },
 
   { href: "/actos", label: "Actos administrativos", icon: FileSignature, section: "Implementación", badge: "M14" },
 
