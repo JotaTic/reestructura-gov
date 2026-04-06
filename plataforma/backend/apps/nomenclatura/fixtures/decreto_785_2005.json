@@ -1,49 +1,2902 @@
 [
-  {"model": "nomenclatura.jobnomenclature", "pk": 1, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "005", "denomination": "Alcalde"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 2, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "010", "denomination": "Gobernador"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 3, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "020", "denomination": "Secretario de Despacho"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 4, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "050", "denomination": "Director Administrativo"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 5, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "054", "denomination": "Director Técnico"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 6, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "055", "denomination": "Director Operativo"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 7, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "068", "denomination": "Gerente"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 8, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "070", "denomination": "Subgerente"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 9, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "077", "denomination": "Jefe de Oficina"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 10, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "084", "denomination": "Jefe de Oficina Asesora"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 11, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "100", "denomination": "Subsecretario de Despacho"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 12, "fields": {"scope": "TERRITORIAL", "level": "DIRECTIVO", "code": "105", "denomination": "Subdirector"}},
-
-  {"model": "nomenclatura.jobnomenclature", "pk": 20, "fields": {"scope": "TERRITORIAL", "level": "ASESOR", "code": "105", "denomination": "Asesor"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 21, "fields": {"scope": "TERRITORIAL", "level": "ASESOR", "code": "115", "denomination": "Jefe de Oficina Asesora de Jurídica"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 22, "fields": {"scope": "TERRITORIAL", "level": "ASESOR", "code": "116", "denomination": "Jefe de Oficina Asesora de Planeación"}},
-
-  {"model": "nomenclatura.jobnomenclature", "pk": 30, "fields": {"scope": "TERRITORIAL", "level": "PROFESIONAL", "code": "201", "denomination": "Tesorero General"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 31, "fields": {"scope": "TERRITORIAL", "level": "PROFESIONAL", "code": "202", "denomination": "Comisario de Familia"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 32, "fields": {"scope": "TERRITORIAL", "level": "PROFESIONAL", "code": "206", "denomination": "Profesional Especializado"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 33, "fields": {"scope": "TERRITORIAL", "level": "PROFESIONAL", "code": "208", "denomination": "Profesional Universitario"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 34, "fields": {"scope": "TERRITORIAL", "level": "PROFESIONAL", "code": "219", "denomination": "Profesional Universitario"}},
-
-  {"model": "nomenclatura.jobnomenclature", "pk": 40, "fields": {"scope": "TERRITORIAL", "level": "TECNICO", "code": "303", "denomination": "Inspector de Policía"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 41, "fields": {"scope": "TERRITORIAL", "level": "TECNICO", "code": "339", "denomination": "Técnico Operativo"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 42, "fields": {"scope": "TERRITORIAL", "level": "TECNICO", "code": "367", "denomination": "Técnico Administrativo"}},
-
-  {"model": "nomenclatura.jobnomenclature", "pk": 50, "fields": {"scope": "TERRITORIAL", "level": "ASISTENCIAL", "code": "407", "denomination": "Auxiliar Administrativo"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 51, "fields": {"scope": "TERRITORIAL", "level": "ASISTENCIAL", "code": "412", "denomination": "Auxiliar de Servicios Generales"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 52, "fields": {"scope": "TERRITORIAL", "level": "ASISTENCIAL", "code": "425", "denomination": "Secretario Ejecutivo"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 53, "fields": {"scope": "TERRITORIAL", "level": "ASISTENCIAL", "code": "438", "denomination": "Secretario Ejecutivo del Despacho del Alcalde"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 54, "fields": {"scope": "TERRITORIAL", "level": "ASISTENCIAL", "code": "440", "denomination": "Secretario"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 55, "fields": {"scope": "TERRITORIAL", "level": "ASISTENCIAL", "code": "482", "denomination": "Conductor Mecánico"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 56, "fields": {"scope": "TERRITORIAL", "level": "ASISTENCIAL", "code": "487", "denomination": "Celador"}},
-
-  {"model": "nomenclatura.jobnomenclature", "pk": 100, "fields": {"scope": "NACIONAL", "level": "DIRECTIVO", "code": "0015", "denomination": "Ministro"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 101, "fields": {"scope": "NACIONAL", "level": "DIRECTIVO", "code": "0040", "denomination": "Viceministro"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 102, "fields": {"scope": "NACIONAL", "level": "DIRECTIVO", "code": "0055", "denomination": "Director General de Departamento Administrativo"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 103, "fields": {"scope": "NACIONAL", "level": "DIRECTIVO", "code": "0095", "denomination": "Secretario General"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 104, "fields": {"scope": "NACIONAL", "level": "DIRECTIVO", "code": "0100", "denomination": "Director Técnico"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 105, "fields": {"scope": "NACIONAL", "level": "DIRECTIVO", "code": "0105", "denomination": "Subdirector Técnico"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 110, "fields": {"scope": "NACIONAL", "level": "ASESOR", "code": "1020", "denomination": "Asesor"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 120, "fields": {"scope": "NACIONAL", "level": "PROFESIONAL", "code": "2028", "denomination": "Profesional Especializado"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 121, "fields": {"scope": "NACIONAL", "level": "PROFESIONAL", "code": "2044", "denomination": "Profesional Universitario"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 130, "fields": {"scope": "NACIONAL", "level": "TECNICO", "code": "3124", "denomination": "Técnico Administrativo"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 140, "fields": {"scope": "NACIONAL", "level": "ASISTENCIAL", "code": "4044", "denomination": "Auxiliar Administrativo"}},
-  {"model": "nomenclatura.jobnomenclature", "pk": 141, "fields": {"scope": "NACIONAL", "level": "ASISTENCIAL", "code": "4210", "denomination": "Secretario Ejecutivo"}}
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 1,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "005",
+      "denomination": "Alcalde"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 2,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "030",
+      "denomination": "Alcalde Local"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 3,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "032",
+      "denomination": "Consejero de Justicia"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 4,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "036",
+      "denomination": "Auditor Fiscal de Contraloría"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 5,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "010",
+      "denomination": "Contralor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 6,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "035",
+      "denomination": "Contralor Auxiliar"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 7,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "003",
+      "denomination": "Decano de Escuela o Institución Tecnológica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 8,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "007",
+      "denomination": "Decano de Institución Universitaria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 9,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "008",
+      "denomination": "Decano de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 10,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "009",
+      "denomination": "Director Administrativo o Financiero o Técnico u Operativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 11,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "060",
+      "denomination": "Director de Área Metropolitana"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 12,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "055",
+      "denomination": "Director de Departamento Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 13,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "028",
+      "denomination": "Director de Escuela o de Instituto o de Centro de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 14,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "065",
+      "denomination": "Director de Hospital"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 15,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "016",
+      "denomination": "Director Ejecutivo de Asociación de Municipios"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 16,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "050",
+      "denomination": "Director o Gerente General de Entidad Descentralizada"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 17,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "080",
+      "denomination": "Director Local de Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 18,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "024",
+      "denomination": "Director o Gerente Regional o Provincial"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 19,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "039",
+      "denomination": "Gerente"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 20,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "085",
+      "denomination": "Gerente Empresa Social del Estado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 21,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "001",
+      "denomination": "Gobernador"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 22,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "027",
+      "denomination": "Jefe de Departamento de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 23,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "006",
+      "denomination": "Jefe de Oficina"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 24,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "015",
+      "denomination": "Personero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 25,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "017",
+      "denomination": "Personero Auxiliar"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 26,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "040",
+      "denomination": "Personero Delegado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 27,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "043",
+      "denomination": "Personero Local de Bogotá"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 28,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "071",
+      "denomination": "Presidente Consejo de Justicia"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 29,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "042",
+      "denomination": "Rector de Institución Técnica Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 30,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "048",
+      "denomination": "Rector de Institución Universitaria o de Escuela o de Institución Tecnológica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 31,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "067",
+      "denomination": "Rector de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 32,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "020",
+      "denomination": "Secretario de Despacho"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 33,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "054",
+      "denomination": "Secretario General de Entidad Descentralizada"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 34,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "058",
+      "denomination": "Secretario General de Institución Técnica Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 35,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "064",
+      "denomination": "Secretario General de Institución Universitaria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 36,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "052",
+      "denomination": "Secretario General de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 37,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "066",
+      "denomination": "Secretario General de Escuela o de Institución Tecnológica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 38,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "073",
+      "denomination": "Secretario General de Organismo de Control"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 39,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "097",
+      "denomination": "Secretario Seccional o Local de Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 40,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "025",
+      "denomination": "Subcontralor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 41,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "070",
+      "denomination": "Subdirector"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 42,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "068",
+      "denomination": "Subdirector Administrativo o Financiero o Técnico u Operativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 43,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "072",
+      "denomination": "Subdirector Científico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 44,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "074",
+      "denomination": "Subdirector de Área Metropolitana"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 45,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "076",
+      "denomination": "Subdirector de Departamento Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 46,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "078",
+      "denomination": "Subdirector Ejecutivo de Asociación de Municipios"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 47,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "084",
+      "denomination": "Subdirector o Subgerente General de Entidad Descentralizada"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 48,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "090",
+      "denomination": "Subgerente"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 49,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "045",
+      "denomination": "Subsecretario de Despacho"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 50,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "091",
+      "denomination": "Tesorero Distrital"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 51,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "094",
+      "denomination": "Veedor Distrital"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 52,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "095",
+      "denomination": "Viceveedor Distrital"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 53,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "099",
+      "denomination": "Veedor Distrital Delegado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 54,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "096",
+      "denomination": "Vicerrector de Institución Técnica Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 55,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "098",
+      "denomination": "Vicerrector de Institución Universitaria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 56,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "057",
+      "denomination": "Vicerrector de Escuela Tecnológica o de Institución Tecnológica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 57,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "DIRECTIVO",
+      "code": "077",
+      "denomination": "Vicerrector de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 58,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASESOR",
+      "code": "105",
+      "denomination": "Asesor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 59,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASESOR",
+      "code": "115",
+      "denomination": "Jefe de Oficina Asesora de Jurídica o de Planeación o de Prensa o de Comunicaciones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 60,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "215",
+      "denomination": "Almacenista General"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 61,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "202",
+      "denomination": "Comisario de Familia"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 62,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "203",
+      "denomination": "Comandante de Bomberos"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 63,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "204",
+      "denomination": "Copiloto de Aviación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 64,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "227",
+      "denomination": "Corregidor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 65,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "260",
+      "denomination": "Director de Cárcel"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 66,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "265",
+      "denomination": "Director de Banda"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 67,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "270",
+      "denomination": "Director de Orquesta"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 68,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "235",
+      "denomination": "Director de Centro de Institución Universitaria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 69,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "236",
+      "denomination": "Director de Centro de Escuela Tecnológica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 70,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "243",
+      "denomination": "Enfermero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 71,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "244",
+      "denomination": "Enfermero Especialista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 72,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "232",
+      "denomination": "Director de Centro de Institución Técnica Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 73,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "233",
+      "denomination": "Inspector de Policía Urbano Categoría Especial y 1a Categoría"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 74,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "234",
+      "denomination": "Inspector de Policía Urbano 2a Categoría"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 75,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "206",
+      "denomination": "Líder de Programa"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 76,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "208",
+      "denomination": "Líder de Proyecto"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 77,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "209",
+      "denomination": "Maestro en Artes"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 78,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "211",
+      "denomination": "Médico General"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 79,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "213",
+      "denomination": "Médico Especialista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 80,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "231",
+      "denomination": "Músico de Banda"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 81,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "221",
+      "denomination": "Músico de Orquesta"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 82,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "214",
+      "denomination": "Odontólogo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 83,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "216",
+      "denomination": "Odontólogo Especialista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 84,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "275",
+      "denomination": "Piloto de Aviación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 85,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "222",
+      "denomination": "Profesional Especializado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 86,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "242",
+      "denomination": "Profesional Especializado Área Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 87,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "219",
+      "denomination": "Profesional Universitario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 88,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "237",
+      "denomination": "Profesional Universitario Área Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 89,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "217",
+      "denomination": "Profesional Servicio Social Obligatorio"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 90,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "PROFESIONAL",
+      "code": "201",
+      "denomination": "Tesorero General"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 91,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "335",
+      "denomination": "Auxiliar de Vuelo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 92,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "303",
+      "denomination": "Inspector de Policía 3a a 6a Categoría"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 93,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "306",
+      "denomination": "Inspector de Policía Rural"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 94,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "312",
+      "denomination": "Inspector de Tránsito y Transporte"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 95,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "313",
+      "denomination": "Instructor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 96,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "336",
+      "denomination": "Subcomandante de Bomberos"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 97,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "367",
+      "denomination": "Técnico Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 98,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "323",
+      "denomination": "Técnico Área Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 99,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "TECNICO",
+      "code": "314",
+      "denomination": "Técnico Operativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 100,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "403",
+      "denomination": "Agente de Tránsito"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 101,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "407",
+      "denomination": "Auxiliar Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 102,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "412",
+      "denomination": "Auxiliar Área Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 103,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "470",
+      "denomination": "Auxiliar de Servicios Generales"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 104,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "472",
+      "denomination": "Ayudante"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 105,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "475",
+      "denomination": "Bombero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 106,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "413",
+      "denomination": "Cabo de Bomberos"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 107,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "428",
+      "denomination": "Cabo de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 108,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "411",
+      "denomination": "Capitán de Bomberos"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 109,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "477",
+      "denomination": "Celador"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 110,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "480",
+      "denomination": "Conductor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 111,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "482",
+      "denomination": "Conductor Mecánico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 112,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "485",
+      "denomination": "Guardián"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 113,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "416",
+      "denomination": "Inspector"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 114,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "487",
+      "denomination": "Operario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 115,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "490",
+      "denomination": "Operario Calificado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 116,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "417",
+      "denomination": "Sargento de Bomberos"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 117,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "438",
+      "denomination": "Sargento de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 118,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "440",
+      "denomination": "Secretario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 119,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "420",
+      "denomination": "Secretario Bilingüe"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 120,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "425",
+      "denomination": "Secretario Ejecutivo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 121,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "438",
+      "denomination": "Secretario Ejecutivo del Despacho del Alcalde"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 122,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "430",
+      "denomination": "Secretario Ejecutivo del Despacho del Gobernador"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 123,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "419",
+      "denomination": "Teniente de Bomberos"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 124,
+    "fields": {
+      "scope": "TERRITORIAL",
+      "level": "ASISTENCIAL",
+      "code": "457",
+      "denomination": "Teniente de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 125,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0157",
+      "denomination": "Comisionado Nacional del Servicio Civil"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 126,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0023",
+      "denomination": "Consejero Comercial"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 127,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0004",
+      "denomination": "Contador General de la Nación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 128,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0047",
+      "denomination": "Cónsul General Central"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 129,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0092",
+      "denomination": "Coordinador Ejecutivo de Comisión Reguladora"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 130,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0160",
+      "denomination": "Decano de Institución Universitaria o de Escuela Tecnológica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 131,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0085",
+      "denomination": "Decano de Universidad o de Escuela Superior"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 132,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0100",
+      "denomination": "Director Administrativo y/o Financiero o Técnico u Operativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 133,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0086",
+      "denomination": "Director de Academia Diplomática"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 134,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0186",
+      "denomination": "Director de Centro de Atención Ambulatoria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 135,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0010",
+      "denomination": "Director de Departamento Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 136,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0131",
+      "denomination": "Director de Centro o de Carrera o Jefe de Departamento de Institución Universitaria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 137,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0095",
+      "denomination": "Director de Escuela o de Instituto o de Centro o Jefe de Departamento de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 138,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0116",
+      "denomination": "Director de Fábrica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 139,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0136",
+      "denomination": "Director de Museo o de Teatro o de Coro o Cultural"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 140,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0105",
+      "denomination": "Director de Superintendencia"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 141,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0180",
+      "denomination": "Director de Unidad Hospitalaria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 142,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0141",
+      "denomination": "Director de Unidad de Institución Técnica Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 143,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0128",
+      "denomination": "Director de Unidad Tecnológica o de Unidad Académica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 144,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0087",
+      "denomination": "Director General de Protocolo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 145,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0042",
+      "denomination": "Director o Gerente Territorial o Regional o Seccional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 146,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0036",
+      "denomination": "Embajador Extraordinario y Plenipotenciario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 147,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0090",
+      "denomination": "Experto de Comisión Reguladora"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 148,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0015",
+      "denomination": "Gerente, Presidente o Director General o Nacional de Entidad Descentralizada o de UAE"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 149,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0153",
+      "denomination": "Gestor en Ciencia y Tecnología"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 150,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0138",
+      "denomination": "Intendente"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 151,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0137",
+      "denomination": "Jefe de Oficina"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 152,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0005",
+      "denomination": "Ministro"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 153,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0074",
+      "denomination": "Ministro Plenipotenciario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 154,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0088",
+      "denomination": "Negociador Internacional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 155,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0151",
+      "denomination": "Rector de Institución Técnica Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 156,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0052",
+      "denomination": "Rector de Institución Universitaria o de Escuela Tecnológica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 157,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0045",
+      "denomination": "Rector de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 158,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0191",
+      "denomination": "Registrador Principal"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 159,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0192",
+      "denomination": "Registrador Seccional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 160,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0161",
+      "denomination": "Secretario General de Institución Técnica Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 161,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0185",
+      "denomination": "Secretario General de Institución Universitaria o de Escuela Tecnológica"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 162,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0035",
+      "denomination": "Secretario General de Ministerio o de Departamento Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 163,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0037",
+      "denomination": "Secretario General de UAE o de Superintendencia o de Entidad Descentralizada"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 164,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0008",
+      "denomination": "Subcontador General de la Nación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 165,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0150",
+      "denomination": "Subdirector Administrativo y/o Financiero o Técnico u Operativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 166,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0025",
+      "denomination": "Subdirector de Departamento Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 167,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0190",
+      "denomination": "Subdirector de Unidad Hospitalaria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 168,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0040",
+      "denomination": "Subgerente, Vicepresidente o Subdirector General o Nacional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 169,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0044",
+      "denomination": "Subsecretario de Relaciones Exteriores"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 170,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0030",
+      "denomination": "Superintendente"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 171,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0110",
+      "denomination": "Superintendente Delegado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 172,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0108",
+      "denomination": "Superintendente Delegado Adjunto"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 173,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0020",
+      "denomination": "Viceministro"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 174,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0171",
+      "denomination": "Vicerrector de Institución Técnica Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 175,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0065",
+      "denomination": "Vicerrector o Director Administrativo de Institución Universitaria"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 176,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0060",
+      "denomination": "Vicerrector o Director Administrativo de Universidad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 177,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0195",
+      "denomination": "Director de Tránsito y Transporte"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 178,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "DIRECTIVO",
+      "code": "0196",
+      "denomination": "Secretario de Tránsito y Transporte"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 179,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASESOR",
+      "code": "1050",
+      "denomination": "Agregado para Asuntos Aéreos"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 180,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASESOR",
+      "code": "1020",
+      "denomination": "Asesor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 181,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASESOR",
+      "code": "1060",
+      "denomination": "Asesor Comercial"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 182,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASESOR",
+      "code": "1012",
+      "denomination": "Consejero de Relaciones Exteriores"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 183,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASESOR",
+      "code": "1045",
+      "denomination": "Jefe de Oficina Asesora de Comunicaciones o de Prensa o de Jurídica o de Planeación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 184,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASESOR",
+      "code": "1014",
+      "denomination": "Ministro Consejero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 185,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2024",
+      "denomination": "Administrador de Parques Nacionales"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 186,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2001",
+      "denomination": "Capellán"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 187,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2132",
+      "denomination": "Comandante Superior de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 188,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2133",
+      "denomination": "Consejero de Relaciones Exteriores"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 189,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2002",
+      "denomination": "Copiloto de Aviación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 190,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2125",
+      "denomination": "Defensor de Familia"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 191,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2012",
+      "denomination": "Director de Cárcel"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 192,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2014",
+      "denomination": "Director de Coro"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 193,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2018",
+      "denomination": "Director de Orquesta"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 194,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2003",
+      "denomination": "Enfermero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 195,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2004",
+      "denomination": "Enfermero Especialista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 196,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2025",
+      "denomination": "Ingeniero de Minas"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 197,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2085",
+      "denomination": "Líder de Proyecto"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 198,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2120",
+      "denomination": "Maestro en Artes"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 199,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2142",
+      "denomination": "Médico Cirujano"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 200,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2087",
+      "denomination": "Médico Especialista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 201,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2123",
+      "denomination": "Médico General"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 202,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2052",
+      "denomination": "Músico de Banda"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 203,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2053",
+      "denomination": "Músico de Orquesta"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 204,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2009",
+      "denomination": "Oficial de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 205,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2007",
+      "denomination": "Piloto de Aviación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 206,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2112",
+      "denomination": "Profesional de Asuntos Internacionales"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 207,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2045",
+      "denomination": "Profesional de Defensa Ciudadana"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 208,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2020",
+      "denomination": "Profesional de Servicio Social Obligatorio"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 209,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2165",
+      "denomination": "Profesional Especializado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 210,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2028",
+      "denomination": "Profesional Especializado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 211,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2033",
+      "denomination": "Profesional Especializado Área Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 212,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2044",
+      "denomination": "Profesional Universitario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 213,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2048",
+      "denomination": "Profesional Universitario Área Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 214,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2152",
+      "denomination": "Subcomandante de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 215,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2168",
+      "denomination": "Suboficial de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 216,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2173",
+      "denomination": "Subteniente de Aviación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 217,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2094",
+      "denomination": "Tesorero General"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 218,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2186",
+      "denomination": "Teniente de Aviación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 219,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2102",
+      "denomination": "Terapeuta"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 220,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2103",
+      "denomination": "Trabajador Social"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 221,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2114",
+      "denomination": "Veterinario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 222,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "PROFESIONAL",
+      "code": "2116",
+      "denomination": "Zootecnista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 223,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3015",
+      "denomination": "Subcomandante de Bomberos"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 224,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3003",
+      "denomination": "Agrimensor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 225,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3038",
+      "denomination": "Caporal de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 226,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3046",
+      "denomination": "Carabinero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 227,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3054",
+      "denomination": "Dragoneante de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 228,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3066",
+      "denomination": "Guardián de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 229,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3074",
+      "denomination": "Inspector de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 230,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3078",
+      "denomination": "Inspector de Tránsito y Transporte"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 231,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3080",
+      "denomination": "Instructor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 232,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3084",
+      "denomination": "Investigador Profesional"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 233,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3092",
+      "denomination": "Monitor de Coro"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 234,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3094",
+      "denomination": "Monitor de Orquesta"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 235,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3070",
+      "denomination": "Músico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 236,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3102",
+      "denomination": "Paramédico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 237,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3105",
+      "denomination": "Piloto de Embarcación"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 238,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3110",
+      "denomination": "Suboficial de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 239,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3137",
+      "denomination": "Técnico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 240,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3010",
+      "denomination": "Técnico Aeronáutico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 241,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3116",
+      "denomination": "Técnico Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 242,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3118",
+      "denomination": "Técnico de Servicios"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 243,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3100",
+      "denomination": "Técnico Operativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 244,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3124",
+      "denomination": "Técnico Área Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 245,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3234",
+      "denomination": "Técnico de Ayudas Audiovisuales"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 246,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3128",
+      "denomination": "Tecnólogo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 247,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3132",
+      "denomination": "Topógrafo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 248,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3136",
+      "denomination": "Vigía de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 249,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "TECNICO",
+      "code": "3142",
+      "denomination": "Vigilante Penitenciario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 250,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4002",
+      "denomination": "Aprendiz del SENA"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 251,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4006",
+      "denomination": "Archivista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 252,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4008",
+      "denomination": "Asistente"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 253,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4026",
+      "denomination": "Auxiliar"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 254,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4028",
+      "denomination": "Auxiliar Administrativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 255,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4032",
+      "denomination": "Auxiliar Área Salud"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 256,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4034",
+      "denomination": "Auxiliar de Archivista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 257,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4036",
+      "denomination": "Auxiliar de Enfermería"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 258,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4038",
+      "denomination": "Auxiliar de Laboratorio"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 259,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4070",
+      "denomination": "Auxiliar de Mantenimiento"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 260,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4044",
+      "denomination": "Auxiliar de Servicios Generales"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 261,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4046",
+      "denomination": "Ayudante"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 262,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4048",
+      "denomination": "Bombero Aeronáutico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 263,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4851",
+      "denomination": "Cajero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 264,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4071",
+      "denomination": "Camillero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 265,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4850",
+      "denomination": "Citador"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 266,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4050",
+      "denomination": "Conductor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 267,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4056",
+      "denomination": "Conductor Mecánico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 268,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4064",
+      "denomination": "Guardián"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 269,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4069",
+      "denomination": "Mensajero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 270,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4078",
+      "denomination": "Operario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 271,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4097",
+      "denomination": "Operario Calificado"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 272,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4103",
+      "denomination": "Portero"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 273,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4112",
+      "denomination": "Secretario"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 274,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4114",
+      "denomination": "Secretario Bilingüe"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 275,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4123",
+      "denomination": "Secretario Ejecutivo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 276,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4128",
+      "denomination": "Secretario Ejecutivo del Despacho del Ministro"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 277,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4137",
+      "denomination": "Suboficial de Protección y Seguridad"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 278,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4152",
+      "denomination": "Técnico Servicio Civil"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 279,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4158",
+      "denomination": "Telefonista"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 280,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4167",
+      "denomination": "Tramitador"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 281,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4169",
+      "denomination": "Vigía"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 282,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4173",
+      "denomination": "Zapatero de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 283,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4178",
+      "denomination": "Cocinero de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 284,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4182",
+      "denomination": "Conductor de Prisiones"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 285,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4210",
+      "denomination": "Secretario Ejecutivo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 286,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4212",
+      "denomination": "Secretario Ejecutivo del Despacho del Viceministro"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 287,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4215",
+      "denomination": "Supervisor"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 288,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4220",
+      "denomination": "Técnico"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 289,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4222",
+      "denomination": "Técnico Operativo"
+    }
+  },
+  {
+    "model": "nomenclatura.jobnomenclature",
+    "pk": 290,
+    "fields": {
+      "scope": "NACIONAL",
+      "level": "ASISTENCIAL",
+      "code": "4225",
+      "denomination": "Vigilante"
+    }
+  }
 ]
