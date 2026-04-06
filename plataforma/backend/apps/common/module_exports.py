@@ -469,6 +469,93 @@ def export_protected_employees(entity, queryset) -> tuple:
 
 
 # ---------------------------------------------------------------------------
+# M15 — Hoja de vida del empleado
+# ---------------------------------------------------------------------------
+
+def export_employee_cv(employee) -> tuple:
+    """
+    Genera la hoja de vida de un empleado en formato exportable.
+
+    employee: apps.talento.models.Employee (con prefetch de sub-relaciones).
+    """
+    sections: list[Section] = []
+
+    # Datos básicos
+    sections.append({
+        'heading': 'Datos básicos',
+        'headers': ['Campo', 'Valor'],
+        'rows': [
+            ['Nombre completo', employee.full_name],
+            ['Documento', f'{employee.get_id_type_display()} {employee.id_number}'],
+            ['Fecha de nacimiento', _d(employee.birth_date)],
+            ['Sexo', employee.get_sex_display()],
+            ['Cabeza de hogar', 'Sí' if employee.is_head_of_household else 'No'],
+            ['Discapacidad', f'Sí ({employee.disability_percentage}%)' if employee.has_disability else 'No'],
+            ['Correo', employee.email or '—'],
+            ['Teléfono', employee.phone or '—'],
+        ],
+    })
+
+    # Educación
+    edu_rows = [
+        [i + 1, e.get_level_display(), e.institution, e.program, e.title,
+         _d(e.graduation_date), e.credential_number or '—']
+        for i, e in enumerate(employee.education.all())
+    ]
+    sections.append({
+        'heading': 'Formación académica',
+        'headers': ['#', 'Nivel', 'Institución', 'Programa', 'Título', 'Fecha grado', 'T.P.'],
+        'rows': edu_rows,
+    })
+
+    # Experiencia
+    exp_rows = [
+        [i + 1, e.employer, e.position_name, e.get_sector_display(),
+         _d(e.start_date), _d(e.end_date) or 'Actual',
+         'Sí' if e.is_public_sector else 'No']
+        for i, e in enumerate(employee.experience.all().order_by('-start_date'))
+    ]
+    sections.append({
+        'heading': 'Experiencia laboral',
+        'headers': ['#', 'Empleador', 'Cargo', 'Sector', 'Inicio', 'Retiro', 'Sector público'],
+        'rows': exp_rows,
+    })
+
+    # Capacitación
+    cap_rows = [
+        [i + 1, t.topic, t.hours, t.institution, _d(t.completed_at)]
+        for i, t in enumerate(employee.training.all())
+    ]
+    sections.append({
+        'heading': 'Capacitación y formación complementaria',
+        'headers': ['#', 'Tema', 'Horas', 'Institución', 'Fecha'],
+        'rows': cap_rows,
+    })
+
+    # Evaluaciones
+    eval_rows = [
+        [ev.year, ev.score, ev.get_result_display(), ev.evaluator, _d(ev.at)]
+        for ev in employee.evaluations.all().order_by('-year')
+    ]
+    sections.append({
+        'heading': 'Evaluaciones de desempeño',
+        'headers': ['Año', 'Puntaje', 'Resultado', 'Evaluador', 'Fecha'],
+        'rows': eval_rows,
+    })
+
+    title = f'Hoja de vida — {employee.full_name}'
+    meta = [
+        ('Empleado', employee.full_name),
+        ('Documento', f'{employee.get_id_type_display()} {employee.id_number}'),
+        ('Entidad', employee.entity.name),
+        ('Módulo', 'M15 · Hojas de vida'),
+        ('Generado', date.today().isoformat()),
+    ]
+    filename_ctx = employee.id_number
+    return title, meta, sections, 'hoja_de_vida', filename_ctx
+
+
+# ---------------------------------------------------------------------------
 # M14 — Actos Administrativos (un borrador)
 # ---------------------------------------------------------------------------
 
@@ -501,3 +588,100 @@ def export_act_draft(draft) -> tuple:
         ('Estado', draft.get_status_display()),
     ])
     return title, meta, sections, 'acto', f'{draft.kind.lower()}_{draft.id}'
+
+
+# ---------------------------------------------------------------------------
+# M17 — MFMP (Marco Fiscal de Mediano Plazo)
+# ---------------------------------------------------------------------------
+
+def export_mfmp(mfmp) -> tuple:
+    """
+    mfmp: apps.mfmp.models.MFMP (con prefetch de incomes, expenses, debts).
+    """
+    from apps.mfmp.services import get_projection_matrix, calculate_law_617_by_year
+
+    matrix = get_projection_matrix(mfmp)
+    years = matrix['years']
+    law_617 = calculate_law_617_by_year(mfmp)
+    sections: list[Section] = []
+
+    # Ingresos por concepto
+    income_rows = []
+    for concept, year_amounts in matrix['income_by_concept'].items():
+        row = [concept]
+        for yr in years:
+            row.append(_d(Decimal(str(year_amounts.get(str(yr), 0)))))
+        income_rows.append(row)
+    sections.append({
+        'heading': 'Ingresos por concepto',
+        'description': 'Proyección de ingresos del MFMP por concepto y año.',
+        'headers': ['Concepto'] + [str(yr) for yr in years],
+        'rows': income_rows,
+    })
+
+    # Totales de ingresos
+    sections.append({
+        'heading': 'Totales ingresos',
+        'headers': ['Año', 'Total ingresos'],
+        'rows': [[yr, _d(Decimal(str(matrix['totals']['income'].get(str(yr), 0))))] for yr in years],
+    })
+
+    # Gastos por concepto
+    expense_rows = []
+    for concept, year_amounts in matrix['expense_by_concept'].items():
+        row = [concept]
+        for yr in years:
+            row.append(_d(Decimal(str(year_amounts.get(str(yr), 0)))))
+        expense_rows.append(row)
+    sections.append({
+        'heading': 'Gastos por concepto',
+        'description': 'Proyección de gastos del MFMP por concepto y año.',
+        'headers': ['Concepto'] + [str(yr) for yr in years],
+        'rows': expense_rows,
+    })
+
+    # Deuda
+    debt_rows = []
+    for yr in years:
+        d = matrix['debt'].get(str(yr), {})
+        debt_rows.append([
+            yr,
+            _d(Decimal(str(d.get('outstanding_debt', 0)))),
+            _d(Decimal(str(d.get('debt_service', 0)))),
+            _d(Decimal(str(d.get('new_disbursements', 0)))),
+        ])
+    sections.append({
+        'heading': 'Deuda',
+        'headers': ['Año', 'Saldo deuda', 'Servicio deuda', 'Nuevos desembolsos'],
+        'rows': debt_rows,
+    })
+
+    # Ley 617
+    law_617_rows = []
+    for yr in years:
+        d = law_617.get(yr, {})
+        law_617_rows.append([
+            yr,
+            _d(Decimal(str(d.get('icld', 0)))),
+            _d(Decimal(str(d.get('funcionamiento', 0)))),
+            f'{d.get("ratio", 0) * 100:.1f}%',
+            f'{d.get("limit", 0) * 100:.0f}%',
+            'Cumple' if d.get('compliant', True) else 'No cumple',
+        ])
+    sections.append({
+        'heading': 'Indicadores Ley 617/2000',
+        'description': 'ICLD, gastos funcionamiento y cumplimiento del límite por año.',
+        'headers': ['Año', 'ICLD', 'Funcionamiento', 'Ratio', 'Límite', 'Cumplimiento'],
+        'rows': law_617_rows,
+        'notes': 'Ley 617/2000 — límite de gastos de funcionamiento sobre ICLD.',
+    })
+
+    title = f'MFMP — {mfmp.name}'
+    meta = _entity_meta(mfmp.entity, extras=[
+        ('Módulo', 'M17 · MFMP Ley 819'),
+        ('Nombre MFMP', mfmp.name),
+        ('Año base', str(mfmp.base_year)),
+        ('Horizonte', f'{mfmp.horizon_years} años'),
+        ('Aprobado por', mfmp.approved_by or '—'),
+    ])
+    return title, meta, sections, 'mfmp', f'{mfmp.base_year}'

@@ -4,7 +4,14 @@ Núcleo: modelo de Entidad (tenant lógico) y Dependencias.
 Ajustado al numeral 1.1 del prompt de reestructuración:
 - Orden, categoría municipal, naturaleza jurídica (condiciona reglas y salidas).
 """
+from decimal import Decimal
+
+from django.conf import settings
+from django.contrib.auth.models import Group
+from django.core.exceptions import ValidationError
 from django.db import models
+
+from apps.common.audit import AuditedModel
 
 
 class Entity(models.Model):
@@ -118,17 +125,28 @@ class Restructuring(models.Model):
     """
 
     class Status(models.TextChoices):
-        DRAFT = 'DRAFT', 'Borrador'
-        IN_PROGRESS = 'IN_PROGRESS', 'En curso'
-        APPROVED = 'APPROVED', 'Aprobada'
-        IMPLEMENTED = 'IMPLEMENTED', 'Implementada'
-        ARCHIVED = 'ARCHIVED', 'Archivada'
+        BORRADOR = 'BORRADOR', 'Borrador'
+        DIAGNOSTICO_COMPLETO = 'DIAGNOSTICO_COMPLETO', 'Diagnóstico completo'
+        ANALISIS_COMPLETO = 'ANALISIS_COMPLETO', 'Análisis completo'
+        REVISION_JURIDICA = 'REVISION_JURIDICA', 'Revisión jurídica'
+        REVISION_FINANCIERA = 'REVISION_FINANCIERA', 'Revisión financiera'
+        CONCEPTO_DAFP_SOLICITADO = 'CONCEPTO_DAFP_SOLICITADO', 'Concepto DAFP solicitado'
+        CONCEPTO_DAFP_RECIBIDO = 'CONCEPTO_DAFP_RECIBIDO', 'Concepto DAFP recibido'
+        COMISION_PERSONAL_INFORMADA = 'COMISION_PERSONAL_INFORMADA', 'Comisión de personal informada'
+        APROBADO = 'APROBADO', 'Aprobada'
+        ACTO_EXPEDIDO = 'ACTO_EXPEDIDO', 'Acto expedido'
+        IMPLEMENTADO = 'IMPLEMENTADO', 'Implementada'
+        ARCHIVADO = 'ARCHIVADO', 'Archivada'
 
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='restructurings')
     name = models.CharField('Nombre', max_length=255)
     code = models.CharField('Código', max_length=64, blank=True)
     reference_date = models.DateField('Fecha de referencia')
-    status = models.CharField('Estado', max_length=16, choices=Status.choices, default=Status.DRAFT)
+    status = models.CharField('Estado', max_length=32, choices=Status.choices, default=Status.BORRADOR)
+    current_status_since = models.DateTimeField(
+        'En estado actual desde', null=True, blank=True,
+        help_text='Fecha/hora en que entró al estado actual. Útil para medir tiempos de proceso.',
+    )
     description = models.TextField('Descripción', blank=True)
     created_by = models.ForeignKey(
         'auth.User', null=True, blank=True, on_delete=models.SET_NULL,
@@ -196,3 +214,157 @@ class Department(models.Model):
 
     def __str__(self) -> str:
         return f'{self.entity.acronym or self.entity.name} / {self.name}'
+
+
+# ---------------------------------------------------------------------------
+#                    Sprint 0 — Multi-tenant y matriz de permisos
+# ---------------------------------------------------------------------------
+
+
+class UserEntityAccess(models.Model):
+    """Acceso de un usuario a una entidad (multi-tenant estricto).
+
+    Un usuario puede tener varias entidades; solo una marcada como
+    is_default=True (constraint parcial). El superusuario NO necesita
+    registros aqui: ve todas las entidades.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='entity_access'
+    )
+    entity = models.ForeignKey(
+        Entity, on_delete=models.CASCADE, related_name='user_access'
+    )
+    is_default = models.BooleanField(
+        'Entidad por defecto', default=False,
+        help_text='Entidad con la que el usuario entra al iniciar sesion.'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Acceso usuario-entidad'
+        verbose_name_plural = 'Accesos usuario-entidad'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'entity'], name='uniq_user_entity_access'
+            ),
+            models.UniqueConstraint(
+                fields=['user'], condition=models.Q(is_default=True),
+                name='uniq_user_default_entity',
+            ),
+        ]
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['entity']),
+        ]
+
+    def __str__(self) -> str:
+        flag = ' (default)' if self.is_default else ''
+        return f'{self.user_id}->{self.entity_id}{flag}'
+
+
+class GroupModelPermission(models.Model):
+    """Matriz CRUD por (grupo, modelo).
+
+    Se lee desde apps.common.permissions.MatrixPermission en cada request.
+    La matriz se administra desde /superadmin/permissions/.
+    """
+
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='model_permissions')
+    app_label = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    can_create = models.BooleanField(default=False)
+    can_read = models.BooleanField(default=False)
+    can_update = models.BooleanField(default=False)
+    can_delete = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Permiso de grupo sobre modelo'
+        verbose_name_plural = 'Permisos de grupo sobre modelo'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['group', 'app_label', 'model'],
+                name='uniq_group_model_permission',
+            ),
+        ]
+        indexes = [
+            models.Index(fields=['group']),
+            models.Index(fields=['app_label', 'model']),
+        ]
+
+    def clean(self):
+        if not self.app_label or not self.model:
+            raise ValidationError('app_label y model son obligatorios.')
+
+    def __str__(self) -> str:
+        bits = ''.join([
+            'C' if self.can_create else '-',
+            'R' if self.can_read else '-',
+            'U' if self.can_update else '-',
+            'D' if self.can_delete else '-',
+        ])
+        return f'{self.group.name} | {self.app_label}.{self.model} [{bits}]'
+
+
+# ---------------------------------------------------------------------------
+#                    Sprint 1 — Objetivos de reestructuración
+# ---------------------------------------------------------------------------
+
+class RestructuringObjective(AuditedModel):
+    """
+    Objetivo específico de un expediente de reestructuración.
+
+    Cada reestructuración puede tener múltiples objetivos (uno por kind).
+    El kind determina los módulos activos, validadores y entregables (ver
+    apps.core.objectives.OBJECTIVE_DEFINITIONS).
+    """
+
+    class Kind(models.TextChoices):
+        FORTALECIMIENTO_INSTITUCIONAL = 'FORTALECIMIENTO_INSTITUCIONAL', 'Fortalecimiento institucional'
+        NIVELACION_SALARIAL = 'NIVELACION_SALARIAL', 'Nivelación salarial'
+        RECLASIFICACION_EMPLEOS = 'RECLASIFICACION_EMPLEOS', 'Reclasificación de empleos'
+        CREACION_DEPENDENCIA = 'CREACION_DEPENDENCIA', 'Creación de dependencia'
+        SUPRESION_DEPENDENCIA = 'SUPRESION_DEPENDENCIA', 'Supresión de dependencia'
+        SUPRESION_EMPLEOS = 'SUPRESION_EMPLEOS', 'Supresión de empleos'
+        LIQUIDACION_ENTIDAD = 'LIQUIDACION_ENTIDAD', 'Liquidación de entidad'
+        FUSION_ENTIDADES = 'FUSION_ENTIDADES', 'Fusión de entidades'
+        ESCISION_ENTIDAD = 'ESCISION_ENTIDAD', 'Escisión de entidad'
+        MODERNIZACION_TECNOLOGICA = 'MODERNIZACION_TECNOLOGICA', 'Modernización tecnológica'
+        CUMPLIMIENTO_COMPETENCIAS = 'CUMPLIMIENTO_COMPETENCIAS', 'Cumplimiento de competencias'
+        AJUSTE_ORDEN_JUDICIAL = 'AJUSTE_ORDEN_JUDICIAL', 'Ajuste por orden judicial'
+        CUMPLIMIENTO_LEY_617 = 'CUMPLIMIENTO_LEY_617', 'Cumplimiento Ley 617/2000'
+        PLANTA_TRANSITORIA = 'PLANTA_TRANSITORIA', 'Planta transitoria'
+        PLAN_CARRERA_CNSC = 'PLAN_CARRERA_CNSC', 'Plan de carrera CNSC'
+        AJUSTE_NOMENCLATURA = 'AJUSTE_NOMENCLATURA', 'Ajuste de nomenclatura'
+
+    restructuring = models.ForeignKey(
+        Restructuring,
+        on_delete=models.CASCADE,
+        related_name='objectives',
+    )
+    kind = models.CharField('Tipo de objetivo', max_length=40, choices=Kind.choices)
+    description = models.TextField('Descripción', blank=True)
+    target_metric = models.CharField('Métrica objetivo', max_length=255, blank=True)
+    target_value = models.DecimalField(
+        'Valor objetivo', max_digits=14, decimal_places=2,
+        null=True, blank=True,
+    )
+    indicator = models.CharField('Indicador de seguimiento', max_length=255, blank=True)
+    deadline = models.DateField('Fecha límite', null=True, blank=True)
+    priority = models.PositiveIntegerField('Prioridad', default=1)
+
+    class Meta:
+        verbose_name = 'Objetivo de reestructuración'
+        verbose_name_plural = 'Objetivos de reestructuración'
+        ordering = ['restructuring', 'priority', 'kind']
+        unique_together = [('restructuring', 'kind')]
+        indexes = [models.Index(fields=['restructuring'])]
+
+    def clean(self):
+        from apps.core.objectives import OBJECTIVE_DEFINITIONS
+        if self.kind and self.kind not in OBJECTIVE_DEFINITIONS:
+            raise ValidationError({'kind': f'Tipo de objetivo desconocido: {self.kind}'})
+
+    def __str__(self) -> str:
+        return f'{self.restructuring} — {self.get_kind_display()}'

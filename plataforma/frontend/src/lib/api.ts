@@ -89,11 +89,28 @@ function request<T>(
   }).then(handle<T>);
 }
 
+function requestForm<T>(method: string, path: string, formData: FormData): Promise<T> {
+  const headers: Record<string, string> = { ...getContextHeaders() };
+  if (method !== "GET" && method !== "HEAD") {
+    const token = csrfToken();
+    if (token) headers["X-CSRFToken"] = token;
+  }
+  // No Content-Type — el browser lo setea automáticamente con boundary para multipart
+  return fetch(`${API_URL}${path}`, {
+    method,
+    credentials: "include",
+    headers,
+    body: formData,
+    cache: "no-store",
+  }).then(handle<T>);
+}
+
 export const api = {
   get: <T>(path: string, params?: Query) => request<T>("GET", path, undefined, params),
   post: <T>(path: string, body: unknown) => request<T>("POST", path, body),
   put: <T>(path: string, body: unknown) => request<T>("PUT", path, body),
   patch: <T>(path: string, body: unknown) => request<T>("PATCH", path, body),
   delete: <T>(path: string) => request<T>("DELETE", path),
+  postForm: <T>(path: string, formData: FormData) => requestForm<T>("POST", path, formData),
   downloadUrl: (path: string) => `${API_URL}${path}`,
 };

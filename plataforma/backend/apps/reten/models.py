@@ -41,6 +41,17 @@ class ProtectedEmployee(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # Sprint 1 — referencia a la hoja de vida (talento.Employee)
+    employee_ref = models.ForeignKey(
+        'talento.Employee',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='protection_records',
+        verbose_name='Hoja de vida vinculada',
+    )
+    # Marca los registros ingresados manualmente (legacy) vs inferidos desde M15
+    is_manual = models.BooleanField('Registro manual', default=True)
+
     class Meta:
         verbose_name = 'Empleado con protección'
         verbose_name_plural = 'Retén social'

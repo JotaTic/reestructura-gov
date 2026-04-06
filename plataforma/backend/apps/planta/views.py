@@ -44,6 +44,18 @@ class PayrollPlanViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
             return Response({'detail': str(e)}, status=400)
         return Response(data)
 
+    @action(detail=True, methods=['get'], url_path='costo-real')
+    def costo_real(self, request, pk=None):
+        """
+        M16 — Costo real de la planta considerando factor prestacional.
+
+        Importa el service localmente para evitar ciclos de importación.
+        """
+        plan = self.get_object()
+        from apps.nomina.services import calculate_payroll_total
+        data = calculate_payroll_total(plan)
+        return Response(data)
+
 
 class PayrollPositionViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
     queryset = PayrollPosition.objects.select_related('plan', 'department').all()

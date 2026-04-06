@@ -13,8 +13,27 @@ Como fallback acepta query params ?entity= y ?restructuring=.
 
 Cualquier intento de operar sin contexto válido retorna 403 con un payload
 estructurado para que el frontend pueda detectarlo y redirigir al selector.
+
+Además — desde el Sprint 0 — valida que la entidad activa esté en el conjunto
+de entidades permitidas para el usuario (`core.UserEntityAccess`). El
+superusuario es la única excepción: ve todas las entidades.
 """
 from rest_framework.exceptions import PermissionDenied
+
+
+def get_user_allowed_entity_ids(user) -> set[int] | None:
+    """Devuelve el set de ids de entidades permitidas para el usuario.
+
+    Si el usuario es superuser, devuelve `None` (convención: "todas").
+    """
+    if user is None or not user.is_authenticated:
+        return set()
+    if user.is_superuser:
+        return None
+    from apps.core.models import UserEntityAccess
+    return set(
+        UserEntityAccess.objects.filter(user=user).values_list('entity_id', flat=True)
+    )
 
 
 class _ContextError(PermissionDenied):
@@ -54,7 +73,19 @@ class EntityScopedMixin:
             raise _ContextError(f'{qp_name} inválida.', code=f'{qp_name}_invalid')
 
     def get_active_entity_id(self) -> int:
-        return self._resolve_header('X-Entity-Id', 'entity')
+        entity_id = self._resolve_header('X-Entity-Id', 'entity')
+        user = getattr(self.request, 'user', None)
+        allowed = get_user_allowed_entity_ids(user)
+        if allowed is not None and entity_id not in allowed:
+            raise _ContextError(
+                'No tienes acceso a esta entidad.',
+                code='entity_not_authorized',
+            )
+        return entity_id
+
+    def get_user_allowed_entities(self):
+        """Helper para otras vistas: devuelve `None` (todas) o set de ids."""
+        return get_user_allowed_entity_ids(getattr(self.request, 'user', None))
 
     # ---- Queryset ----
 

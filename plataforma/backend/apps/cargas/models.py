@@ -90,6 +90,15 @@ class WorkloadEntry(models.Model):
     # Total horas-hombre mes (frecuencia × TE) — col 15–19 en la matriz de FP.
     hh_month = models.DecimalField('Horas-hombre/mes', max_digits=10, decimal_places=4, editable=False)
 
+    # Sprint 3 — vínculo opcional con paso de procedimiento
+    procedure_step = models.ForeignKey(
+        'procedimientos.ProcedureStep',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='workload_entries',
+        verbose_name='Paso de procedimiento',
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

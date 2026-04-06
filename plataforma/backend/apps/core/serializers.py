@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from .models import Entity, Department, TimelineActivity, Restructuring
+
+from apps.common.audit import AuditedSerializerMixin
+
+from .models import Entity, Department, TimelineActivity, Restructuring, RestructuringObjective
 
 
 class RestructuringSerializer(serializers.ModelSerializer):
@@ -10,8 +13,8 @@ class RestructuringSerializer(serializers.ModelSerializer):
         model = Restructuring
         fields = [
             'id', 'entity', 'entity_name', 'name', 'code',
-            'reference_date', 'status', 'status_display', 'description',
-            'created_by', 'created_at', 'updated_at',
+            'reference_date', 'status', 'status_display', 'current_status_since',
+            'description', 'created_by', 'created_at', 'updated_at',
         ]
         read_only_fields = ['created_by']
 
@@ -52,3 +55,25 @@ class EntitySerializer(serializers.ModelSerializer):
             'problem_statement', 'objectives', 'approach', 'risks',
             'created_at', 'updated_at',
         ]
+
+
+class RestructuringObjectiveSerializer(AuditedSerializerMixin, serializers.ModelSerializer):
+    kind_display = serializers.CharField(source='get_kind_display', read_only=True)
+    restructuring_name = serializers.CharField(source='restructuring.name', read_only=True)
+
+    class Meta:
+        model = RestructuringObjective
+        fields = [
+            'id', 'restructuring', 'restructuring_name', 'kind', 'kind_display',
+            'description', 'target_metric', 'target_value', 'indicator',
+            'deadline', 'priority',
+            'created_at', 'updated_at', 'created_by', 'updated_by',
+        ]
+        read_only_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
+
+    def validate(self, attrs):
+        from apps.core.objectives import OBJECTIVE_DEFINITIONS
+        kind = attrs.get('kind')
+        if kind and kind not in OBJECTIVE_DEFINITIONS:
+            raise serializers.ValidationError({'kind': f'Tipo de objetivo desconocido: {kind}'})
+        return attrs

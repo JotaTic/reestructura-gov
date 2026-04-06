@@ -53,6 +53,14 @@ class PayrollPlan(models.Model):
     def __str__(self) -> str:
         return f'{self.entity.acronym or self.entity.name} — {self.get_kind_display()}: {self.name}'
 
+    def fiscal_impact(self, mfmp):
+        """
+        Calcula el impacto fiscal de esta planta sobre el MFMP dado.
+        Import tardío para evitar ciclos de importación.
+        """
+        from apps.mfmp.services import simulate_plan_impact
+        return simulate_plan_impact(mfmp, self)
+
 
 class PayrollPosition(models.Model):
     """
@@ -75,6 +83,15 @@ class PayrollPosition(models.Model):
     )
     notes = models.CharField('Observaciones', max_length=255, blank=True)
 
+    # Sprint 1 — vínculo con la hoja de vida del empleado que ocupa el cargo
+    occupant = models.ForeignKey(
+        'talento.Employee',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='positions_held',
+        verbose_name='Empleado ocupante',
+    )
+
     class Meta:
         verbose_name = 'Cargo de planta'
         verbose_name_plural = 'Cargos de planta'
@@ -82,6 +99,7 @@ class PayrollPosition(models.Model):
         indexes = [
             models.Index(fields=['plan', 'hierarchy_level']),
             models.Index(fields=['plan', 'code', 'grade']),
+            models.Index(fields=['occupant']),
         ]
 
     @property

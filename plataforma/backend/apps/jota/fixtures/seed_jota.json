@@ -514,6 +514,46 @@
     "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
   }},
 
+  { "model": "jota.jotaintent", "pk": 52, "fields": {
+    "name": "Matriz de permisos CRUD (superadmin)",
+    "slug": "matriz-permisos",
+    "category": "Superadministración",
+    "keywords": "matriz de permisos, matriz crud, permisos por grupo, permisos por rol, permisos crud, quien puede editar que, politica de permisos, configurar permisos, administrar permisos",
+    "answer": "Los permisos CRUD por **grupo × modelo** se configuran en [Superadmin → Permisos CRUD](/superadmin/permissions). Solo el **superusuario** accede a esta pantalla. Cada fila es un modelo (por ejemplo *diagnostico.diagnosis*) y cada columna un grupo (*Planeación*, *Jurídica*, etc.). Las celdas son cuatro casillas **C / R / U / D** (Crear / Leer / Actualizar / Borrar). Los cambios se guardan por fila. El botón **Restablecer** recarga los valores por defecto desde `seed_permissions`.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 53, "fields": {
+    "name": "Gestionar usuarios (superadmin)",
+    "slug": "gestionar-usuarios",
+    "category": "Superadministración",
+    "keywords": "gestionar usuarios, administrar usuarios, crear usuario, editar usuario, eliminar usuario, nuevo usuario, dar de alta usuario, contraseña temporal, resetear contraseña, asignar grupo, asignar entidad a usuario",
+    "answer": "La gestión de usuarios se hace desde [Superadmin → Usuarios](/superadmin/users) (solo superusuario). Para **crear** un usuario, haz clic en **Nuevo usuario**: defines *username*, *nombre*, *email*, *grupos*, *entidades permitidas* y *entidad por defecto*. La plataforma genera una **contraseña temporal** que se muestra una sola vez — cópiala y entrégala al usuario. Desde la fila puedes **editar**, **eliminar** o **resetear contraseña** (icono de llave).",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 54, "fields": {
+    "name": "Auditoría / historial de cambios",
+    "slug": "auditoria",
+    "category": "Superadministración",
+    "keywords": "auditoria, audit log, historial de cambios, quien cambio, changelog, trazabilidad, registro de cambios, bitacora, log de cambios",
+    "answer": "Cada cambio sobre los modelos auditados (Entidad, Reestructuración, Dependencia, Usuario, Accesos, Permisos…) queda registrado en el **ChangeLog**, accesible desde [Superadmin → Auditoría](/superadmin/audit). Puedes filtrar por *app*, *modelo*, *acción* (creación, actualización, eliminación) y *usuario*. Al hacer clic en una fila ves el *antes* y *después* en formato JSON. Solo el superusuario puede consultar este historial.",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 55, "fields": {
+    "name": "Cambiar entidad activa (multi-tenant)",
+    "slug": "cambiar-entidad-multi",
+    "category": "Navegación",
+    "keywords": "cambiar entidad activa, seleccionar entidad permitida, entidades permitidas, tenant, multi tenant, que entidad estoy viendo, entidad actual, solo veo una entidad, no puedo ver otra entidad",
+    "answer": "Desde el Sprint 0, cada usuario solo ve las **entidades que tiene asignadas** en su perfil. Si tienes más de una, el selector del **topbar** permite cambiar entre ellas. Si tienes solo una, el selector se muestra fijo (sin menú) para evitar confusión. El *superusuario* ve todas las entidades. Si crees que te falta una entidad, pide a un superadmin que te la asigne en [Superadmin → Usuarios](/superadmin/users).",
+    "priority": 12, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
   { "model": "jota.jotaintent", "pk": 51, "fields": {
     "name": "Ayuda general / menú de módulos",
     "slug": "ayuda-general",
@@ -522,5 +562,305 @@
     "answer": "ReEstructura.Gov tiene **10 módulos**, que puedes ver en el sidebar izquierdo:\n\n- **M5 · Base Legal** — [/base-legal](/base-legal). Marco normativo aplicable: Ley 489/1998, Ley 909/2004, CPACA, Cartilla Función Pública 2018, decretos de nomenclatura (785/2005, 2489/2006) y jurisprudencia.\n- **M6 · Diagnóstico** — [/diagnostico](/diagnostico). Análisis DOFA institucional, identificación de problemas, brechas organizacionales y los cuatro interrogantes de la Cartilla (Fase Previa).\n- **M7 · Análisis Financiero** — [/financiero](/financiero). Evaluación de disponibilidad presupuestal para la sostenibilidad de la planta de personal propuesta (Ley 617/2000).\n- **M8 · Procesos** — [/procesos](/procesos). Levantamiento y análisis de procesos y procedimientos institucionales actuales; mapa de procesos y cadena de valor.\n- **M9 · Estructura Orgánica** — [/estructura](/estructura). Diseño y rediseño del organigrama institucional, niveles jerárquicos, dependencias y su agrupación funcional.\n- **M10 · Matriz de Cargas** — [/matrices](/matrices). Cálculo de cargas de trabajo por cargo usando tiempos estándar, distribución de actividades e indicadores de productividad.\n- **M11 · Planta de Personal** — [/planta](/planta). Diseño de planta actual y propuesta, nomenclatura CNSC, equivalencias y justificación técnica de cargos.\n- **M12 · Manual de Funciones** — [/manual-funciones](/manual-funciones). Fichas de funciones por cargo, competencias laborales y requisitos mínimos de estudio y experiencia.\n- **M13 · Retén Social** — [/reten-social](/reten-social). Identificación de población protegida: pre-pensionados, madres/padres cabeza de familia y personas con discapacidad.\n- **M14 · Actos Administrativos** — [/actos](/actos). Generación de resoluciones, decretos de reestructuración y actos de supresión y creación de cargos.\n\nPregúntame por cualquiera de ellos (por ejemplo *\"¿cómo hago el diagnóstico?\"* o *\"¿cómo creo la planta?\"*) y te guío paso a paso.",
     "priority": 11, "is_active": true,
     "created_at": "2026-04-04T00:00:00Z", "updated_at": "2026-04-04T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 56, "fields": {
+    "name": "Importar SIGEP — Hojas de vida",
+    "slug": "importar-sigep",
+    "category": "Módulo 15 — Talento",
+    "keywords": "importar sigep, importar hojas de vida, cargar empleados excel, importar empleados, sigep excel, archivo sigep, hoja de vida sigep, cargar sigep",
+    "answer": "Para importar hojas de vida desde el **SIGEP** (Sistema de Información y Gestión del Empleo Público) ve a [Talento → Empleados](/talento/empleados) y haz clic en **Importar SIGEP**. Debes adjuntar un archivo **.xlsx** con las hojas:\n\n- **Información Básica**: tipo_doc, numero_doc, nombres, apellidos, fecha_nacimiento, sexo (requeridos).\n- **Educación**: numero_doc, nivel, institución, programa, título.\n- **Experiencia**: numero_doc, empleador, cargo, sector, fecha_inicio.\n- **Capacitación**: numero_doc, tema, horas, institución, fecha.\n\nLa importación es **idempotente**: si el empleado ya existe (por tipo+número de documento), actualiza los datos sin duplicar. Las hojas que no existan en el archivo se omiten sin error. Al finalizar se muestra un resumen con `{created, updated, errors, warnings}`.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 57, "fields": {
+    "name": "Hoja de vida del empleado",
+    "slug": "hoja-de-vida",
+    "category": "Módulo 15 — Talento",
+    "keywords": "hoja de vida, curriculum, cv empleado, ver empleado, detalle empleado, educacion empleado, experiencia laboral, capacitacion empleado, evaluacion desempeño, vinculacion laboral",
+    "answer": "En [Talento → Empleados](/talento/empleados) haz clic en el nombre del empleado para ver su **hoja de vida completa** organizada en pestañas:\n\n- **Básica**: datos personales, documento, contacto.\n- **Estudios**: formación académica (nivel, institución, programa, título).\n- **Experiencia**: empleadores, cargos, sector público/privado, fechas.\n- **Capacitación**: cursos, horas, institución.\n- **Evaluaciones**: desempeño anual (Sobresaliente / Satisfactorio / No satisfactorio).\n- **Empleos**: vinculaciones activas e históricas con cargos de la planta.\n\nTambién puedes exportar la hoja de vida como **.docx** con el botón **Exportar CV**. La API calcula automáticamente el **tiempo de servicio** (`tenure`) y la **elegibilidad de pensión** (`retirement_eligibility`).",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 58, "fields": {
+    "name": "Objetivos de reestructuración",
+    "slug": "objetivo-reestructuracion",
+    "category": "Core — Objetivos",
+    "keywords": "objetivo reestructuracion, objetivos de la reestructuracion, tipos de objetivos, kind objetivo, fortalecimiento institucional, nivelacion salarial, supresion empleos, creacion dependencia, liquidacion entidad, plan carrera cnsc, ajuste nomenclatura",
+    "answer": "Cada expediente de reestructuración puede tener uno o más **objetivos** (uno por tipo o *kind*). Los 16 tipos disponibles son:\n\n`FORTALECIMIENTO_INSTITUCIONAL`, `NIVELACION_SALARIAL`, `RECLASIFICACION_EMPLEOS`, `CREACION_DEPENDENCIA`, `SUPRESION_DEPENDENCIA`, `SUPRESION_EMPLEOS`, `LIQUIDACION_ENTIDAD`, `FUSION_ENTIDADES`, `ESCISION_ENTIDAD`, `MODERNIZACION_TECNOLOGICA`, `CUMPLIMIENTO_COMPETENCIAS`, `AJUSTE_ORDEN_JUDICIAL`, `CUMPLIMIENTO_LEY_617`, `PLANTA_TRANSITORIA`, `PLAN_CARRERA_CNSC`, `AJUSTE_NOMENCLATURA`.\n\nCada tipo tiene insumos requeridos, módulos activos, validadores y entregables esperados. Consúltalo en el endpoint `GET /api/objetivos/definitions/` o desde la pantalla de objetivos de la reestructuración.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 59, "fields": {
+    "name": "Escala salarial y factor prestacional",
+    "slug": "escala-salarial",
+    "category": "Módulo 16 — Nómina",
+    "keywords": "escala salarial, factor prestacional, salario base, asignacion basica, regimen prestacional, territorial general, nacional general, trabajador oficial, decreto salarial 2026, tabla salarial",
+    "answer": "La **escala salarial** (M16) permite consultar los salarios base de referencia por orden (nacional/territorial), nivel jerárquico, código y grado. Para el año 2026 la plataforma incluye valores aproximados:\n\n| Nivel | Territorial | Nacional |\n|---|---|---|\n| Asistencial | 1.800.000 | 2.070.000 |\n| Técnico | 2.600.000 | 2.990.000 |\n| Profesional | 3.800.000 | 4.370.000 |\n| Asesor | 5.500.000 | 6.325.000 |\n| Directivo | 7.500.000 | 8.625.000 |\n\nEl **factor prestacional** (territorial general 2026: **1.62**) multiplica el salario base para obtener el costo real mensual y anual incluyendo prima de servicios, cesantías, vacaciones, aportes patronales (salud, pensión, ARL, parafiscales).",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 60, "fields": {
+    "name": "Costo real de la planta (costo-real)",
+    "slug": "costo-real-planta",
+    "category": "Módulo 16 — Nómina",
+    "keywords": "costo real planta, costo total planta, costo efectivo nomina, costo con prestaciones, costo mensual efectivo, costo anual planta, presupuesto planta, valor real planta",
+    "answer": "El endpoint `GET /api/planes/{id}/costo-real/` calcula el **costo real** de una planta de personal considerando el factor prestacional de la entidad. Devuelve:\n\n- `monthly_base`: suma de salarios base × cantidad de cargos.\n- `monthly_effective`: `monthly_base × factor_prestacional`.\n- `annual_effective`: `monthly_effective × 12`.\n- `position_count`: total de cargos.\n\nSi la entidad no tiene configuración salarial, usa el régimen **TERRITORIAL_GENERAL** con factor **1.62** del año en curso. Puedes configurar el régimen en [Configuración salarial](/config-salarial).",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 61, "fields": {
+    "name": "MFMP — Marco Fiscal de Mediano Plazo",
+    "slug": "mfmp",
+    "category": "Módulo 17 — MFMP Ley 819",
+    "keywords": "mfmp, marco fiscal de mediano plazo, ley 819, proyeccion fiscal, horizonte fiscal, presupuesto plurianual, mfmp entidad, crear mfmp, nuevo mfmp, plan fiscal",
+    "answer": "El **MFMP** (Marco Fiscal de Mediano Plazo) — Módulo 17 — permite proyectar los ingresos, gastos y deuda de la entidad para un horizonte de hasta 10 años, conforme al artículo 5 de la **Ley 819/2003**.\n\nPara acceder ve a [MFMP (Ley 819)](/mfmp). Desde allí puedes:\n\n- **Crear un MFMP**: nombre, año base y horizonte de proyección.\n- **Registrar ingresos** por concepto (tributarios, SGP, regalías, etc.) año a año.\n- **Registrar gastos** por concepto (personal, generales, inversión, servicio de deuda).\n- **Proyectar deuda**: saldo, servicio y nuevos desembolsos.\n- **Ver la matriz** año × concepto con totales.\n- **Importar desde FUT** (.xlsx) con hojas INGRESOS, GASTOS y DEUDA opcional.\n\nEl sistema calcula automáticamente los indicadores **Ley 617/2000** y **Ley 358/1997** por año.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 62, "fields": {
+    "name": "Ley 819 — Marco Fiscal y sostenibilidad",
+    "slug": "ley-819",
+    "category": "Módulo 17 — MFMP Ley 819",
+    "keywords": "ley 819, ley 819 de 2003, marco fiscal de mediano plazo, responsabilidad fiscal, sostenibilidad financiera, art 7 ley 819, ficha impacto fiscal, proyeccion ingresos gastos",
+    "answer": "La **Ley 819 de 2003** (Responsabilidad y Transparencia Fiscal) exige que toda entidad territorial presente un **Marco Fiscal de Mediano Plazo** con:\n\n- Proyecciones de ingresos y gastos para 10 años.\n- Análisis de sostenibilidad de la deuda.\n- Cumplimiento de los límites de la **Ley 617/2000** (gastos de funcionamiento / ICLD).\n- Indicadores de la **Ley 358/1997** (solvencia y sostenibilidad de la deuda).\n\nEl **artículo 7** exige además una **ficha de impacto fiscal** para toda iniciativa que genere gasto nuevo (como una reestructuración con planta propuesta). La plataforma genera esta ficha automáticamente en `/mfmp/{id}/ficha-impacto-fiscal/?plan={plan_id}`.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 63, "fields": {
+    "name": "Impacto fiscal de la reestructuración",
+    "slug": "impacto-fiscal",
+    "category": "Módulo 17 — MFMP Ley 819",
+    "keywords": "impacto fiscal, analisis fiscal, efecto fiscal reestructuracion, costo fiscal planta, ley 617 cumplimiento, ley 358 indicadores, ficha impacto, presupuesto reestructuracion",
+    "answer": "El **impacto fiscal** de una reestructuración se analiza en la pestaña **Simulación** del MFMP. La plataforma:\n\n1. Calcula el **costo anual efectivo** de la planta propuesta (salarios × factor prestacional × 12).\n2. Inyecta ese costo como delta en **FUNCIONAMIENTO_PERSONAL** en cada año del horizonte.\n3. Recalcula los indicadores de **Ley 617** y **Ley 358** con y sin el delta.\n4. Identifica los **años que rompen el límite** de Ley 617 o quedan en estado ROJO en Ley 358.\n5. Genera la **Ficha de Impacto Fiscal** en Word (botón «Descargar ficha Ley 819»).\n\nEsta ficha es el entregable exigido por el **art. 7 de la Ley 819** para sustentar la reestructuración ante el Ministerio de Hacienda.",
+    "priority": 17, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 64, "fields": {
+    "name": "Simular impacto de planta sobre el MFMP",
+    "slug": "simular-planta-fiscal",
+    "category": "Módulo 17 — MFMP Ley 819",
+    "keywords": "simular planta, simulacion fiscal, impacto planta mfmp, simular reestructuracion, costo planta ley 617, costo planta ley 358, cuantos años rompen, años que no cumplen 617",
+    "answer": "Para **simular el impacto** de una planta de personal sobre el MFMP:\n\n1. Ve a [MFMP](/mfmp) → selecciona el MFMP → pestaña **Simulación**.\n2. Selecciona el **Plan de personal** (actual o propuesto) en el selector.\n3. Haz clic en **Simular**.\n\nLa plataforma llama al endpoint `GET /api/mfmp/{id}/simular/?plan={plan_id}` y muestra:\n\n- **Costo anual del plan** (con factor prestacional).\n- Tabla **Baseline vs Simulado** para Ley 617 y Ley 358 año a año.\n- Lista de **años que rompen el límite** de funcionamiento (Ley 617).\n- Lista de **años en ROJO** (Ley 358 — solvencia ≥ 60%).\n\nLa simulación es **no destructiva**: no modifica la base de datos ni el MFMP.",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 65, "fields": {
+    "name": "Ficha de impacto fiscal (Ley 819 art. 7)",
+    "slug": "ficha-impacto-fiscal",
+    "category": "Módulo 17 — MFMP Ley 819",
+    "keywords": "ficha impacto fiscal, word ley 819, docx ley 819, ficha art 7, descargar ficha, exportar ficha, impacto fiscal word, ficha reestructuracion hacienda",
+    "answer": "La **Ficha de Impacto Fiscal** es el documento oficial exigido por el **artículo 7 de la Ley 819/2003** para sustentar cualquier iniciativa que genere nuevo gasto. La plataforma la genera automáticamente en formato **.docx** con estas secciones:\n\n1. **Identificación**: entidad, plan de personal, MFMP, horizonte, costo anual estimado.\n2. **Baseline Ley 617**: tabla año | ICLD | Funcionamiento | Ratio | Límite | Estado.\n3. **Simulación con planta propuesta**: tabla con los deltas y el nuevo ratio por año.\n4. **Años que rompen límites**: lista de años con incumplimiento de Ley 617 o Ley 358 (ROJO).\n5. **Indicadores Ley 358**: solvencia baseline vs simulado por año.\n\nPara descargarla: en la pestaña **Simulación** del MFMP → botón **Descargar ficha Ley 819**, o directamente `GET /api/mfmp/{id}/ficha-impacto-fiscal/?plan={plan_id}`.",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 66, "fields": {
+    "name": "Importar manual de funciones vigente",
+    "slug": "importar-manual-vigente",
+    "category": "Módulo 12+ — Manual Vigente",
+    "keywords": "manual vigente, importar manual, cargar manual funciones, manual funciones docx, manual cargos existente, manual actual entidad, funciones vigentes, cargos vigentes",
+    "answer": "El **Manual de Funciones Vigente** permite cargar el manual actual de la entidad (antes de la reestructuración) para compararlo con la propuesta. Pasos:\n\n1. Ve a [Manual Vigente](/manual-vigente) → **Nuevo manual**.\n2. Ingresa nombre, decreto o resolución que lo adoptó y fecha de emisión.\n3. Haz clic en **Importar DOCX** y selecciona el archivo `.docx` del manual.\n4. La plataforma detecta automáticamente cargos (IDENTIFICACION DEL EMPLEO), propósitos principales, funciones esenciales y requisitos.\n5. Revisa el **reporte de importación**: cargos detectados, funciones y advertencias.\n\nEl importador es heurístico — reconoce encabezados estándar de los manuales colombianos. Si el formato es muy diferente, revisa y ajusta manualmente los cargos.",
+    "priority": 12, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 67, "fields": {
+    "name": "Comparar manual vigente con planta propuesta",
+    "slug": "comparar-manuales",
+    "category": "Módulo 12+ — Manual Vigente",
+    "keywords": "comparar manual, diferencia manual planta, cargos nuevos propuesta, cargos eliminados, cargos modificados, diff manual planta, comparativo cargos, brecha manual propuesta",
+    "answer": "Para comparar el **manual vigente** con la **planta propuesta** de la reestructuración:\n\n1. Ve a [Manual Vigente](/manual-vigente) → **Comparar con propuesta** o la pestaña *Comparar*.\n2. Selecciona la reestructuración activa.\n3. La plataforma muestra:\n\n   - **Añadidos** (cargos en la propuesta no presentes en el manual).\n   - **Eliminados** (cargos del manual no en la propuesta).\n   - **Modificados** (denominación o grado cambiado).\n   - **Sin cambios** (idénticos por código y grado).\n\nEl match se hace por `(código, grado)`; si alguno está vacío, por denominación normalizada. Esta comparación es insumo clave para la justificación del estudio.",
+    "priority": 12, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 68, "fields": {
+    "name": "Importar procedimientos desde DOCX",
+    "slug": "importar-procedimientos",
+    "category": "Módulo 8+ — Procedimientos",
+    "keywords": "importar procedimiento, cargar procedimiento, procedimiento docx, pasos procedimiento, manual procedimientos, actividades procedimiento, tiempo procedimiento, responsable paso",
+    "answer": "El módulo de **Procedimientos** permite cargar el manual de procedimientos de la entidad por proceso. Pasos:\n\n1. Ve a [Procedimientos](/procedimientos) → **Importar DOCX**.\n2. Selecciona el proceso del mapa al que pertenece el procedimiento.\n3. Adjunta el archivo `.docx` del procedimiento.\n4. La plataforma detecta automáticamente:\n   - Título del procedimiento, objetivo, alcance, entradas y salidas.\n   - La tabla de pasos (reconoce columnas con No., Actividad, Responsable, Tiempo, Sistema).\n   - Convierte tiempos ('15 min', '1 hora', '30') a minutos.\n\nLos **pasos** quedan vinculados a la matriz de cargas mediante el campo `procedure_step` en `WorkloadEntry`. Usa **Derivar cargas** para proponer entradas de cargas desde los pasos.",
+    "priority": 8, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 69, "fields": {
+    "name": "Mandatos legales y reporte de brecha",
+    "slug": "mandatos-legales",
+    "category": "Módulo 18 — Mandatos Legales",
+    "keywords": "mandatos legales, reporte brecha mandatos, mandato sin proceso, proceso sin mandato, cobertura mandato, norma mandato, funcion mandatada, cumplimiento mandato, brecha normativa",
+    "answer": "El módulo de **Mandatos Legales** permite registrar las funciones impuestas a la entidad por norma y verificar qué procesos las cumplen. Flujo:\n\n1. Ve a [Mandatos](/mandatos) → **Nuevo mandato**.\n2. Ingresa la norma (ej. 'Ley 715/2001'), artículo, texto del mandato, tipo (Ejecución, Regulación, Vigilancia, Fomento) y dependencia responsable.\n3. En **Cumplimiento**, vincula el mandato al proceso que lo ejecuta y marca la cobertura (Plena, Parcial, Ninguna).\n4. Usa el botón **Reporte de Brecha** para obtener:\n   - Mandatos sin proceso que los cumpla.\n   - Procesos del mapa activo sin mandato vinculado.\n   - Estadísticas de cobertura (plena/parcial/ninguna/sin registro).\n\nEste reporte es insumo del diagnóstico institucional y el análisis de opciones prioritarias.",
+    "priority": 18, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 70, "fields": {
+    "name": "Adjuntar documentos a la reestructuración",
+    "slug": "adjuntar-documento",
+    "category": "Gestión Documental",
+    "keywords": "adjuntar documento, cargar archivo, subir documento, acto administrativo adjunto, documento reestructuracion, archivo entidad, pdf adjunto, docx adjunto, hoja vida adjunto, presupuesto adjunto",
+    "answer": "El módulo de **Gestión Documental** permite adjuntar archivos (PDFs, DOCX, Excel, imágenes) a cualquier objeto de la plataforma. Tipos de documento soportados:\n\n- Acto de estructura / planta\n- Manual vigente\n- Procedimiento\n- Hoja de vida\n- Oficio o concepto DAFP / Minhacienda\n- Sentencia judicial\n- Presupuesto / MFMP histórico\n- Otro\n\nEl tamaño máximo por archivo es **25 MB**. Para adjuntar un documento:\n\n1. Usa el endpoint `POST /api/documentos/` (o el componente *DocumentList* en cualquier módulo).\n2. Envía el formulario `multipart/form-data` con: `file`, `title`, `kind`, `entity` y opcionalmente `content_type` + `object_id` para vincular el archivo a un objeto específico.\n\nEl campo `extracted_text` se completa automáticamente si el servidor tiene OCR activo (`OCR_ENABLED=1`).",
+    "priority": 10, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 71, "fields": {
+    "name": "Análisis de elegibilidad para nivelación salarial",
+    "slug": "analisis-elegibilidad",
+    "category": "Sprint 4 — Núcleo Analítico",
+    "keywords": "elegibilidad, nivelacion salarial, motor elegibilidad, equivalencias decreto 785, analizar empleado, nivel destino, gap educacion, brecha experiencia, ELEGIBLE, NO_ELEGIBLE, ELEGIBLE_POR_EQUIVALENCIA",
+    "answer": "El **Motor de Elegibilidad** (Sprint 4) analiza si un empleado cumple los requisitos para pasar a un nivel/cargo destino según el Decreto 785/2005 (territorial) o 2489/2006 (nacional).\n\n**Flujo:**\n1. Ve a [Elegibilidad](/analisis/elegibilidad).\n2. Selecciona nivel origen y nivel destino.\n3. Haz clic en **Analizar** — el sistema evalúa educación formal + experiencia en sector público.\n4. Resultados posibles:\n   - **ELEGIBLE**: cumple directo todos los requisitos.\n   - **ELEGIBLE_POR_EQUIVALENCIA**: no cumple directo pero aplica una equivalencia del art. 25 D-785.\n   - **NO_ELEGIBLE**: no cumple. La columna *Brechas* muestra qué falta; *Ruta* sugiere pasos.\n5. Usa **Estimar costo** para calcular el diferencial salarial anual si se nivela el grupo elegible.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 72, "fields": {
+    "name": "Sincronización automática del retén social",
+    "slug": "reten-automatico",
+    "category": "Sprint 4 — Núcleo Analítico",
+    "keywords": "reten automatico, sincronizar reten, pre-pensionado automatico, cabeza hogar automatico, discapacidad automatico, detectar protegidos, hoja de vida reten, sync reten",
+    "answer": "El **Retén Automático** (Sprint 4) detecta la población protegida a partir de las hojas de vida sin necesidad de ingresarlos manualmente. Para sincronizar:\n\n1. Ve a [Retén Social](/reten-social).\n2. Haz clic en **Sincronizar desde hojas de vida**.\n3. El sistema detecta automáticamente:\n   - **Pre-pensionados**: empleados a ≤ 3 años de pensión (Ley 100/93).\n   - **Madre/Padre cabeza de hogar**: empleados con `is_head_of_household=True`.\n   - **Discapacidad**: empleados con `has_disability=True`.\n4. Se crean registros con `is_manual=False`. Los registros marcados como `is_manual=True` nunca se modifican.\n\n**Nota:** Revisa siempre los registros automáticos y añade el soporte documental correspondiente.",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 73, "fields": {
+    "name": "Validadores legales declarativos",
+    "slug": "validadores-legales",
+    "category": "Sprint 4 — Núcleo Analítico",
+    "keywords": "validar reestructuracion, reglas validacion, hallazgos legales, R-001 R-003 R-005 R-006 R-010 R-014, errores advertencias, dashboard validacion, check reestructuracion",
+    "answer": "El **Motor de Validación** (Sprint 4) ejecuta 10 reglas legales declarativas sobre la reestructuración y devuelve hallazgos clasificados por severidad.\n\n**Acceso:** [Validación](/validacion/<id-reestructuración>)\n\n**Reglas implementadas:**\n- R-001 info: norma citada no registrada en base legal.\n- R-002 warning: proceso sin respuesta a los 3 interrogantes 3.4.\n- R-003 warning: cargo propuesto sin actividades en matriz.\n- R-004 warning: planta propuesta sin análisis de retén.\n- R-005 error: cargo con más de 167 h-h/mes.\n- R-006 error: planta rompe Ley 617 en algún año del MFMP.\n- R-007 warning: cargo con nivel no contemplado en D-785/2489.\n- R-008 warning: empleado de carrera con cargo suprimido sin plan reincorporación.\n- R-009 warning: acto sin citar norma habilitante.\n- R-010 warning: objetivo sin indicador.\n- R-013 warning: diagnóstico sin ítems DOFA.\n- R-014 error: reestructuración sin objetivos.\n- R-015 warning: escala salarial desactualizada.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 74, "fields": {
+    "name": "Generar estudio técnico consolidado",
+    "slug": "estudio-tecnico-consolidado",
+    "category": "Sprint 4 — Núcleo Analítico",
+    "keywords": "estudio tecnico, generar docx, consolidado reestructuracion, 12 capitulos, cartilla funcion publica, informe final reestructuracion, descargar estudio, exportar estudio",
+    "answer": "El **Generador de Estudio Técnico** (Sprint 4) produce un único DOCX con los 12 capítulos de la Cartilla de Función Pública:\n\n1. Identificación de la entidad\n2. Objetivos de reestructuración\n3. Marco legal y mandatos\n4. Diagnóstico (DOFA + análisis de entornos)\n5. Marco Fiscal de Mediano Plazo\n6. Estructura orgánica\n7. Matriz de cargas de trabajo\n8. Planta de personal (actual vs propuesta)\n9. Manual de funciones\n10. Retén social\n11. Elegibilidad para nivelación (si hay objetivo NIVELACION_SALARIAL)\n12. Actos administrativos\n- Anexos: documentos adjuntos\n\n**Para descargarlo:** Ve a la reestructuración y haz clic en **Generar Estudio Técnico**. Si algún módulo no tiene datos cargados, el capítulo aparece con '(sin información cargada)'.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 75, "fields": {
+    "name": "Motor de decisiones y priorización",
+    "slug": "motor-decisiones",
+    "category": "Sprint 4 — Núcleo Analítico",
+    "keywords": "motor decisiones, priorizar empleados, decision elegibilidad, que hacer con empleados, priorizar nivelacion, plan de accion elegibilidad, decision reten, automatizar decisiones reestructuracion",
+    "answer": "El **Núcleo Analítico** (Sprint 4) combina tres motores para apoyar decisiones de reestructuración:\n\n1. **Motor de Elegibilidad**: evalúa si cada empleado cumple los requisitos del nivel destino (D-785/2005). Clasifica en ELEGIBLE / ELEGIBLE_POR_EQUIVALENCIA / NO_ELEGIBLE con brecha y ruta sugerida.\n\n2. **Retén Automático**: detecta pre-pensionados, cabezas de hogar y personas con discapacidad directamente de las hojas de vida, sin digitación manual duplicada.\n\n3. **Validadores Legales**: ejecuta 13 reglas sobre la reestructuración y muestra errores, advertencias e informes priorizados.\n\n4. **Estudio Técnico**: consolida los 12 capítulos en un solo DOCX listo para presentar a Función Pública.\n\nNinguno de estos motores usa IA generativa — todos son cálculos deterministas basados en la normatividad colombiana.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 76, "fields": {
+    "name": "Máquina de estados de la reestructuración",
+    "slug": "maquina-estados",
+    "category": "Sprint 5 — Gobierno",
+    "keywords": "estados reestructuracion, flujo de trabajo, workflow reestructuracion, borrador diagnostico analisis revision juridica financiera dafp comision personal aprobado acto expedido implementado archivado, transiciones, avanzar estado",
+    "answer": "El **Módulo de Gobierno** (Sprint 5) controla el flujo de la reestructuración a través de 12 estados secuenciales:\n\n1. **Borrador** → Diagnóstico completo: requiere DOFA registrado.\n2. **Diagnóstico completo** → Análisis completo: requiere planta propuesta + matriz de cargas.\n3. **Análisis completo** → Revisión jurídica: requiere 0 errores de validación.\n4. **Revisión jurídica** → Revisión financiera: requiere MFMP de la entidad.\n5. **Revisión financiera** → Concepto DAFP solicitado: requiere consulta DAFP creada.\n6. **Concepto DAFP solicitado** → Concepto DAFP recibido: requiere fecha de respuesta.\n7. **Concepto DAFP recibido** → Comisión de personal informada: requiere reunión de comisión.\n8. **Comisión de personal informada** → Aprobada: 0 errores + DAFP FAVORABLE.\n9. **Aprobada** → Acto expedido: requiere acto ISSUED + DAFP FAVORABLE.\n10. **Acto expedido** → Implementada: sin precondiciones.\n11. **Implementada** → Archivada: sin precondiciones.\n\n**Acceso:** Ve a [Gobierno](/reestructuraciones/<id>/gobierno) y usa los botones de transición. Si el botón aparece gris con tooltip, la transición tiene requisitos pendientes.",
+    "priority": 16, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 77, "fields": {
+    "name": "Transiciones del workflow de reestructuración",
+    "slug": "transiciones-workflow",
+    "category": "Sprint 5 — Gobierno",
+    "keywords": "transicionar, avanzar estado, cambiar estado reestructuracion, ejecutar transicion, quien puede avanzar, grupo responsable transicion, precondiciones workflow",
+    "answer": "Para avanzar el estado de una reestructuración:\n\n1. Ve a [Gobierno](/reestructuraciones/<id>/gobierno).\n2. Verás las **transiciones disponibles** desde el estado actual.\n3. Cada transición indica el **grupo responsable** y los **requisitos pendientes** (si los hay).\n4. Si el botón está habilitado (requisitos cumplidos), haz clic para ejecutarla.\n5. El ChangeLog registra automáticamente cada cambio de estado.\n\n**Grupos y responsabilidades:**\n- *Planeación*: BORRADOR → DIAGNOSTICO_COMPLETO, REVISION_FINANCIERA → CONCEPTO_DAFP_SOLICITADO, ACTO_EXPEDIDO → IMPLEMENTADO.\n- *Equipo Técnico*: DIAGNOSTICO_COMPLETO → ANALISIS_COMPLETO.\n- *Jurídica*: ANALISIS_COMPLETO → REVISION_JURIDICA, APROBADO → ACTO_EXPEDIDO.\n- *Financiera*: REVISION_JURIDICA → REVISION_FINANCIERA.\n- *Talento Humano*: CONCEPTO_DAFP_RECIBIDO → COMISION_PERSONAL_INFORMADA.\n- *Administrador*: COMISION_PERSONAL_INFORMADA → APROBADO, IMPLEMENTADO → ARCHIVADO.\n\nEl superusuario puede ejecutar cualquier transición.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 78, "fields": {
+    "name": "Consultas oficiales a organismos externos",
+    "slug": "consulta-dafp",
+    "category": "Sprint 5 — Gobierno",
+    "keywords": "consulta dafp, concepto funcion publica, consulta minhacienda, consulta mintrabajo, consulta cnsc, consulta contraloria, consulta personeria, consultas oficiales, registro respuesta consulta, favorable no favorable",
+    "answer": "El **Módulo de Consultas** (Sprint 5) registra las consultas formales que debe enviar la entidad a organismos externos durante el proceso:\n\n**Acceso:** [Consultas](/consultas)\n\n**Organismos soportados:** DAFP/Función Pública, MinHacienda, MinTrabajo, CNSC, Contraloría, Personería, Otro.\n\n**Flujo:**\n1. Crea una nueva consulta: selecciona el organismo, escribe el asunto, ingresa la fecha de envío y el número de radicado.\n2. Cuando llegue la respuesta, actualiza: fecha de respuesta, resultado (FAVORABLE/NO_FAVORABLE/CON_OBSERVACIONES) y adjunta el documento.\n3. Las filas se colorean: verde (<15 días), amarillo (15-25 días), rojo (>25 días) según tiempo de espera.\n\n**Importante:** La transición *Revisión Financiera → Concepto DAFP Solicitado* requiere que exista al menos una consulta a la DAFP. La transición a *Aprobada* requiere que la consulta DAFP sea FAVORABLE.",
+    "priority": 15, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 79, "fields": {
+    "name": "Comisión de personal y sus reuniones",
+    "slug": "comision-personal",
+    "category": "Sprint 5 — Gobierno",
+    "keywords": "comision de personal, reunion comision, miembros comision, acta reunion, ley 909 2004, comision personal reestructuracion, informar comision personal",
+    "answer": "La **Comisión de Personal** (Ley 909/2004) es el órgano que debe ser informado antes de aprobar la reestructuración.\n\n**Acceso:** [Comisión de Personal](/comision-personal)\n\n**Configurar la comisión:**\n1. Crea la comisión de la entidad (nombre por defecto: 'Comisión de Personal').\n2. Añade los miembros con su nombre, rol y fecha de posesión.\n\n**Registrar reuniones:**\n1. En la comisión, haz clic en *Nueva reunión*.\n2. Selecciona la reestructuración vinculada, la fecha, el orden del día y el acta.\n3. Adjunta el documento del acta si lo tienes digitalizado.\n\n**Requisito de transición:** La transición *Concepto DAFP Recibido → Comisión Personal Informada* exige que exista al menos una reunión vinculada a la reestructuración.",
+    "priority": 14, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 80, "fields": {
+    "name": "Comunicaciones sindicales en la reestructuración",
+    "slug": "comunicaciones-sindicales",
+    "category": "Sprint 5 — Gobierno",
+    "keywords": "sindicato comunicacion, organizacion sindical, notificacion sindical, comunicado sindicato, respuesta sindicato, comunicaciones sindicales reestructuracion",
+    "answer": "El módulo de **Comunicaciones Sindicales** (Sprint 5) registra las notificaciones enviadas a las organizaciones sindicales activas en la entidad.\n\n**Acceso:** [Comisión de Personal](/comision-personal) → pestaña *Comunicaciones sindicales*\n\n**Registrar una comunicación:**\n1. Selecciona la reestructuración.\n2. Ingresa el nombre de la organización sindical, la fecha de envío y el asunto.\n3. Escribe el cuerpo del comunicado o adjunta el documento.\n4. Cuando llegue la respuesta, marca *Respuesta recibida* y agrega las notas.\n\nEste registro documenta el cumplimiento del deber de información a los trabajadores organizados, requerido en los procesos de supresión de empleos.",
+    "priority": 13, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 81, "fields": {
+    "name": "Simulador de escenarios de reestructuración",
+    "slug": "simulador-escenarios",
+    "category": "Sprint 6 — Experiencia",
+    "keywords": "simulador escenarios, escenario reestructuracion, clonar plan, comparar escenarios, evaluar escenario, metricas escenario, alternativas planta, ley 617 escenario, costo escenario",
+    "answer": "El **Simulador de escenarios** (Sprint 6) permite crear variantes del plan de personal y comparar su impacto financiero y normativo.\n\n**Acceso:** [Simulador](/simulador)\n\n**Flujo de uso:**\n1. En el simulador, haz clic en *Clonar plan a escenario*: selecciona un plan existente y asigna un nombre al escenario (ej. 'Alternativa con reducción 10%').\n2. Modifica las posiciones del plan clonado según la alternativa.\n3. Haz clic en *Evaluar* para calcular: costo mensual, costo anual, posiciones totales, indicador Ley 617 y cobertura de mandatos.\n4. Selecciona 2 o más escenarios y haz clic en *Comparar* para ver la tabla N-aria con rankings por costo, cumplimiento Ley 617 y número de posiciones.\n\n**API:** POST `/api/simulador/clonar/`, POST `/api/simulador/{id}/evaluar/`, POST `/api/simulador/comparar/`.",
+    "priority": 12, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 82, "fields": {
+    "name": "Dashboard ejecutivo de la plataforma",
+    "slug": "dashboard-ejecutivo",
+    "category": "Sprint 6 — Experiencia",
+    "keywords": "dashboard, tablero ejecutivo, kpis reestructuracion, resumen global, panel principal, indicadores plataforma, total reestructuraciones, empleados totales, posiciones, validaciones rojo",
+    "answer": "El **Dashboard ejecutivo** (Sprint 6) muestra un resumen consolidado del estado de todas las reestructuraciones.\n\n**Acceso:** [Dashboard](/)\n\n**KPIs disponibles:**\n- Total de reestructuraciones por estado (barras de color).\n- Empleados registrados y protegidos por retén social.\n- Posiciones actuales vs propuestas.\n- Errores de validación activos (en rojo).\n- Consultas próximas a vencer (con menos de 10 días).\n\n**Filtrar por entidad:** Añade `?entity=<id>` a la URL para ver el detalle de reestructuraciones de una entidad específica, incluyendo costo actual vs propuesto, delta de posiciones, indicador Ley 617 proyectado y progreso de módulos.\n\n**API:** GET `/api/dashboard/` o GET `/api/dashboard/?entity=<id>`.",
+    "priority": 11, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 83, "fields": {
+    "name": "Notificaciones de la plataforma",
+    "slug": "notificaciones-plataforma",
+    "category": "Sprint 6 — Experiencia",
+    "keywords": "notificacion, campana notificaciones, sin leer, marcar leida, alertas plataforma, avisos workflow, notificacion transicion, notificacion documento, asignacion tarea",
+    "answer": "El módulo de **Notificaciones** (Sprint 6) te mantiene informado sobre eventos importantes de la plataforma.\n\n**Ubicación:** Ícono de campana en la barra superior.\n\n**Tipos de notificación:**\n- *Transición de estado*: cuando una reestructuración cambia de fase (workflow).\n- *Validación en rojo*: cuando hay errores de validación críticos.\n- *Consulta por vencer*: consultas formales sin respuesta próximas al vencimiento.\n- *Documento nuevo*: cuando se carga un documento al expediente.\n- *Tarea asignada*: cuando se te asigna una responsabilidad.\n- *Sistema*: mensajes administrativos de la plataforma.\n\n**Gestión:**\n- El badge muestra el número de notificaciones no leídas (se refresca cada 30 segundos).\n- Haz clic en la campana para ver las últimas 10.\n- Haz clic en *Marcar leída* para limpiar el badge.\n\n**API:** GET `/api/notificaciones/sin-leer/`, POST `/api/notificaciones/marcar-leidas/`.",
+    "priority": 10, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 84, "fields": {
+    "name": "Comparar escenarios de reestructuración",
+    "slug": "comparar-escenarios",
+    "category": "Sprint 6 — Experiencia",
+    "keywords": "comparar escenarios, tabla comparacion, ranking escenarios, mejor escenario, escenario costo, escenario ley 617, escenario posiciones, n-aria comparacion",
+    "answer": "La función **Comparar escenarios** del simulador permite ver N alternativas lado a lado.\n\n**Cómo comparar:**\n1. Crea y evalúa al menos 2 escenarios en el [Simulador](/simulador).\n2. Marca los escenarios que deseas comparar con la casilla de selección.\n3. Haz clic en *Comparar seleccionados*.\n\n**Resultado:** Una tabla con columnas por escenario que muestra:\n- Posiciones totales.\n- Costo mensual efectivo y costo anual.\n- Indicador Ley 617 (año actual y años que rompe el límite).\n- Cobertura de mandatos.\n- % posiciones con ocupante.\n\n**Rankings automáticos:**\n- *Por costo*: de menor a mayor costo anual.\n- *Por cumplimiento Ley 617*: de menos a más años fuera del límite.\n- *Por posiciones*: de menor a mayor número de cargos.\n\n**API:** POST `/api/simulador/comparar/` con `{scenario_ids: [1, 2, 3]}`.",
+    "priority": 9, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
+  }},
+
+  { "model": "jota.jotaintent", "pk": 85, "fields": {
+    "name": "Consultas próximas a vencer",
+    "slug": "consultas-vencer",
+    "category": "Sprint 6 — Experiencia",
+    "keywords": "consulta vencer, vencimiento consulta, alerta vencimiento, dias consulta, 30 dias consulta, consulta sin respuesta, proximo vencer, consulta urgente",
+    "answer": "El dashboard y el módulo de consultas te alertan sobre las consultas formales próximas a vencer.\n\n**Regla de vencimiento:** 30 días naturales desde la fecha de envío (`sent_at`).\n\n**Indicadores de color en el módulo de Consultas:**\n- **Verde:** menos de 15 días de espera.\n- **Amarillo:** entre 15 y 25 días.\n- **Rojo:** más de 25 días sin respuesta.\n\n**Dashboard:** La sección *Consultas próximas a vencer* muestra las consultas sin respuesta con menos de 10 días restantes.\n\n**Notificación automática:** Sprint 6 puede configurar alertas tipo `CONSULTATION_DUE` para usuarios del grupo Planeación cuando una consulta entra en zona de alerta.\n\n**Acción recomendada:** Si una consulta está en rojo, contacta al organismo consultado y registra la respuesta en [Consultas](/consultas) tan pronto como la recibas.",
+    "priority": 8, "is_active": true,
+    "created_at": "2026-04-05T00:00:00Z", "updated_at": "2026-04-05T00:00:00Z"
   }}
 ]

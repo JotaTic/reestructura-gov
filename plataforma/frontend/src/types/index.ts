@@ -48,11 +48,114 @@ export interface TimelineActivity {
 }
 
 export type RestructuringStatus =
-  | "DRAFT"
-  | "IN_PROGRESS"
-  | "APPROVED"
-  | "IMPLEMENTED"
-  | "ARCHIVED";
+  | "BORRADOR"
+  | "DIAGNOSTICO_COMPLETO"
+  | "ANALISIS_COMPLETO"
+  | "REVISION_JURIDICA"
+  | "REVISION_FINANCIERA"
+  | "CONCEPTO_DAFP_SOLICITADO"
+  | "CONCEPTO_DAFP_RECIBIDO"
+  | "COMISION_PERSONAL_INFORMADA"
+  | "APROBADO"
+  | "ACTO_EXPEDIDO"
+  | "IMPLEMENTADO"
+  | "ARCHIVADO";
+
+// Sprint 5 — Gobierno
+
+export interface WorkflowTransition {
+  from_status: RestructuringStatus;
+  to_status: RestructuringStatus;
+  name: string;
+  responsible_group: string;
+  description: string;
+  blocked_by: string[];
+}
+
+export type ConsultationTarget =
+  | "DAFP"
+  | "MINHACIENDA"
+  | "MINTRABAJO"
+  | "CNSC"
+  | "CONTRALORIA"
+  | "PERSONERIA"
+  | "OTRO";
+
+export type ConsultationResult =
+  | "PENDIENTE"
+  | "FAVORABLE"
+  | "NO_FAVORABLE"
+  | "CON_OBSERVACIONES";
+
+export interface OfficialConsultation {
+  id: number;
+  restructuring: number;
+  entity_target: ConsultationTarget;
+  entity_target_display: string;
+  subject: string;
+  sent_at: string | null;
+  reference_number: string;
+  response_at: string | null;
+  response_result: ConsultationResult;
+  response_result_display: string;
+  response_document: number | null;
+  notes: string;
+  days_until_expiration: number | null;
+  created_at: string;
+  updated_at: string;
+  created_by: number | null;
+  updated_by: number | null;
+}
+
+export interface PersonnelCommitteeMember {
+  name: string;
+  role: string;
+  since: string;
+}
+
+export interface PersonnelCommittee {
+  id: number;
+  entity: number;
+  entity_name: string;
+  name: string;
+  members_json: PersonnelCommitteeMember[];
+  meetings_count: number;
+  created_at: string;
+  updated_at: string;
+  created_by: number | null;
+  updated_by: number | null;
+}
+
+export interface CommitteeMeeting {
+  id: number;
+  committee: number;
+  committee_name: string;
+  restructuring: number | null;
+  date: string;
+  agenda: string;
+  minutes_text: string;
+  minutes_document: number | null;
+  created_at: string;
+  updated_at: string;
+  created_by: number | null;
+  updated_by: number | null;
+}
+
+export interface UnionCommunication {
+  id: number;
+  restructuring: number;
+  union_name: string;
+  sent_at: string;
+  subject: string;
+  body: string;
+  document: number | null;
+  response_received: boolean;
+  response_notes: string;
+  created_at: string;
+  updated_at: string;
+  created_by: number | null;
+  updated_by: number | null;
+}
 
 export interface Restructuring {
   id: number;
@@ -63,6 +166,7 @@ export interface Restructuring {
   reference_date: string;
   status: RestructuringStatus;
   status_display: string;
+  current_status_since: string | null;
   description: string;
   created_by: number | null;
   created_at: string;
@@ -511,4 +615,765 @@ export interface Paginated<T> {
   next: string | null;
   previous: string | null;
   results: T[];
+}
+
+// ---- Sprint 0 — Superadmin ----
+
+export interface AdminUserEntityAccess {
+  id: number;
+  entity: number;
+  entity_name: string;
+  is_default: boolean;
+}
+
+export interface AdminUser {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  is_active: boolean;
+  is_staff: boolean;
+  is_superuser: boolean;
+  groups: number[];
+  group_names: string[];
+  entity_access: AdminUserEntityAccess[];
+  temporary_password?: string;
+}
+
+export interface AdminGroup {
+  id: number;
+  name: string;
+}
+
+export interface MatrixCell {
+  group_id: number;
+  group_name: string;
+  can_create: boolean;
+  can_read: boolean;
+  can_update: boolean;
+  can_delete: boolean;
+}
+
+export interface MatrixRow {
+  app_label: string;
+  model: string;
+  verbose_name: string;
+  cells: MatrixCell[];
+}
+
+export interface MatrixResponse {
+  groups: AdminGroup[];
+  models: MatrixRow[];
+}
+
+// ---- Sprint 1 — Objetivos de reestructuración ----
+
+export type ObjectiveKind =
+  | "FORTALECIMIENTO_INSTITUCIONAL"
+  | "NIVELACION_SALARIAL"
+  | "RECLASIFICACION_EMPLEOS"
+  | "CREACION_DEPENDENCIA"
+  | "SUPRESION_DEPENDENCIA"
+  | "SUPRESION_EMPLEOS"
+  | "LIQUIDACION_ENTIDAD"
+  | "FUSION_ENTIDADES"
+  | "ESCISION_ENTIDAD"
+  | "MODERNIZACION_TECNOLOGICA"
+  | "CUMPLIMIENTO_COMPETENCIAS"
+  | "AJUSTE_ORDEN_JUDICIAL"
+  | "CUMPLIMIENTO_LEY_617"
+  | "PLANTA_TRANSITORIA"
+  | "PLAN_CARRERA_CNSC"
+  | "AJUSTE_NOMENCLATURA";
+
+export interface ObjectiveDefinition {
+  label: string;
+  required_inputs: string[];
+  active_modules: string[];
+  validators: string[];
+  required_outputs: string[];
+}
+
+export interface RestructuringObjective {
+  id: number;
+  restructuring: number;
+  restructuring_name?: string;
+  kind: ObjectiveKind;
+  kind_display: string;
+  description: string;
+  target_metric: string;
+  target_value: string | null;
+  indicator: string;
+  deadline: string | null;
+  priority: number;
+  created_at: string;
+  updated_at: string;
+  created_by: number | null;
+  updated_by: number | null;
+}
+
+// ---- Sprint 1 — M15 Hojas de vida ----
+
+export type IdType = "CC" | "CE" | "PA" | "TI" | "RC";
+export type Sex = "M" | "F" | "NB";
+
+export interface Employee {
+  id: number;
+  entity: number;
+  entity_name?: string;
+  id_type: IdType;
+  id_type_display?: string;
+  id_number: string;
+  full_name: string;
+  first_name: string;
+  last_name: string;
+  birth_date: string;
+  sex: Sex;
+  sex_display?: string;
+  has_disability: boolean;
+  disability_percentage: number | null;
+  is_head_of_household: boolean;
+  email: string;
+  phone: string;
+  address: string;
+  created_at: string;
+  updated_at: string;
+  created_by: number | null;
+  updated_by: number | null;
+}
+
+export type EducationLevel =
+  | "PRIMARIA"
+  | "BACHILLERATO"
+  | "TECNICO"
+  | "TECNOLOGO"
+  | "PREGRADO"
+  | "ESPECIALIZACION"
+  | "MAESTRIA"
+  | "DOCTORADO";
+
+export interface EmployeeEducation {
+  id?: number;
+  employee: number;
+  level: EducationLevel;
+  level_display?: string;
+  institution: string;
+  program: string;
+  title: string;
+  graduation_date: string | null;
+  credential_number: string;
+}
+
+export type ExperienceSector = "PUBLICO" | "PRIVADO" | "MIXTO" | "INDEPENDIENTE" | "OTRO";
+
+export interface EmployeeExperience {
+  id?: number;
+  employee: number;
+  employer: string;
+  position_name: string;
+  sector: ExperienceSector;
+  sector_display?: string;
+  start_date: string;
+  end_date: string | null;
+  is_current: boolean;
+  is_public_sector: boolean;
+  functions: string;
+}
+
+export interface EmployeeTraining {
+  id?: number;
+  employee: number;
+  topic: string;
+  hours: number;
+  institution: string;
+  completed_at: string | null;
+  cert: string;
+}
+
+export type EvaluationResult = "SOBRESALIENTE" | "SATISFACTORIO" | "NO_SATISFACTORIO";
+
+export interface EmployeeEvaluation {
+  id?: number;
+  employee: number;
+  year: number;
+  score: string | number;
+  result: EvaluationResult;
+  result_display?: string;
+  evaluator: string;
+  at: string;
+}
+
+export type AppointmentType =
+  | "CARRERA"
+  | "LNR"
+  | "PROVISIONAL"
+  | "TEMPORAL"
+  | "SUPERNUMERARIO"
+  | "TRABAJADOR_OFICIAL";
+
+export type AdminStatus =
+  | "ACTIVO"
+  | "VACACIONES"
+  | "LICENCIA_REMUNERADA"
+  | "LICENCIA_NO_REMUNERADA"
+  | "COMISION_SERVICIOS"
+  | "COMISION_ESTUDIO"
+  | "ENCARGO"
+  | "SUSPENDIDO";
+
+export interface EmploymentRecord {
+  id?: number;
+  employee: number;
+  position: number | null;
+  entity: number;
+  appointment_type: AppointmentType;
+  appointment_type_display?: string;
+  appointment_date: string;
+  termination_date: string | null;
+  termination_reason: string;
+  administrative_status: AdminStatus;
+  administrative_status_display?: string;
+  is_active: boolean;
+}
+
+export interface EmployeeTenure {
+  total_days: number;
+  days_in_current_entity: number;
+  total_years: number;
+}
+
+export interface RetirementEligibility {
+  is_pre_pensioned: boolean;
+  years_remaining: number;
+  reason: string;
+}
+
+export interface EmployeeHojaDeVida {
+  employee: Employee;
+  education: EmployeeEducation[];
+  experience: EmployeeExperience[];
+  training: EmployeeTraining[];
+  evaluations: EmployeeEvaluation[];
+  employment_records: EmploymentRecord[];
+  tenure: EmployeeTenure;
+  retirement_eligibility: RetirementEligibility;
+}
+
+export type ChangeAction = "CREATE" | "UPDATE" | "DELETE";
+
+export interface ChangeLogEntry {
+  id: number;
+  user: number | null;
+  user_username: string | null;
+  entity: number | null;
+  entity_name: string | null;
+  app_label: string;
+  model: string;
+  object_id: string;
+  action: ChangeAction;
+  action_display: string;
+  before_json: Record<string, unknown> | null;
+  after_json: Record<string, unknown> | null;
+  at: string;
+}
+
+// ---------------------------------------------------------------------------
+// M17 — MFMP (Marco Fiscal de Mediano Plazo) — Ley 819/2003
+// ---------------------------------------------------------------------------
+
+export type MFMPIncomeConcept =
+  | "TRIBUTARIOS"
+  | "NO_TRIBUTARIOS"
+  | "TRANSFERENCIAS_SGP"
+  | "TRANSFERENCIAS_OTRAS"
+  | "REGALIAS"
+  | "COFINANCIACION"
+  | "CREDITO"
+  | "RECURSOS_BALANCE"
+  | "OTROS";
+
+export type MFMPExpenseConcept =
+  | "FUNCIONAMIENTO_PERSONAL"
+  | "FUNCIONAMIENTO_GENERALES"
+  | "FUNCIONAMIENTO_TRANSFERENCIAS"
+  | "SERVICIO_DEUDA"
+  | "INVERSION"
+  | "OTROS";
+
+export interface MFMP {
+  id: number;
+  entity: number;
+  entity_name: string;
+  entity_acronym: string;
+  name: string;
+  base_year: number;
+  horizon_years: number;
+  approved_by: string;
+  approved_at: string | null;
+  notes: string;
+  totals: {
+    income: Record<string, number>;
+    expense: Record<string, number>;
+  };
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MFMPIncomeProjection {
+  id: number;
+  mfmp: number;
+  year: number;
+  concept: MFMPIncomeConcept;
+  amount: string;
+  notes: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MFMPExpenseProjection {
+  id: number;
+  mfmp: number;
+  year: number;
+  concept: MFMPExpenseConcept;
+  amount: string;
+  notes: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MFMPDebtProjection {
+  id: number;
+  mfmp: number;
+  year: number;
+  outstanding_debt: string;
+  debt_service: string;
+  new_disbursements: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MFMPScenario {
+  id: number;
+  mfmp: number;
+  name: string;
+  description: string;
+  deltas_json: Record<string, unknown>;
+  is_baseline: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MFMPLawByYear {
+  icld?: number;
+  funcionamiento?: number;
+  ratio: number;
+  limit?: number;
+  compliant?: boolean;
+  solvency_ratio?: number;
+  sustainability_ratio?: number;
+  status?: "VERDE" | "AMARILLO" | "ROJO";
+  ahorro_operacional?: number;
+  ingresos_corrientes?: number;
+  debt_service?: number;
+  outstanding_debt?: number;
+}
+
+export interface MFMPSimulation {
+  plan_id: number;
+  annual_cost: number;
+  baseline: {
+    law_617: Record<string, MFMPLawByYear>;
+    law_358: Record<string, MFMPLawByYear>;
+  };
+  simulated: {
+    law_617: Record<string, MFMPLawByYear>;
+    law_358: Record<string, MFMPLawByYear>;
+  };
+  broken_years_617: number[];
+  broken_years_358: number[];
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 3 — Manual Vigente, Procedimientos, Mandatos, Documentos
+// ---------------------------------------------------------------------------
+
+export type RoleLevel =
+  | "DIRECTIVO"
+  | "ASESOR"
+  | "PROFESIONAL"
+  | "TECNICO"
+  | "ASISTENCIAL";
+
+export interface LegacyManualFunction {
+  id: number;
+  role: number;
+  order: number;
+  description: string;
+  is_essential: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface LegacyManualRole {
+  id: number;
+  manual: number;
+  level: RoleLevel;
+  code: string;
+  grade: string;
+  denomination: string;
+  main_purpose: string;
+  dependencies_where_applies: string;
+  min_education: string;
+  min_experience: string;
+  order: number;
+  functions: LegacyManualFunction[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface LegacyManual {
+  id: number;
+  entity: number;
+  entity_name: string;
+  name: string;
+  act_reference: string;
+  issue_date: string | null;
+  source_file_name: string;
+  import_report: Record<string, unknown>;
+  notes: string;
+  roles_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ManualCompareItem {
+  code: string;
+  grade: string;
+  denomination: string;
+  diff?: Record<string, { old: string; new: string }>;
+}
+
+export interface ManualCompareReport {
+  added: ManualCompareItem[];
+  removed: ManualCompareItem[];
+  modified: ManualCompareItem[];
+  unchanged: ManualCompareItem[];
+  stats: {
+    added: number;
+    removed: number;
+    modified: number;
+    unchanged: number;
+  };
+  warnings?: string[];
+}
+
+export interface ProcedureStep {
+  id: number;
+  procedure: number;
+  order: number;
+  description: string;
+  role_executor: string;
+  estimated_minutes: number;
+  monthly_volume: number;
+  input_document: string;
+  output_document: string;
+  supporting_system: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Procedure {
+  id: number;
+  process: number;
+  process_name: string;
+  code: string;
+  name: string;
+  version: string;
+  objective: string;
+  scope: string;
+  inputs_text: string;
+  outputs_text: string;
+  last_updated: string | null;
+  steps_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export type MandateKind =
+  | "EJECUCION"
+  | "REGULACION"
+  | "VIGILANCIA"
+  | "FOMENTO"
+  | "OTRO";
+
+export type CoverageLevel = "FULL" | "PARTIAL" | "NONE";
+
+export interface LegalMandate {
+  id: number;
+  entity: number;
+  entity_name: string;
+  norm: string;
+  article: string;
+  mandate_text: string;
+  kind: MandateKind;
+  is_constitutional: boolean;
+  assigned_to_department: number | null;
+  department_name: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MandateCompliance {
+  id: number;
+  mandate: number;
+  mandate_norm: string;
+  process: number;
+  process_name: string;
+  coverage: CoverageLevel;
+  notes: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MandateGapReport {
+  mandates_without_process: Array<{
+    id: number;
+    norm: string;
+    article: string;
+    kind: MandateKind;
+    mandate_text: string;
+  }>;
+  processes_without_mandate: Array<{
+    id: number;
+    code: string;
+    name: string;
+    type: string;
+  }>;
+  coverage_stats: {
+    full: number;
+    partial: number;
+    none: number;
+    untracked: number;
+  };
+}
+
+export type DocumentKind =
+  | "ACTO_ESTRUCTURA"
+  | "ACTO_PLANTA"
+  | "MANUAL_VIGENTE"
+  | "PROCEDIMIENTO"
+  | "HOJA_DE_VIDA"
+  | "OFICIO_DAFP"
+  | "CONCEPTO_DAFP"
+  | "CONCEPTO_MINHACIENDA"
+  | "SENTENCIA"
+  | "PRESUPUESTO"
+  | "MFMP_HISTORICO"
+  | "OTRO";
+
+export interface DocumentItem {
+  id: number;
+  entity: number;
+  entity_name: string;
+  restructuring: number | null;
+  content_type: number | null;
+  object_id: number | null;
+  title: string;
+  kind: DocumentKind;
+  file: string;
+  file_url: string | null;
+  mime: string;
+  size: number;
+  notes: string;
+  extracted_text: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// ─── Sprint 4 — Núcleo Analítico ────────────────────────────────────────────
+
+export type EligibilityStatus =
+  | "ELEGIBLE"
+  | "ELEGIBLE_POR_EQUIVALENCIA"
+  | "NO_ELEGIBLE";
+
+export interface PromotionEligibility {
+  employee_id: number;
+  employee_name: string;
+  target_level: string;
+  target_code: string;
+  target_grade: string;
+  status: EligibilityStatus;
+  gap: string[];
+  path_to_qualify: string[];
+  matched_education: string | null;
+  total_public_experience_years: number;
+  equivalence_applied: string | null;
+}
+
+export interface EligibilityBulkResult {
+  total_analyzed: number;
+  eligible_direct: number;
+  eligible_by_equivalence: number;
+  not_eligible: number;
+  results: PromotionEligibility[];
+}
+
+export interface EligibilityCostEstimate {
+  employees_count: number;
+  current_monthly_avg: number;
+  new_monthly_avg: number;
+  annual_delta: number;
+  monthly_delta: number;
+}
+
+export interface ValidationFinding {
+  rule_code: string;
+  severity: "error" | "warning" | "info";
+  message: string;
+  subject: string;
+  context: Record<string, unknown>;
+}
+
+export interface ValidationReport {
+  restructuring_id: number;
+  errors: ValidationFinding[];
+  warnings: ValidationFinding[];
+  info: ValidationFinding[];
+  summary: {
+    total: number;
+    errors: number;
+    warnings: number;
+    info: number;
+  };
+}
+
+export interface RetenSyncResult {
+  pre_pensioned: number;
+  head_of_household: number;
+  disability: number;
+  total_automated: number;
+  manual_preserved: number;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 6 — Simulador, Dashboard, Notificaciones
+// ---------------------------------------------------------------------------
+
+export type NotificationKind =
+  | "TRANSITION"
+  | "VALIDATION_ERROR"
+  | "CONSULTATION_DUE"
+  | "DOCUMENT_NEW"
+  | "ASSIGNMENT"
+  | "SYSTEM";
+
+export interface Notification {
+  id: number;
+  user: number;
+  kind: NotificationKind;
+  kind_display: string;
+  entity: number | null;
+  entity_name: string | null;
+  restructuring: number | null;
+  message: string;
+  link: string;
+  read: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ScenarioMetrics {
+  total_positions: number;
+  total_monthly_base: number;
+  total_monthly_effective: number;
+  total_annual: number;
+  law_617_current_year: boolean | null;
+  law_617_years_broken: number;
+  mandate_coverage_pct: number | null;
+  eligibility_pct: number;
+}
+
+export interface Scenario {
+  id: number;
+  restructuring: number;
+  restructuring_name: string | null;
+  name: string;
+  description: string;
+  parent: number | null;
+  is_baseline: boolean;
+  payroll_plan: number | null;
+  payroll_plan_name: string | null;
+  cached_metrics: ScenarioMetrics | Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+  created_by: number | null;
+  updated_by: number | null;
+}
+
+export interface ScenarioRanking {
+  by_cost: number[];
+  by_law_617_compliance: number[];
+  by_positions: number[];
+}
+
+export interface ScenarioComparison {
+  scenarios: Array<{
+    id: number;
+    name: string;
+    is_baseline: boolean;
+    metrics: ScenarioMetrics;
+  }>;
+  rankings: ScenarioRanking;
+}
+
+export interface DashboardRestructuringItem {
+  id: number;
+  name: string;
+  status: RestructuringStatus;
+  status_display: string;
+  current_status_since: string | null;
+  days_in_status: number | null;
+  entity_name: string;
+  entity_id: number;
+  objectives_count: number;
+}
+
+export interface DashboardSummary {
+  total_restructurings: number;
+  by_status: Record<string, number>;
+  total_employees: number;
+  total_protected: number;
+  total_positions_current: number;
+  total_positions_proposed: number;
+  validation_errors: number;
+  validation_warnings: number;
+  upcoming_consultations: Array<{
+    id: number;
+    entity_target: string;
+    subject: string;
+    sent_at: string | null;
+    days_pending: number | null;
+  }>;
+}
+
+export interface DashboardRestructuringDetail {
+  restructuring_id: number;
+  name: string;
+  modules_complete_pct: number;
+  validation: { errors: number; warnings: number; info: number };
+  cost_current: number;
+  cost_proposed: number;
+  cost_delta: number;
+  law_617_current: boolean | null;
+  law_617_projected: boolean | null;
+  positions_delta: number;
+  protected_count: number;
+}
+
+export interface DashboardResponse {
+  restructurings: DashboardRestructuringItem[];
+  summary: DashboardSummary;
+  per_restructuring: DashboardRestructuringDetail[];
 }

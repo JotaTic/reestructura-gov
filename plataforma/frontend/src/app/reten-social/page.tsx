@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import type { Paginated, ProtectedEmployee, ProtectionType } from "@/types";
-import { AlertTriangle, Plus, Shield, Trash2 } from "lucide-react";
+import type { Paginated, ProtectedEmployee, ProtectionType, RetenSyncResult } from "@/types";
+import { AlertTriangle, Plus, RefreshCw, Shield, Trash2 } from "lucide-react";
 import { RequireContext } from "@/components/context/RequireContext";
 import { ExportBar } from "@/components/ui/ExportBar";
 import { useContextStore } from "@/stores/contextStore";
@@ -50,6 +50,8 @@ function Inner() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<ProtectedEmployee>(emptyForm(activeEntity.id));
+  const [syncLoading, setSyncLoading] = useState(false);
+  const [syncResult, setSyncResult] = useState<RetenSyncResult | null>(null);
 
   useEffect(() => {
     setForm(emptyForm(activeEntity.id));
@@ -80,6 +82,19 @@ function Inner() {
   };
 
   const activos = rows.filter((r) => r.active).length;
+
+  const sincronizar = async () => {
+    setSyncLoading(true);
+    setSyncResult(null);
+    try {
+      const result = await api.post<RetenSyncResult>("/reten-social/sincronizar/", {});
+      setSyncResult(result);
+      const d = await api.get<Paginated<ProtectedEmployee>>("/reten-social/", { page_size: 200 });
+      setRows(d.results);
+    } finally {
+      setSyncLoading(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-6xl space-y-5">
@@ -115,13 +130,29 @@ function Inner() {
           <strong className="text-slate-900 text-lg">{activos}</strong> empleados con protección vigente
         </div>
         <div className="flex-1" />
-        <button
-          onClick={() => setShowForm(true)}
-          className="inline-flex items-center gap-1 rounded-md bg-brand-700 px-3 py-2 text-sm font-medium text-white hover:bg-brand-800"
-        >
-          <Plus size={14} /> Registrar
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={sincronizar}
+            disabled={syncLoading}
+            className="inline-flex items-center gap-1 rounded-md border border-brand-700 px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-50 disabled:opacity-50"
+          >
+            <RefreshCw size={14} className={syncLoading ? "animate-spin" : ""} />
+            {syncLoading ? "Sincronizando…" : "Sincronizar desde hojas de vida"}
+          </button>
+          <button
+            onClick={() => setShowForm(true)}
+            className="inline-flex items-center gap-1 rounded-md bg-brand-700 px-3 py-2 text-sm font-medium text-white hover:bg-brand-800"
+          >
+            <Plus size={14} /> Registrar
+          </button>
+        </div>
       </div>
+
+      {syncResult && (
+        <div className="rounded-md border border-emerald-300 bg-emerald-50 p-3 text-xs text-emerald-800">
+          <strong>Sincronización completa:</strong> Pre-pensionados: {syncResult.pre_pensioned} · Cabeza de hogar: {syncResult.head_of_household} · Discapacidad: {syncResult.disability} · Total automatizados: {syncResult.total_automated} · Registros manuales preservados: {syncResult.manual_preserved}
+        </div>
+      )}
 
       {showForm && (
         <form

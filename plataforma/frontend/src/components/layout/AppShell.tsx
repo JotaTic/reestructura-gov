@@ -47,12 +47,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
     (async () => {
       try {
-        const data = await api.get<{ user: SessionUser; entities: Entity[] }>(
-          "/me/context/"
-        );
+        const data = await api.get<{
+          user: SessionUser;
+          entities: Entity[];
+          default_entity_id: number | null;
+        }>("/me/context/");
         setUser(data.user);
 
-        // Revalidar entidad activa: debe seguir existiendo.
+        // Revalidar entidad activa: debe seguir existiendo y estar permitida.
         if (activeEntity) {
           const still = data.entities.find((e) => e.id === activeEntity.id);
           if (!still) {
@@ -60,6 +62,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           } else if (JSON.stringify(still) !== JSON.stringify(activeEntity)) {
             setActiveEntity(still);
           }
+        }
+        // Si no hay entidad activa pero el usuario tiene default o única entidad,
+        // la seleccionamos automáticamente.
+        if (!activeEntity) {
+          const def =
+            data.entities.find((e) => e.id === data.default_entity_id) ||
+            (data.entities.length === 1 ? data.entities[0] : null);
+          if (def) setActiveEntity(def);
         }
       } catch (e) {
         // Cualquier fallo del chequeo de sesión (401 de SessionAuth, 403 de DRF

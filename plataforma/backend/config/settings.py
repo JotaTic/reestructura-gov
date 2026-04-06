@@ -38,7 +38,26 @@ INSTALLED_APPS = [
     'apps.financiero',
     'apps.reten',
     'apps.jota',
+    'apps.talento',
+    'apps.nomina',
+    'apps.mfmp',
+    # Sprint 3
+    'apps.manual_legacy',
+    'apps.procedimientos',
+    'apps.mandatos',
+    'apps.documentos',
+    # Sprint 4
+    'apps.analisis',
+    # Sprint 5
+    'apps.consultas',
+    'apps.participacion',
+    # Sprint 6
+    'apps.simulador',
+    'apps.notificaciones',
 ]
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -47,6 +66,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'apps.common.middleware.AuditUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -113,6 +133,7 @@ REST_FRAMEWORK = {
     # Los endpoints públicos (login) desactivan esto vía @permission_classes.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+        'apps.common.permissions.MatrixPermission',
     ],
     'DEFAULT_THROTTLE_RATES': {
         'jota': '60/min',

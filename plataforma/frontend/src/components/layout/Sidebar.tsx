@@ -7,21 +7,33 @@ import {
   BookOpen,
   Brain,
   Building2,
+  CheckCircle,
   DollarSign,
   FileSignature,
+  FileStack,
   FileText,
+  Gavel,
   GitBranch,
+  GitCompare,
+  GraduationCap,
+  IdCard,
   LayoutDashboard,
   ListChecks,
+  ListOrdered,
+  Mail,
   Menu,
   Network,
   ScrollText,
   Shield,
+  ShieldCheck,
+  TrendingUp,
   Users,
   Users2,
+  Workflow,
   X,
 } from "lucide-react";
 import clsx from "clsx";
+import { useContextStore } from "@/stores/contextStore";
 
 type NavItem = {
   href: string;
@@ -33,20 +45,38 @@ type NavItem = {
 
 const nav: NavItem[] = [
   { href: "/", label: "Tablero", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
 
   { href: "/entidades", label: "Entidades", icon: Building2, section: "Entidad" },
   { href: "/dependencias", label: "Dependencias", icon: Users },
   { href: "/estructura", label: "Estructura orgánica", icon: GitBranch, badge: "M9" },
 
+  { href: "/talento/empleados", label: "Hojas de vida", icon: IdCard, section: "Talento", badge: "M15" },
+
   { href: "/diagnostico", label: "Diagnóstico", icon: Brain, section: "Diagnóstico", badge: "M6" },
   { href: "/base-legal", label: "Base legal", icon: BookOpen, badge: "M5" },
   { href: "/financiero", label: "Análisis financiero", icon: DollarSign, badge: "M7" },
+  { href: "/mfmp", label: "MFMP (Ley 819)", icon: TrendingUp, badge: "M17" },
   { href: "/procesos", label: "Procesos", icon: Network, badge: "M8" },
+  // Sprint 3 — Insumos
+  { href: "/manual-vigente", label: "Manual vigente", icon: FileStack, section: "Insumos", badge: "M12+" },
+  { href: "/procedimientos", label: "Procedimientos", icon: ListOrdered, badge: "M8+" },
+  { href: "/mandatos", label: "Mandatos legales", icon: Gavel, badge: "M18" },
 
   { href: "/matrices", label: "Matriz de Cargas", icon: ListChecks, section: "Diseño", badge: "M10" },
   { href: "/planta", label: "Planta de Personal", icon: Users2, badge: "M11" },
   { href: "/manual-funciones", label: "Manual de funciones", icon: FileText, badge: "M12" },
   { href: "/reten-social", label: "Retén social", icon: Shield, badge: "M13" },
+
+  // Sprint 4 — Núcleo Analítico
+  { href: "/analisis/elegibilidad", label: "Elegibilidad", icon: GraduationCap, section: "Analítico", badge: "M20" },
+  { href: "/validacion", label: "Validación", icon: CheckCircle, badge: "M4R" },
+  { href: "/simulador", label: "Simulador", icon: GitCompare, badge: "M22" },
+
+  // Sprint 5 — Gobierno
+  { href: "/reestructuraciones", label: "Gobierno", icon: Workflow, section: "Gobierno", badge: "SP5" },
+  { href: "/consultas", label: "Consultas", icon: Mail, badge: "SP5" },
+  { href: "/comision-personal", label: "Comisión Personal", icon: Users, badge: "SP5" },
 
   { href: "/actos", label: "Actos administrativos", icon: FileSignature, section: "Implementación", badge: "M14" },
 
@@ -56,6 +86,22 @@ const nav: NavItem[] = [
 export function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const user = useContextStore((s) => s.user);
+  const activeRestructuring = useContextStore((s) => s.activeRestructuring);
+
+  // Link dinámico de Gobierno según la reestructuración activa
+  const gobiernoHref = activeRestructuring
+    ? `/reestructuraciones/${activeRestructuring.id}/gobierno`
+    : "/reestructuraciones";
+
+  // Insertar el item de Gobierno con href dinámico en la sección Gobierno
+  const finalNav: NavItem[] = nav.map((item) =>
+    item.label === "Gobierno" ? { ...item, href: gobiernoHref } : item
+  );
+
+  const navItems: NavItem[] = user?.is_superuser
+    ? [...finalNav, { href: "/superadmin", label: "Superadmin", icon: ShieldCheck, section: "Administración" }]
+    : finalNav;
 
   return (
     <>
@@ -85,7 +131,7 @@ export function Sidebar() {
         </div>
 
         <nav className="px-2 py-4">
-          {nav.map((item) => {
+          {navItems.map((item) => {
             const Icon = item.icon;
             const active =
               pathname === item.href ||
