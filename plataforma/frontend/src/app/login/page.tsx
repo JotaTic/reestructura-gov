@@ -44,7 +44,7 @@ export default function LoginPage() {
       });
       setUser(data.user);
       setRemembered(remember ? username.trim() : null);
-      router.push("/");
+      router.push("/seleccionar-contexto");
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message || "Credenciales inválidas.");

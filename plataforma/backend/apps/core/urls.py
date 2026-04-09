@@ -10,6 +10,7 @@ from .views import (
     login_view,
     logout_view,
     me_context,
+    auto_create_restructuring,
 )
 from .views_search import global_search
 from .views_admin import (
@@ -36,5 +37,6 @@ urlpatterns = [
     path('auth/login/', login_view, name='auth-login'),
     path('auth/logout/', logout_view, name='auth-logout'),
     path('me/context/', me_context, name='me-context'),
+    path('auto-crear-reestructuracion/', auto_create_restructuring, name='auto-crear-reestructuracion'),
     path('buscar/', global_search, name='global-search'),
 ] + router.urls + [path('superadmin/', include(admin_router.urls))]

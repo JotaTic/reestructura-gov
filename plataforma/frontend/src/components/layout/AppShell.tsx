@@ -11,10 +11,10 @@ import type { Entity, SessionUser } from "@/types";
 
 /**
  * Shell global:
- *  - Permite el render libre de /login (sin sidebar/topbar).
- *  - En cualquier otra ruta: revalida la sesión contra /api/me/context/.
- *    Si falla, redirige a /login. Si tiene éxito, inyecta el usuario en el store.
- *  - Hidrata y revalida la entidad activa persistida en localStorage.
+ *  - /login, /encuesta/* → render libre (sin sidebar/topbar, sin auth).
+ *  - /seleccionar-contexto → requiere auth pero sin sidebar (pantalla completa).
+ *  - Resto de rutas → requiere auth + entidad + reestructuración seleccionadas.
+ *    Si falta contexto, redirige a /seleccionar-contexto.
  */
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -23,15 +23,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const user = useContextStore((s) => s.user);
   const setUser = useContextStore((s) => s.setUser);
   const activeEntity = useContextStore((s) => s.activeEntity);
-  const setActiveEntity = useContextStore((s) => s.setActiveEntity);
+  const activeRestructuring = useContextStore((s) => s.activeRestructuring);
   const [mounted, setMounted] = useState(false);
   const [checking, setChecking] = useState(true);
 
-  const isPublic = pathname?.startsWith("/login") || pathname?.startsWith("/encuesta/");
+  // Rutas que no requieren autenticación
+  const isFullyPublic =
+    pathname?.startsWith("/login") || pathname?.startsWith("/encuesta/");
+
+  // Ruta que requiere auth pero no sidebar ni contexto obligatorio
+  const isContextSelector = pathname === "/seleccionar-contexto";
 
   // Forzar rehidratación del store persistido al montar en cliente.
-  // Evita quedarnos atascados en "Cargando…" si el middleware persist
-  // no dispara onRehydrateStorage (SSR + Next.js).
   useEffect(() => {
     useContextStore.persist?.rehydrate?.();
     markHydrated();
@@ -40,7 +43,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!mounted) return;
-    if (isPublic) {
+
+    if (isFullyPublic) {
       setChecking(false);
       return;
     }
@@ -53,29 +57,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           default_entity_id: number | null;
         }>("/me/context/");
         setUser(data.user);
-
-        // Revalidar entidad activa: debe seguir existiendo y estar permitida.
-        if (activeEntity) {
-          const still = data.entities.find((e) => e.id === activeEntity.id);
-          if (!still) {
-            setActiveEntity(null);
-          } else if (JSON.stringify(still) !== JSON.stringify(activeEntity)) {
-            setActiveEntity(still);
-          }
-        }
-        // Si no hay entidad activa pero el usuario tiene default o única entidad,
-        // la seleccionamos automáticamente.
-        if (!activeEntity) {
-          const def =
-            data.entities.find((e) => e.id === data.default_entity_id) ||
-            (data.entities.length === 1 ? data.entities[0] : null);
-          if (def) setActiveEntity(def);
-        }
       } catch (e) {
-        // Cualquier fallo del chequeo de sesión (401 de SessionAuth, 403 de DRF
-        // cuando no se proveen credenciales, o error de red) significa que no
-        // hay sesión válida: redirigimos a /login en vez de quedarnos en
-        // "Cargando…" infinito.
         if (
           e instanceof ApiError &&
           (e.status === 401 || e.status === 403)
@@ -83,8 +65,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           router.replace("/login");
           return;
         }
-        // Error inesperado (red, CORS, 5xx). También mandamos al login para no
-        // dejar al usuario bloqueado en el shell.
         router.replace("/login");
         return;
       } finally {
@@ -92,7 +72,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mounted, isPublic]);
+  }, [mounted, isFullyPublic]);
 
   if (!mounted || checking) {
     return (
@@ -102,13 +82,30 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (isPublic) {
+  // Rutas públicas: render directo
+  if (isFullyPublic) {
     return <>{children}</>;
   }
 
+  // Sin usuario autenticado: redirigir
   if (!user) {
-    // El efecto ya está redirigiendo, evitamos render intermedio.
     return null;
+  }
+
+  // Selector de contexto: render sin sidebar (pantalla completa)
+  if (isContextSelector) {
+    return <>{children}</>;
+  }
+
+  // Rutas protegidas: exigir entidad + reestructuración
+  if (!activeEntity || !activeRestructuring) {
+    // Redirigir al selector de contexto
+    router.replace("/seleccionar-contexto");
+    return (
+      <div className="flex min-h-screen items-center justify-center text-sm text-slate-500">
+        Redirigiendo al selector de contexto…
+      </div>
+    );
   }
 
   return (

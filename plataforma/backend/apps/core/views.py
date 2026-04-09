@@ -275,7 +275,8 @@ def logout_view(request):
 def me_context(request):
     """
     Bootstrap del frontend: devuelve el usuario, el listado de entidades a las
-    que tiene acceso y (si viene) valida la entidad/reestructuración activas.
+    que tiene acceso (con sus reestructuraciones) y la entidad/reestructuración
+    por defecto.
     """
     user = request.user
     allowed = get_user_allowed_entity_ids(user)
@@ -286,6 +287,16 @@ def me_context(request):
         entities = Entity.objects.filter(id__in=allowed)
         default_access = UserEntityAccess.objects.filter(user=user, is_default=True).first()
         default_entity_id = default_access.entity_id if default_access else None
+
+    # Incluir reestructuraciones por entidad para el selector de contexto
+    entities_data = []
+    for ent in entities:
+        ent_data = EntitySerializer(ent).data
+        ent_data['restructurings'] = RestructuringSerializer(
+            ent.restructurings.order_by('-reference_date'), many=True,
+        ).data
+        entities_data.append(ent_data)
+
     return Response({
         'user': {
             'id': user.id,
@@ -297,6 +308,46 @@ def me_context(request):
             'is_superuser': user.is_superuser,
             'groups': list(user.groups.values_list('name', flat=True)),
         },
-        'entities': EntitySerializer(entities, many=True).data,
+        'entities': entities_data,
         'default_entity_id': default_entity_id,
     })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def auto_create_restructuring(request):
+    """
+    POST /api/auto-crear-reestructuracion/
+    Body: {entity_id: <int>}
+    Crea automáticamente una reestructuración con nombre
+    "Reestructuración {entidad} {año}" si no existe ninguna para esa entidad.
+    """
+    import datetime
+    entity_id = request.data.get('entity_id')
+    if not entity_id:
+        return Response({'detail': 'entity_id es obligatorio.'}, status=400)
+
+    # Validar acceso a la entidad
+    allowed = get_user_allowed_entity_ids(request.user)
+    if allowed is not None and int(entity_id) not in allowed:
+        return Response({'detail': 'No tienes acceso a esta entidad.'}, status=403)
+
+    try:
+        entity = Entity.objects.get(id=entity_id)
+    except Entity.DoesNotExist:
+        return Response({'detail': 'Entidad no encontrada.'}, status=404)
+
+    year = datetime.date.today().year
+    name = f'Reestructuración {entity.name} {year}'
+
+    restr = Restructuring.objects.create(
+        entity=entity,
+        name=name,
+        code=f'RE-{entity.acronym or entity.id}-{year}',
+        reference_date=datetime.date.today(),
+        status='BORRADOR',
+        description=f'Reestructuración institucional de {entity.name}, vigencia {year}.',
+        created_by=request.user,
+    )
+
+    return Response(RestructuringSerializer(restr).data, status=201)

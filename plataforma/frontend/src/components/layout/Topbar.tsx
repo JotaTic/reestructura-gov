@@ -123,6 +123,19 @@ export function Topbar() {
   const selectEntity = (e: Entity) => {
     setActiveEntity(e);
     setOpenEntity(false);
+    // Si la nueva entidad no tiene reestructuraciones cargadas,
+    // redirigimos al selector de contexto para que cree una.
+    api
+      .get<Restructuring[]>(`/entidades/${e.id}/reestructuraciones/`)
+      .then((list) => {
+        setRestrs(list);
+        if (list.length === 0) {
+          router.push("/seleccionar-contexto");
+        } else if (list.length === 1) {
+          setActiveRestructuring(list[0]);
+        }
+      })
+      .catch(() => {});
   };
   const selectRestr = (r: Restructuring) => {
     setActiveRestructuring(r);
@@ -424,6 +437,13 @@ export function Topbar() {
                 <div className="text-slate-400">{user.groups.join(", ")}</div>
               )}
             </div>
+            <Link
+              href="/seleccionar-contexto"
+              onClick={() => setOpenUser(false)}
+              className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-xs font-medium text-slate-700 hover:bg-slate-50"
+            >
+              <Layers size={12} /> Cambiar contexto
+            </Link>
             <button
               onClick={doLogout}
               className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-xs font-medium text-red-700 hover:bg-red-50"
