@@ -2,12 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import type { Department, Paginated } from "@/types";
+import type { Department, DepartmentLevel, Paginated } from "@/types";
 import { Plus, Save, Trash2, Users } from "lucide-react";
 import { useContextStore } from "@/stores/contextStore";
 import { RequireContext } from "@/components/context/RequireContext";
 
 type Row = Department & { _dirty?: boolean };
+
+const LEVELS: { value: DepartmentLevel; label: string }[] = [
+  { value: "DESPACHO", label: "🏛️ Despacho" },
+  { value: "SECRETARIA", label: "📋 Secretaría" },
+  { value: "DIRECCION", label: "📁 Dirección" },
+  { value: "SUBDIRECCION", label: "📂 Subdirección" },
+  { value: "OFICINA", label: "🗂️ Oficina" },
+  { value: "GRUPO", label: "👥 Grupo interno" },
+  { value: "AREA", label: "📌 Área / Unidad" },
+];
 
 export default function DependenciasPage() {
   return (
@@ -25,11 +35,12 @@ function DependenciasInner() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [newName, setNewName] = useState("");
+  const [newLevel, setNewLevel] = useState<DepartmentLevel>("AREA");
 
   useEffect(() => {
     setLoading(true);
     api
-      .get<Paginated<Department>>("/dependencias/", { page_size: 200 })
+      .get<Paginated<Department>>("/dependencias/", { page_size: 500 })
       .then((d) => setRows(d.results as Row[]))
       .finally(() => setLoading(false));
   }, [activeEntity.id, version]);
@@ -39,10 +50,12 @@ function DependenciasInner() {
     const created = await api.post<Department>("/dependencias/", {
       entity: activeEntity.id,
       name: newName.trim(),
+      level: newLevel,
       order: rows.length + 1,
     });
-    setRows((r) => [...r, created]);
+    setRows((r) => [...r, created as Row]);
     setNewName("");
+    setNewLevel("AREA");
   };
 
   const updateRow = (idx: number, patch: Partial<Row>) =>
@@ -58,9 +71,10 @@ function DependenciasInner() {
         name: row.name,
         code: row.code,
         parent: row.parent,
+        level: row.level,
         order: row.order,
       });
-      setRows((r) => r.map((x, i) => (i === idx ? { ...updated, _dirty: false } : x)));
+      setRows((r) => r.map((x, i) => (i === idx ? { ...updated, _dirty: false } as Row : x)));
     } finally {
       setSaving(false);
     }
@@ -74,11 +88,12 @@ function DependenciasInner() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl space-y-5">
+    <div className="mx-auto max-w-6xl space-y-5">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Dependencias</h1>
         <p className="text-sm text-slate-600">
-          Estructura orgánica de <strong>{activeEntity.name}</strong>.
+          Estructura orgánica de <strong>{activeEntity.name}</strong>. Cada dependencia
+          tiene un <strong>nivel organizacional</strong> que define su jerarquía.
         </p>
       </div>
 
@@ -90,6 +105,15 @@ function DependenciasInner() {
         </div>
 
         <div className="flex items-center gap-2 border-b border-slate-100 bg-white px-4 py-2">
+          <select
+            value={newLevel}
+            onChange={(e) => setNewLevel(e.target.value as DepartmentLevel)}
+            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+          >
+            {LEVELS.map((l) => (
+              <option key={l.value} value={l.value}>{l.label}</option>
+            ))}
+          </select>
           <input
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
@@ -119,8 +143,10 @@ function DependenciasInner() {
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-xs uppercase text-slate-600">
               <tr>
+                <th className="p-2 text-left">Nivel</th>
                 <th className="p-2 text-left">Nombre</th>
                 <th className="p-2 text-left w-24">Código</th>
+                <th className="p-2 text-left">Padre</th>
                 <th className="p-2 text-right w-16">Orden</th>
                 <th className="p-2 text-right w-28">Acciones</th>
               </tr>
@@ -131,6 +157,17 @@ function DependenciasInner() {
                   key={row.id}
                   className={"border-t border-slate-100 " + (row._dirty ? "bg-amber-50" : "")}
                 >
+                  <td className="p-2">
+                    <select
+                      value={row.level}
+                      onChange={(e) => updateRow(idx, { level: e.target.value as DepartmentLevel })}
+                      className="w-full rounded border border-slate-200 px-1 py-1 text-xs"
+                    >
+                      {LEVELS.map((l) => (
+                        <option key={l.value} value={l.value}>{l.label}</option>
+                      ))}
+                    </select>
+                  </td>
                   <td className="p-2">
                     <input
                       value={row.name}
@@ -144,6 +181,18 @@ function DependenciasInner() {
                       onChange={(e) => updateRow(idx, { code: e.target.value })}
                       className="w-full rounded border border-slate-200 px-2 py-1 text-sm"
                     />
+                  </td>
+                  <td className="p-2">
+                    <select
+                      value={row.parent ?? ""}
+                      onChange={(e) => updateRow(idx, { parent: e.target.value ? Number(e.target.value) : null })}
+                      className="w-full rounded border border-slate-200 px-1 py-1 text-xs"
+                    >
+                      <option value="">— Raíz —</option>
+                      {rows.filter((r) => r.id !== row.id).map((r) => (
+                        <option key={r.id} value={r.id}>{r.level_display}: {r.name}</option>
+                      ))}
+                    </select>
                   </td>
                   <td className="p-2">
                     <input

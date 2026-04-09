@@ -199,11 +199,36 @@ class TimelineActivity(models.Model):
 class Department(models.Model):
     """Dependencia de una entidad (Secretaría, Oficina, Dirección, etc.)."""
 
+    class Level(models.TextChoices):
+        DESPACHO = 'DESPACHO', 'Despacho'
+        SECRETARIA = 'SECRETARIA', 'Secretaría'
+        DIRECCION = 'DIRECCION', 'Dirección'
+        SUBDIRECCION = 'SUBDIRECCION', 'Subdirección'
+        OFICINA = 'OFICINA', 'Oficina'
+        GRUPO = 'GRUPO', 'Grupo interno de trabajo'
+        AREA = 'AREA', 'Área / Unidad'
+
+    # Mapeo: dado el nivel del padre, sugerir el nivel del hijo
+    CHILD_LEVEL_SUGGESTION = {
+        'DESPACHO': 'SECRETARIA',
+        'SECRETARIA': 'DIRECCION',
+        'DIRECCION': 'SUBDIRECCION',
+        'SUBDIRECCION': 'OFICINA',
+        'OFICINA': 'GRUPO',
+        'GRUPO': 'AREA',
+        'AREA': 'AREA',
+    }
+
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='departments')
     name = models.CharField('Nombre', max_length=255)
     code = models.CharField('Código interno', max_length=32, blank=True)
     parent = models.ForeignKey(
         'self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children'
+    )
+    level = models.CharField(
+        'Nivel organizacional', max_length=16,
+        choices=Level.choices, default=Level.AREA,
+        help_text='Tipo de dependencia según la jerarquía organizacional.',
     )
     order = models.PositiveIntegerField('Orden de presentación', default=0)
 
@@ -211,9 +236,16 @@ class Department(models.Model):
         verbose_name = 'Dependencia'
         verbose_name_plural = 'Dependencias'
         ordering = ['entity', 'order', 'name']
+        indexes = [
+            models.Index(fields=['entity', 'level']),
+        ]
 
     def __str__(self) -> str:
         return f'{self.entity.acronym or self.entity.name} / {self.name}'
+
+    def suggest_child_level(self) -> str:
+        """Sugiere el nivel organizacional para una subdependencia."""
+        return self.CHILD_LEVEL_SUGGESTION.get(self.level, 'AREA')
 
 
 # ---------------------------------------------------------------------------

@@ -207,12 +207,24 @@ export interface SessionUser {
   groups: string[];
 }
 
+export type DepartmentLevel =
+  | "DESPACHO"
+  | "SECRETARIA"
+  | "DIRECCION"
+  | "SUBDIRECCION"
+  | "OFICINA"
+  | "GRUPO"
+  | "AREA";
+
 export interface Department {
   id: number;
   entity: number;
   name: string;
   code: string;
   parent: number | null;
+  level: DepartmentLevel;
+  level_display: string;
+  suggested_child_level: DepartmentLevel;
   order: number;
 }
 

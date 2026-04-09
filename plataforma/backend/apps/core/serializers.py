@@ -20,9 +20,13 @@ class RestructuringSerializer(serializers.ModelSerializer):
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
+    level_display = serializers.CharField(source='get_level_display', read_only=True)
+    suggested_child_level = serializers.CharField(source='suggest_child_level', read_only=True)
+
     class Meta:
         model = Department
-        fields = ['id', 'entity', 'name', 'code', 'parent', 'order']
+        fields = ['id', 'entity', 'name', 'code', 'parent', 'level', 'level_display',
+                  'suggested_child_level', 'order']
 
 
 class TimelineActivitySerializer(serializers.ModelSerializer):
