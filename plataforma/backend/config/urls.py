@@ -37,6 +37,10 @@ urlpatterns = [
     # Sprint 13 — Encuestas de cargas + Contratistas OPS/CPS
     path('api/', include('apps.encuestas.urls')),
     path('api/', include('apps.contratistas.urls')),
+    # Sprint 14+ — Equipo técnico, Implementación, Indemnizaciones
+    path('api/', include('apps.equipotecnico.urls')),
+    path('api/', include('apps.implementacion.urls')),
+    path('api/', include('apps.indemnizaciones.urls')),
     path('api/dashboard/', include('apps.core.urls_dashboard')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),

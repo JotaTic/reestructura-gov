@@ -8,27 +8,33 @@ import {
   BookOpen,
   Brain,
   Building2,
+  Calculator,
+  Calendar,
   CheckCircle,
   ClipboardList,
   DollarSign,
   FileSignature,
   FileStack,
   FileText,
+  Flag,
   Gavel,
   GitBranch,
   GitCompare,
+  Globe,
   GraduationCap,
   Handshake,
   IdCard,
   LayoutDashboard,
   ListChecks,
   ListOrdered,
+  ListTodo,
   Mail,
   Menu,
   Network,
   ScrollText,
   Shield,
   ShieldCheck,
+  Target,
   TrendingUp,
   Users,
   Users2,
@@ -47,47 +53,57 @@ type NavItem = {
 };
 
 const nav: NavItem[] = [
-  { href: "/", label: "Tablero", icon: LayoutDashboard },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  // ── INICIO
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, section: "Inicio" },
 
-  { href: "/entidades", label: "Entidades", icon: Building2, section: "Entidad" },
+  // ── FASE 0 · CONFIGURACIÓN
+  { href: "/entidades", label: "Entidades", icon: Building2, section: "F0 · Configuración" },
   { href: "/dependencias", label: "Dependencias", icon: Users },
-  { href: "/estructura", label: "Estructura orgánica", icon: GitBranch, badge: "M9" },
+  { href: "/estructura", label: "Estructura orgánica", icon: GitBranch },
+  { href: "/nomenclatura", label: "Nomenclatura", icon: ScrollText },
 
-  { href: "/talento/empleados", label: "Hojas de vida", icon: IdCard, section: "Talento", badge: "M15" },
+  // ── FASE 1 · ACUERDO INICIAL
+  { href: "/reestructuraciones", label: "Expediente", icon: Flag, section: "F1 · Acuerdo Inicial", badge: "F1" },
+  { href: "/objetivos", label: "Objetivos", icon: Target, badge: "F1" },
+  { href: "/cronograma", label: "Cronograma", icon: Calendar, badge: "F1" },
+  { href: "/equipo-tecnico", label: "Equipo técnico", icon: Users2, badge: "F1" },
 
-  { href: "/diagnostico", label: "Diagnóstico", icon: Brain, section: "Diagnóstico", badge: "M6" },
-  { href: "/base-legal", label: "Base legal", icon: BookOpen, badge: "M5" },
-  { href: "/financiero", label: "Análisis financiero", icon: DollarSign, badge: "M7" },
-  { href: "/mfmp", label: "MFMP (Ley 819)", icon: TrendingUp, badge: "M17" },
-  { href: "/procesos", label: "Procesos", icon: Network, badge: "M8" },
-  // Sprint 3 — Insumos
-  { href: "/manual-vigente", label: "Manual vigente", icon: FileStack, section: "Insumos", badge: "M12+" },
-  { href: "/procedimientos", label: "Procedimientos", icon: ListOrdered, badge: "M8+" },
-  { href: "/mandatos", label: "Mandatos legales", icon: Gavel, badge: "M18" },
+  // ── FASE 2 · DIAGNÓSTICO
+  { href: "/diagnostico", label: "Diagnóstico DOFA", icon: Brain, section: "F2 · Diagnóstico", badge: "F2" },
+  { href: "/base-legal", label: "Marco legal", icon: BookOpen, badge: "F2" },
+  { href: "/mandatos", label: "Mandatos legales", icon: Gavel, badge: "F2" },
 
-  { href: "/matrices", label: "Matriz de Cargas", icon: ListChecks, section: "Diseño", badge: "M10" },
-  { href: "/encuestas", label: "Encuestas de cargas", icon: ClipboardList, badge: "M10+" },
-  { href: "/contratistas", label: "Contratistas OPS/CPS", icon: Handshake, badge: "NEW" },
-  { href: "/brechas", label: "Análisis de brechas", icon: BarChart3, badge: "NEW" },
-  { href: "/planta", label: "Planta de Personal", icon: Users2, badge: "M11" },
-  { href: "/manual-funciones", label: "Manual de funciones", icon: FileText, badge: "M12" },
-  { href: "/reten-social", label: "Retén social", icon: Shield, badge: "M13" },
+  // ── FASE 3 · DISEÑO TÉCNICO
+  { href: "/procesos", label: "Procesos", icon: Network, section: "F3 · Diseño Técnico", badge: "F3" },
+  { href: "/procedimientos", label: "Procedimientos", icon: ListOrdered, badge: "F3" },
+  { href: "/matrices", label: "Matriz de Cargas", icon: ListChecks, badge: "F3" },
+  { href: "/encuestas", label: "Encuestas de cargas", icon: ClipboardList, badge: "F3" },
+  { href: "/contratistas", label: "Contratistas OPS/CPS", icon: Handshake, badge: "F3" },
+  { href: "/brechas", label: "Análisis de brechas", icon: BarChart3, badge: "F3" },
+  { href: "/planta", label: "Planta de Personal", icon: Users2, badge: "F3" },
+  { href: "/manual-vigente", label: "Manual vigente", icon: FileStack, badge: "F3" },
+  { href: "/manual-funciones", label: "Manual de funciones", icon: FileText, badge: "F3" },
 
-  // Sprint 4 — Núcleo Analítico
-  { href: "/analisis/elegibilidad", label: "Elegibilidad", icon: GraduationCap, section: "Analítico", badge: "M20" },
-  { href: "/validacion", label: "Validación", icon: CheckCircle, badge: "M4R" },
-  { href: "/simulador", label: "Simulador", icon: GitCompare, badge: "M22" },
+  // ── FASE 4 · ANÁLISIS Y REVISIONES
+  { href: "/validacion", label: "Validación", icon: CheckCircle, section: "F4 · Análisis", badge: "F4" },
+  { href: "/financiero", label: "Análisis financiero", icon: DollarSign, badge: "F4" },
+  { href: "/mfmp", label: "MFMP (Ley 819)", icon: TrendingUp, badge: "F4" },
+  { href: "/simulador", label: "Simulador", icon: GitCompare, badge: "F4" },
+  { href: "/analisis/elegibilidad", label: "Elegibilidad", icon: GraduationCap, badge: "F4" },
+  { href: "/indemnizaciones", label: "Indemnizaciones", icon: Calculator, badge: "F4" },
+  { href: "/estudio-tecnico", label: "Estudio técnico", icon: FileText, badge: "F4" },
 
-  // Sprint 5 — Gobierno
-  { href: "/reestructuraciones", label: "Gobierno", icon: Workflow, section: "Gobierno", badge: "SP5" },
-  { href: "/consultas", label: "Consultas", icon: Mail, badge: "SP5" },
-  { href: "/comision-personal", label: "Comisión Personal", icon: Users, badge: "SP5" },
-  { href: "/comunicaciones-sindicales", label: "Comunicaciones sindicales", icon: Mail, badge: "SP5" },
+  // ── FASE 5 · GOBIERNO Y APROBACIÓN
+  { href: "/gobierno", label: "Gobierno", icon: Workflow, section: "F5 · Gobierno", badge: "F5" },
+  { href: "/consultas", label: "Consultas oficiales", icon: Globe, badge: "F5" },
+  { href: "/comision-personal", label: "Comisión Personal", icon: Users, badge: "F5" },
+  { href: "/comunicaciones-sindicales", label: "Com. sindicales", icon: Mail, badge: "F5" },
+  { href: "/actos", label: "Actos administrativos", icon: FileSignature, badge: "F5" },
 
-  { href: "/actos", label: "Actos administrativos", icon: FileSignature, section: "Implementación", badge: "M14" },
-
-  { href: "/nomenclatura", label: "Nomenclatura", icon: ScrollText, section: "Referencia" },
+  // ── FASE 6 · IMPLEMENTACIÓN
+  { href: "/implementacion", label: "Plan implementación", icon: ListTodo, section: "F6 · Implementación", badge: "F6" },
+  { href: "/reten-social", label: "Retén social", icon: Shield, badge: "F6" },
+  { href: "/talento/empleados", label: "Hojas de vida", icon: IdCard, badge: "F6" },
 ];
 
 export function Sidebar() {
@@ -101,14 +117,22 @@ export function Sidebar() {
     ? `/reestructuraciones/${activeRestructuring.id}/gobierno`
     : "/reestructuraciones";
 
-  // Insertar el item de Gobierno con href dinámico en la sección Gobierno
   const finalNav: NavItem[] = nav.map((item) =>
     item.label === "Gobierno" ? { ...item, href: gobiernoHref } : item
   );
 
+  // Ruta /objetivos redirige a objetivos de la reestructuración activa
+  const objetivosHref = activeRestructuring
+    ? `/reestructuraciones/${activeRestructuring.id}/objetivos`
+    : "/reestructuraciones";
+
+  const withDynamic: NavItem[] = finalNav.map((item) =>
+    item.label === "Objetivos" ? { ...item, href: objetivosHref } : item
+  );
+
   const navItems: NavItem[] = user?.is_superuser
-    ? [...finalNav, { href: "/superadmin", label: "Superadmin", icon: ShieldCheck, section: "Administración" }]
-    : finalNav;
+    ? [...withDynamic, { href: "/superadmin", label: "Superadmin", icon: ShieldCheck, section: "Administración" }]
+    : withDynamic;
 
   return (
     <>
@@ -138,13 +162,13 @@ export function Sidebar() {
         </div>
 
         <nav className="px-2 py-4">
-          {navItems.map((item) => {
+          {navItems.map((item, idx) => {
             const Icon = item.icon;
             const active =
               pathname === item.href ||
-              (item.href !== "/" && pathname?.startsWith(item.href));
+              (item.href !== "/" && item.href !== "/dashboard" && pathname?.startsWith(item.href));
             return (
-              <div key={item.href}>
+              <div key={`${item.href}-${idx}`}>
                 {item.section && (
                   <div className="mt-3 mb-1 px-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
                     {item.section}
@@ -176,7 +200,7 @@ export function Sidebar() {
         </nav>
 
         <div className="border-t border-slate-800 px-4 py-3 text-[10px] text-slate-500">
-          ReEstructura.Gov · MVP completo
+          ReEstructura.Gov · Cartilla FP 2018
         </div>
       </aside>
     </>

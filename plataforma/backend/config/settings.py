@@ -57,6 +57,10 @@ INSTALLED_APPS = [
     # Sprint 13 — Encuestas de cargas + Contratistas OPS/CPS
     'apps.encuestas',
     'apps.contratistas',
+    # Sprint 14+ — Equipo técnico, Implementación, Indemnizaciones
+    'apps.equipotecnico',
+    'apps.implementacion',
+    'apps.indemnizaciones',
 ]
 
 MEDIA_ROOT = BASE_DIR / 'media'

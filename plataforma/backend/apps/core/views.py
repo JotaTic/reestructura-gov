@@ -84,6 +84,13 @@ class RestructuringViewSet(EntityScopedMixin, viewsets.ModelViewSet):
             headers={'Content-Disposition': f'attachment; filename="estudio_tecnico_{restr.id}.docx"'},
         )
 
+    @action(detail=True, methods=['get'], url_path='progreso')
+    def progress(self, request, pk=None):
+        """GET /api/reestructuraciones/<id>/progreso/ — progreso por fase."""
+        restr = self.get_object()
+        from apps.core.services.progress import calculate_progress
+        return Response(calculate_progress(restr))
+
     @action(detail=True, methods=['get'], url_path='transiciones')
     def transiciones(self, request, pk=None):
         """
