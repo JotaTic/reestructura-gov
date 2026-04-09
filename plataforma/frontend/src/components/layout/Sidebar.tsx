@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
+  BarChart3,
   BookOpen,
   Brain,
   Building2,
   CheckCircle,
+  ClipboardList,
   DollarSign,
   FileSignature,
   FileStack,
@@ -16,6 +18,7 @@ import {
   GitBranch,
   GitCompare,
   GraduationCap,
+  Handshake,
   IdCard,
   LayoutDashboard,
   ListChecks,
@@ -64,6 +67,9 @@ const nav: NavItem[] = [
   { href: "/mandatos", label: "Mandatos legales", icon: Gavel, badge: "M18" },
 
   { href: "/matrices", label: "Matriz de Cargas", icon: ListChecks, section: "Diseño", badge: "M10" },
+  { href: "/encuestas", label: "Encuestas de cargas", icon: ClipboardList, badge: "M10+" },
+  { href: "/contratistas", label: "Contratistas OPS/CPS", icon: Handshake, badge: "NEW" },
+  { href: "/brechas", label: "Análisis de brechas", icon: BarChart3, badge: "NEW" },
   { href: "/planta", label: "Planta de Personal", icon: Users2, badge: "M11" },
   { href: "/manual-funciones", label: "Manual de funciones", icon: FileText, badge: "M12" },
   { href: "/reten-social", label: "Retén social", icon: Shield, badge: "M13" },

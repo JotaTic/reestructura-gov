@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     # Sprint 6
     'apps.simulador',
     'apps.notificaciones',
+    # Sprint 13 — Encuestas de cargas + Contratistas OPS/CPS
+    'apps.encuestas',
+    'apps.contratistas',
 ]
 
 MEDIA_ROOT = BASE_DIR / 'media'

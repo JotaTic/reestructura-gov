@@ -20,6 +20,19 @@ import {
   Upload,
   XCircle,
 } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Cell,
+  ReferenceLine,
+  ComposedChart,
+} from "recharts";
 import { RequireContext } from "@/components/context/RequireContext";
 import { useContextStore } from "@/stores/contextStore";
 import Link from "next/link";
@@ -329,103 +342,77 @@ function GraficasTab({
   }
 
   const years = matrix.years ?? [];
-  const incomes = years.map((y) => matrix.totals?.income?.[String(y)] ?? 0);
-  const expenses = years.map((y) => matrix.totals?.expense?.[String(y)] ?? 0);
-  const maxVal = Math.max(...incomes, ...expenses, 1);
+  const chartData = years.map((y) => ({
+    year: String(y),
+    Ingresos: matrix.totals?.income?.[String(y)] ?? 0,
+    Gastos: matrix.totals?.expense?.[String(y)] ?? 0,
+  }));
 
   // Ley 617 ratios
   const ley617Years = ley617 ? Object.keys(ley617).sort() : [];
+  const ley617Data = ley617Years.map((yr) => {
+    const d = ley617![yr];
+    return {
+      year: yr,
+      ratio: parseFloat(((d.ratio ?? 0) * 100).toFixed(1)),
+      limite: parseFloat(((d.limit ?? 0) * 100).toFixed(1)),
+      compliant: d.compliant !== false,
+    };
+  });
+  // Use the first limit value for the ReferenceLine (typically constant across years)
+  const refLimit = ley617Data.length > 0 ? ley617Data[0].limite : 0;
 
   return (
     <div className="space-y-8">
       {/* Income vs Expenses bar chart */}
       <section>
         <h3 className="mb-4 text-sm font-semibold text-slate-700">
-          Ingresos vs Gastos por Ano
+          Ingresos vs Gastos por Año
         </h3>
-        <div className="space-y-3">
-          {years.map((y, i) => {
-            const incPct = (incomes[i] / maxVal) * 100;
-            const expPct = (expenses[i] / maxVal) * 100;
-            return (
-              <div key={y} className="flex items-center gap-3">
-                <span className="w-12 text-right text-xs font-medium text-slate-600">{y}</span>
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="h-5 rounded-r bg-emerald-500 transition-all"
-                      style={{ width: `${Math.max(incPct, 0.5)}%` }}
-                    />
-                    <span className="text-[10px] text-slate-500">${fmt(incomes[i])}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="h-5 rounded-r bg-red-400 transition-all"
-                      style={{ width: `${Math.max(expPct, 0.5)}%` }}
-                    />
-                    <span className="text-[10px] text-slate-500">${fmt(expenses[i])}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="mt-3 flex gap-4 text-[10px] text-slate-500">
-          <span className="flex items-center gap-1">
-            <span className="inline-block h-2.5 w-2.5 rounded bg-emerald-500" /> Ingresos
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="inline-block h-2.5 w-2.5 rounded bg-red-400" /> Gastos
-          </span>
-        </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="year" tick={{ fontSize: 12 }} />
+            <YAxis tickFormatter={(v: number) => `$${fmt(v)}`} tick={{ fontSize: 10 }} />
+            <Tooltip formatter={(value) => [`$${fmt(Number(value))}`, undefined]} />
+            <Legend wrapperStyle={{ fontSize: 12 }} />
+            <Bar dataKey="Ingresos" fill="#10b981" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="Gastos" fill="#f87171" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
       </section>
 
       {/* Ley 617 ratio chart */}
-      {ley617Years.length > 0 && ley617 && (
+      {ley617Data.length > 0 && (
         <section>
           <h3 className="mb-4 text-sm font-semibold text-slate-700">
-            Ley 617 — Ratio Funcionamiento / ICLD por Ano
+            Ley 617 — Ratio Funcionamiento / ICLD por Año
           </h3>
-          <div className="space-y-2">
-            {ley617Years.map((yr) => {
-              const d = ley617[yr];
-              const ratio = (d.ratio ?? 0) * 100;
-              const limit = (d.limit ?? 0) * 100;
-              const compliant = d.compliant !== false;
-              return (
-                <div key={yr} className="flex items-center gap-3">
-                  <span className="w-12 text-right text-xs font-medium text-slate-600">{yr}</span>
-                  <div className="relative flex-1 h-6 rounded bg-slate-100">
-                    {/* Limit marker */}
-                    <div
-                      className="absolute top-0 h-full w-0.5 bg-slate-400 z-10"
-                      style={{ left: `${Math.min(limit, 100)}%` }}
-                      title={`Limite: ${limit.toFixed(1)}%`}
-                    />
-                    {/* Ratio bar */}
-                    <div
-                      className={`h-full rounded transition-all ${compliant ? "bg-emerald-500" : "bg-red-500"}`}
-                      style={{ width: `${Math.min(ratio, 100)}%` }}
-                    />
-                  </div>
-                  <span className={`w-16 text-right text-[10px] font-semibold ${compliant ? "text-emerald-700" : "text-red-700"}`}>
-                    {ratio.toFixed(1)}%
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-          <div className="mt-2 flex gap-4 text-[10px] text-slate-500">
-            <span className="flex items-center gap-1">
-              <span className="inline-block h-2.5 w-2.5 rounded bg-emerald-500" /> Cumple
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="inline-block h-2.5 w-2.5 rounded bg-red-500" /> No cumple
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="inline-block h-2.5 w-0.5 bg-slate-400" /> Limite
-            </span>
-          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <ComposedChart data={ley617Data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="year" tick={{ fontSize: 12 }} />
+              <YAxis
+                tickFormatter={(v: number) => `${v}%`}
+                tick={{ fontSize: 10 }}
+                domain={[0, (max: number) => Math.max(max * 1.15, refLimit * 1.15)]}
+              />
+              <Tooltip formatter={(value) => [`${value}%`, undefined]} />
+              <Legend wrapperStyle={{ fontSize: 12 }} />
+              <ReferenceLine
+                y={refLimit}
+                stroke="#94a3b8"
+                strokeDasharray="6 3"
+                strokeWidth={2}
+                label={{ value: `Límite ${refLimit}%`, position: "right", fontSize: 10, fill: "#64748b" }}
+              />
+              <Bar dataKey="ratio" name="Ratio %" radius={[4, 4, 0, 0]}>
+                {ley617Data.map((entry, idx) => (
+                  <Cell key={idx} fill={entry.compliant ? "#10b981" : "#f87171"} />
+                ))}
+              </Bar>
+            </ComposedChart>
+          </ResponsiveContainer>
         </section>
       )}
     </div>

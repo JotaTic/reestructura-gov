@@ -27,7 +27,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
   const [checking, setChecking] = useState(true);
 
-  const isPublic = pathname?.startsWith("/login");
+  const isPublic = pathname?.startsWith("/login") || pathname?.startsWith("/encuesta/");
 
   // Forzar rehidratación del store persistido al montar en cliente.
   // Evita quedarnos atascados en "Cargando…" si el middleware persist

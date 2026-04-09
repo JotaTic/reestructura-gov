@@ -5,12 +5,12 @@
     "fields": {
       "kind": "CONSTITUCION",
       "reference": "Constitución Política de Colombia",
-      "title": "Principios de la función administrativa y autonomía territorial",
+      "title": "Principios de la función administrativa, autonomía territorial y función pública",
       "year": 1991,
-      "summary": "Art. 209 principios de la función administrativa; art. 287 autonomía territorial; arts. 300-7 y 313-6 competencia de asambleas y concejos sobre estructura.",
-      "key_articles": "Arts. 209, 287, 300-7, 313-6, 315",
+      "summary": "Norma suprema del ordenamiento jurídico colombiano. Título V, Cap. 2 (Arts. 122-131): regula la función pública, define servidores públicos, establece la carrera administrativa como regla general de acceso a cargos, prohíbe el nepotismo, crea la CNSC. Art. 209: principios de la función administrativa. Art. 287: autonomía territorial. Arts. 300-7 y 313-6: competencia de asambleas y concejos sobre estructura.",
+      "key_articles": "Arts. 122-131 (función pública), Art. 125 (carrera administrativa), Art. 130 (CNSC), Art. 209 (principios función administrativa), Art. 287 (autonomía territorial), Arts. 300-7, 313-6, 315",
       "applies_to": "Todas las entidades públicas",
-      "url": ""
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=4125"
     }
   },
   {
@@ -21,10 +21,10 @@
       "reference": "Ley 489 de 1998",
       "title": "Estructura y funcionamiento de la administración pública",
       "year": 1998,
-      "summary": "Principios de organización administrativa. Art. 52 causales de supresión; art. 54 modificación de estructura.",
+      "summary": "Regula el ejercicio de la función administrativa, determina la estructura y define los principios y reglas de organización y funcionamiento de la Administración Pública. Establece normas para la creación, supresión y reestructuración de organismos y entidades públicas. Art. 52 causales de supresión; art. 54 modificación de estructura.",
       "key_articles": "Art. 3 (principios), Art. 52 (causales de supresión), Art. 54 (modificación de estructura)",
       "applies_to": "Todas",
-      "url": ""
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=186"
     }
   },
   {
@@ -35,7 +35,7 @@
       "reference": "Ley 790 de 2002",
       "title": "Programa de Renovación de la Administración Pública",
       "year": 2002,
-      "summary": "Fusión y supresión de entidades nacionales. Art. 12 retén social (protección especial).",
+      "summary": "Fusión y supresión de entidades nacionales. Art. 12 retén social (protección especial para madres cabeza de familia, personas con discapacidad y pre-pensionados).",
       "key_articles": "Art. 12 (retén social)",
       "applies_to": "Orden Nacional y, por remisión jurisprudencial, territoriales",
       "url": ""
@@ -49,10 +49,10 @@
       "reference": "Ley 909 de 2004",
       "title": "Empleo público, carrera administrativa y gerencia pública",
       "year": 2004,
-      "summary": "Art. 19 levantamiento de cargas como sustento de la planta; art. 21 empleos temporales; art. 44 derecho preferencial de incorporación en reestructuración.",
-      "key_articles": "Arts. 19, 21, 44",
+      "summary": "Norma principal vigente sobre empleo público y carrera administrativa. Regula ingreso, permanencia y retiro basados en el mérito. Crea el sistema de gerencia pública, define empleos temporales, establece la evaluación del desempeño y regula la CNSC como órgano autónomo. Art. 19 levantamiento de cargas; art. 21 empleos temporales; art. 44 derecho preferencial de incorporación en reestructuración.",
+      "key_articles": "Arts. 19, 21, 27 (definición carrera), 44 (incorporación preferencial)",
       "applies_to": "Todas",
-      "url": ""
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=14861"
     }
   },
   {
@@ -63,10 +63,10 @@
       "reference": "Ley 1437 de 2011 (CPACA)",
       "title": "Código de Procedimiento Administrativo y de lo Contencioso Administrativo",
       "year": 2011,
-      "summary": "Procedimiento para la expedición de actos administrativos: motivación, publicidad, notificaciones, recursos y control judicial.",
+      "summary": "Regula el procedimiento administrativo y la jurisdicción contencioso administrativa. Aplica a todos los organismos y entidades de las ramas del poder público. Establece principios de debido proceso, igualdad, imparcialidad, transparencia y eficiencia en la actuación administrativa de los servidores públicos.",
       "key_articles": "Libro Primero — procedimiento administrativo",
       "applies_to": "Todas",
-      "url": ""
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=41249"
     }
   },
   {
@@ -77,10 +77,10 @@
       "reference": "Ley 617 de 2000",
       "title": "Racionalización del gasto público territorial",
       "year": 2000,
-      "summary": "Límites al gasto de funcionamiento de departamentos, distritos y municipios por categoría. Exige certificación de cumplimiento antes de modificar planta.",
+      "summary": "Establece la categorización de departamentos, distritos y municipios. Fija límites a los gastos de funcionamiento de entidades territoriales, incluyendo gastos de personal y plantas de personal. Exige certificación de cumplimiento antes de modificar planta.",
       "key_articles": "Arts. 3, 6, 10, 11 (límites por categoría)",
       "applies_to": "Territoriales",
-      "url": ""
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=3771"
     }
   },
   {
@@ -119,10 +119,10 @@
       "reference": "Ley 1551 de 2012",
       "title": "Modernización de la organización y funcionamiento de municipios",
       "year": 2012,
-      "summary": "Municipios de categoría 5ª y 6ª pueden solicitar acompañamiento gratuito de la ESAP en procesos de reestructuración.",
+      "summary": "Moderniza el régimen municipal, fortalece la autonomía territorial. Establece competencias municipales en coordinación con la LOOT. Municipios de categoría 5ª y 6ª pueden solicitar acompañamiento gratuito de la ESAP en procesos de reestructuración.",
       "key_articles": "Art. 30",
-      "applies_to": "Municipios 5ª y 6ª",
-      "url": ""
+      "applies_to": "Municipios",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=48267"
     }
   },
   {
@@ -133,10 +133,10 @@
       "reference": "Decreto 1083 de 2015",
       "title": "Decreto Único Reglamentario del Sector de Función Pública",
       "year": 2015,
-      "summary": "Compila normativa de empleo público. Arts. 2.2.2.2.1 niveles jerárquicos; 2.2.2.5.1 equivalencias del manual (nacional); parágrafo 2.2.12.1 concepto previo DAFP.",
-      "key_articles": "2.2.2.2.1, 2.2.2.5.1, 2.2.12.1",
+      "summary": "Compila y racionaliza toda la normativa reglamentaria del sector de Función Pública. Incluye: empleo público, funciones y competencias, administración de personal, situaciones administrativas, capacitación, sistemas de estímulos, retiro del servicio, reforma de plantas, gerencia pública, comisiones de personal y el SIGEP.",
+      "key_articles": "2.2.2.2.1 (niveles jerárquicos), 2.2.2.5.1 (equivalencias manual nacional), 2.2.12.1 (concepto previo DAFP)",
       "applies_to": "Todas",
-      "url": ""
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=62866"
     }
   },
   {
@@ -147,10 +147,10 @@
       "reference": "Decreto 785 de 2005",
       "title": "Nomenclatura y clasificación de empleos — orden territorial",
       "year": 2005,
-      "summary": "Niveles y denominaciones aplicables a entidades territoriales. Art. 25 equivalencias del manual de funciones.",
+      "summary": "Establece el sistema de nomenclatura y clasificación de empleos para entidades territoriales (departamentos, distritos, municipios). Define cinco niveles jerárquicos: Directivo, Asesor, Profesional, Técnico y Asistencial, con sus funciones generales y requisitos. Expedido bajo facultades de la Ley 909 de 2004.",
       "key_articles": "Arts. 3-25",
       "applies_to": "Territoriales",
-      "url": ""
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=16127"
     }
   },
   {
@@ -159,12 +159,12 @@
     "fields": {
       "kind": "DECRETO",
       "reference": "Decreto 2489 de 2006",
-      "title": "Nomenclatura de empleos — orden nacional",
+      "title": "Nomenclatura y clasificación de empleos — orden nacional",
       "year": 2006,
-      "summary": "Denominaciones, códigos y grados del orden nacional.",
-      "key_articles": "",
+      "summary": "Establece el sistema vigente de nomenclatura y clasificación de empleos del orden nacional. Define nivel jerárquico, denominación, código y grado salarial. Aplica a ministerios, departamentos administrativos, superintendencias, establecimientos públicos, UAE y demás entidades nacionales.",
+      "key_articles": "Art. 2 (tabla de nomenclatura y clasificación)",
       "applies_to": "Orden Nacional",
-      "url": ""
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=65341"
     }
   },
   {
@@ -273,9 +273,583 @@
       "reference": "Ley 4 de 1992",
       "title": "Régimen salarial y prestacional de empleados públicos",
       "year": 1992,
-      "summary": "Marco para fijar la escala salarial.",
+      "summary": "Establece los criterios para que el Gobierno fije el régimen salarial y prestacional de empleados públicos de todas las ramas del poder, Fuerza Pública, Congreso, rama judicial, Ministerio Público, Fiscalía, organización electoral y Contraloría. Define el sistema salarial integrado por la estructura de empleos y escalas de remuneración.",
       "key_articles": "",
       "applies_to": "Todas",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=1166"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 21,
+    "fields": {
+      "kind": "OTRO",
+      "reference": "Acto Legislativo 01 de 2008",
+      "title": "Adición del artículo 125 de la Constitución Política — Inscripción extraordinaria en carrera",
+      "year": 2008,
+      "summary": "Adicionó un parágrafo transitorio al Art. 125 que permitía inscripción extraordinaria en carrera administrativa sin concurso público por 3 años. Declarado INEXEQUIBLE en su totalidad por la Corte Constitucional mediante Sentencia C-588 de 2009 por sustituir la Constitución.",
+      "key_articles": "Parágrafo transitorio Art. 125",
+      "applies_to": "Todas las entidades — norma declarada inexequible",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 22,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 27 de 1992",
+      "title": "Primera ley de carrera administrativa post-Constitución de 1991",
+      "year": 1992,
+      "summary": "Desarrolló el art. 125 de la Constitución. Creó la Comisión Nacional del Servicio Civil y sus seccionales, reguló concursos abiertos y de ascenso, extendió disposiciones al nivel territorial. Derogada por la Ley 443 de 1998.",
+      "key_articles": "",
+      "applies_to": "Todas — norma derogada",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=2773"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 23,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 136 de 1994",
+      "title": "Organización y funcionamiento de los municipios",
+      "year": 1994,
+      "summary": "Establece principios de organización y funcionamiento municipal. Define la categorización de municipios, regula cargos como alcaldes, concejales, personeros, secretarios de despacho y demás empleos públicos municipales.",
+      "key_articles": "",
+      "applies_to": "Municipios",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=329"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 24,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 190 de 1995",
+      "title": "Estatuto Anticorrupción — Moralidad en la Administración Pública",
+      "year": 1995,
+      "summary": "Controles sobre reclutamiento de servidores públicos. Exige declaración juramentada de bienes y rentas como requisito para posesión y desempeño del cargo, actualizada anualmente. Regula inhabilidades e incompatibilidades.",
+      "key_articles": "",
+      "applies_to": "Todos los servidores públicos",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=321"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 25,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 443 de 1998",
+      "title": "Carrera administrativa (predecesora de la Ley 909)",
+      "year": 1998,
+      "summary": "Reformó la Ley 27 de 1992 sobre carrera administrativa. Modificó la composición de la CNSC, creó Comisiones Departamentales y Distritales, ajustó la clasificación de empleos de libre nombramiento y remoción. Derogada por la Ley 909 de 2004, excepto algunos artículos.",
+      "key_articles": "Arts. 24, 58, 81, 82 (vigentes)",
+      "applies_to": "Todas — norma derogada (excepto arts. vigentes)",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 26,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 734 de 2002",
+      "title": "Código Disciplinario Único",
+      "year": 2002,
+      "summary": "Reguló el ejercicio de la potestad disciplinaria del Estado sobre los servidores públicos. Definió deberes, prohibiciones, inhabilidades, incompatibilidades, faltas y sanciones disciplinarias. Derogada a partir del 29 de marzo de 2022 por la Ley 1952 de 2019, excepto el artículo 30.",
+      "key_articles": "Art. 30 (vigente), Art. 34 (deberes), Art. 35 (prohibiciones)",
+      "applies_to": "Todos los servidores públicos — norma derogada",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=4589"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 27,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 1150 de 2007",
+      "title": "Eficiencia y transparencia en la contratación estatal",
+      "year": 2007,
+      "summary": "Modifica la Ley 80 de 1993 (contratación estatal). Establece inhabilidades e incompatibilidades para servidores públicos en relación con la contratación. Extiende inhabilidades por delitos contra la administración pública y regula prohibiciones para exfuncionarios.",
+      "key_articles": "",
+      "applies_to": "Todas las entidades que contratan con recursos públicos",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=184686"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 28,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 1454 de 2011 (LOOT)",
+      "title": "Ley Orgánica de Ordenamiento Territorial",
+      "year": 2011,
+      "summary": "Dicta normas orgánicas sobre ordenamiento territorial. Establece el marco general para la distribución de competencias entre la Nación y las entidades territoriales. Define principios de coordinación, concurrencia y subsidiariedad que rigen la organización político-administrativa del Estado.",
+      "key_articles": "",
+      "applies_to": "Todas las entidades territoriales",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=43210"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 29,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 1474 de 2011",
+      "title": "Estatuto Anticorrupción — Mecanismos de prevención, investigación y sanción",
+      "year": 2011,
+      "summary": "Fortalece inhabilidades e incompatibilidades para cargos públicos. Establece inhabilidad por actos de corrupción, inhabilidad de 2 años para exfuncionarios de nivel directivo, amplía el régimen penal y disciplinario contra la corrupción y refuerza el control de la gestión pública.",
+      "key_articles": "",
+      "applies_to": "Todos los servidores públicos",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=43292"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 30,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 1952 de 2019",
+      "title": "Código General Disciplinario",
+      "year": 2019,
+      "summary": "Reemplaza la Ley 734 de 2002. Establece el régimen disciplinario para servidores públicos: derechos, deberes, prohibiciones, régimen de inhabilidades, incompatibilidades, impedimentos y conflictos de interés. Desarrolla los artículos 124 y 209 de la Constitución sobre responsabilidad de servidores públicos.",
+      "key_articles": "Art. 12 (debido proceso)",
+      "applies_to": "Todos los servidores públicos",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=90324"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 31,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 1960 de 2019",
+      "title": "Modificación de la Ley 909 de 2004 — Ascenso y movilidad en carrera",
+      "year": 2019,
+      "summary": "Modifica el régimen de carrera administrativa. Introduce concursos de ascenso (30% de vacantes) junto con concursos abiertos (70%). Regula el encargo como derecho de los empleados de carrera, fortalece la capacitación y establece mecanismos de movilidad horizontal.",
+      "key_articles": "",
+      "applies_to": "Todas",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=95430"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 32,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 2094 de 2021",
+      "title": "Reforma al Código General Disciplinario",
+      "year": 2021,
+      "summary": "Modifica la Ley 1952 de 2019 para separar las fases de investigación y juzgamiento en el proceso disciplinario, garantizando la imparcialidad objetiva. Cumple con la sentencia de la Corte IDH en el caso Petro Urrego vs. Colombia.",
+      "key_articles": "Art. 3 (modifica Art. 12 de Ley 1952)",
+      "applies_to": "Todos los servidores públicos",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=165113"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 33,
+    "fields": {
+      "kind": "LEY",
+      "reference": "Ley 2294 de 2023",
+      "title": "Plan Nacional de Desarrollo 2022-2026 'Colombia Potencia Mundial de la Vida'",
+      "year": 2023,
+      "summary": "Plan Nacional de Desarrollo vigente. Otorga facultades extraordinarias al Presidente para fortalecer entidades como la DIAN. Contiene disposiciones sobre empleo público, modernización del Estado y reestructuración de entidades del orden nacional.",
+      "key_articles": "",
+      "applies_to": "Todas",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 34,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto Ley 2400 de 1968",
+      "title": "Administración del personal civil de la Rama Ejecutiva",
+      "year": 1968,
+      "summary": "Regula la administración del personal civil de la Rama Ejecutiva del Poder Público. Define los conceptos de empleo y empleado público, establece requisitos para el ingreso, licencias, comisiones, situaciones administrativas y el límite de edad para el servicio (65 años). Norma fundacional del servicio civil colombiano.",
+      "key_articles": "",
+      "applies_to": "Rama Ejecutiva del Poder Público",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=1198"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 35,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 1950 de 1973",
+      "title": "Reglamentación de la administración del personal civil",
+      "year": 1973,
+      "summary": "Reglamenta los Decretos-leyes 2400 y 3074 de 1968. Define categorías de servidores públicos (empleados públicos, trabajadores oficiales), regula la carrera administrativa como sistema de administración de personal, y establece procedimientos de ingreso, ascenso y retiro.",
+      "key_articles": "",
+      "applies_to": "Rama Ejecutiva — orden nacional",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=1525"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 36,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto Ley 1042 de 1978",
+      "title": "Nomenclatura, clasificación y remuneración de empleos del orden nacional (histórico)",
+      "year": 1978,
+      "summary": "Estableció el sistema de nomenclatura, clasificación y escalas de remuneración de empleos públicos del orden nacional. Define grados salariales, jornada laboral de 44 horas semanales y factores salariales. Parcialmente vigente en lo relativo a factores salariales.",
+      "key_articles": "Art. 42 (factores salariales)",
+      "applies_to": "Orden Nacional — parcialmente vigente",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=66581"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 37,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto Ley 1567 de 1998",
+      "title": "Sistema Nacional de Capacitación y Sistema de Estímulos para empleados del Estado",
+      "year": 1998,
+      "summary": "Crea el Sistema Nacional de Capacitación y el Sistema de Estímulos para empleados del Estado. Establece el régimen de obligaciones de entidades y empleados respecto a capacitación, define objetivos de formación del talento humano público y regula programas de bienestar e incentivos.",
+      "key_articles": "",
+      "applies_to": "Todas",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=1246"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 38,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto Ley 770 de 2005",
+      "title": "Sistema de funciones y requisitos generales — orden nacional",
+      "year": 2005,
+      "summary": "Establece los niveles jerárquicos de empleos del orden nacional: Directivo, Asesor, Profesional, Técnico y Asistencial. Define la naturaleza general de las funciones de cada nivel y los requisitos generales de estudio y experiencia.",
+      "key_articles": "",
+      "applies_to": "Orden Nacional",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=16126"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 39,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto Ley 765 de 2005",
+      "title": "Sistema Específico de Carrera de la DIAN",
+      "year": 2005,
+      "summary": "Estableció el sistema específico de carrera administrativa para la DIAN, regulando ingreso, permanencia, evaluación del desempeño y retiro del servicio de sus empleados públicos.",
+      "key_articles": "",
+      "applies_to": "DIAN",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=64559"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 40,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto Ley 775 de 2005",
+      "title": "Sistema Específico de Carrera para Superintendencias",
+      "year": 2005,
+      "summary": "Establece el sistema específico de carrera administrativa para las Superintendencias de la Administración Pública Nacional, regulando provisión de empleos, procesos de selección, evaluación del desempeño, registro público, retiro, capacitación, estímulos y competencias específicas.",
+      "key_articles": "",
+      "applies_to": "Superintendencias",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 41,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 1227 de 2005",
+      "title": "Reglamentación parcial de la Ley 909 de 2004 y el Decreto-ley 1567 de 1998",
+      "year": 2005,
+      "summary": "Reglamenta la Ley 909 en temas de empleos temporales, provisión de empleos de carrera, nombramientos provisionales, encargos, evaluación del desempeño, registro público de carrera administrativa y funcionamiento de la CNSC.",
+      "key_articles": "",
+      "applies_to": "Todas",
+      "url": "https://www1.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=16313"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 42,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 2772 de 2005",
+      "title": "Funciones y requisitos generales para empleos del orden nacional (derogado)",
+      "year": 2005,
+      "summary": "Estableció funciones y requisitos generales para empleos públicos del orden nacional por niveles jerárquicos. Definió factores de estudio y experiencia, equivalencias y plazos para expedición de manuales específicos. Derogado por el Decreto 1785 de 2014.",
+      "key_articles": "",
+      "applies_to": "Orden Nacional — norma derogada",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=17297"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 43,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 1785 de 2014",
+      "title": "Funciones y requisitos generales vigentes para empleos del orden nacional",
+      "year": 2014,
+      "summary": "Establece funciones y requisitos generales vigentes para empleos públicos del orden nacional por niveles jerárquicos (Directivo, Asesor, Profesional, Técnico, Asistencial). Define factores de educación formal y experiencia, regulando equivalencias. Deroga el Decreto 2772 de 2005.",
+      "key_articles": "",
+      "applies_to": "Orden Nacional",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=61493"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 44,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 815 de 2018",
+      "title": "Competencias laborales generales para empleos públicos",
+      "year": 2018,
+      "summary": "Modifica las competencias laborales generales para empleos públicos por niveles jerárquicos. Establece competencias funcionales y comportamentales. Define el sistema tipo de evaluación del desempeño laboral para empleados de carrera administrativa y en período de prueba.",
+      "key_articles": "",
+      "applies_to": "Todas",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=86304"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 45,
+    "fields": {
+      "kind": "DECRETO",
+      "reference": "Decreto 927 de 2023",
+      "title": "Modificación del Sistema Específico de Carrera de la DIAN",
+      "year": 2023,
+      "summary": "Modifica el sistema específico de carrera de la DIAN bajo facultades de la Ley 2294 de 2023. Regula vinculación, permanencia, movilidad por mérito, evaluación del desempeño, competencias laborales y retiro. Introduce por primera vez el acoso sexual como causal de inhabilidad para cargos directivos.",
+      "key_articles": "",
+      "applies_to": "DIAN",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=211570"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 46,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional C-195 de 1994",
+      "title": "Principios de eficacia y eficiencia en la función pública",
+      "year": 1994,
+      "summary": "Establece que el sistema de carrera administrativa busca realizar los principios de eficacia y eficiencia en la función pública, así como garantizar la estabilidad en los cargos con base en estos principios y la honestidad en su desempeño.",
+      "key_articles": "",
+      "applies_to": "Interpretación constitucional de la carrera administrativa",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 47,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional C-372 de 1999",
+      "title": "Naturaleza autónoma de la Comisión Nacional del Servicio Civil",
+      "year": 1999,
+      "summary": "Analiza la naturaleza de la CNSC como entidad autónoma, permanente y del más alto nivel en la administración y vigilancia de la carrera administrativa. Definió su alcance como órgano de garantía del sistema de mérito.",
+      "key_articles": "",
+      "applies_to": "CNSC y sistema de carrera administrativa",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=3592"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 48,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional C-563 de 2000",
+      "title": "Clasificación de empleos de libre nombramiento y remoción",
+      "year": 2000,
+      "summary": "Analiza la constitucionalidad de disposiciones sobre carrera administrativa de la Ley 443 de 1998, específicamente sobre la clasificación de empleos de libre nombramiento y remoción y su relación con el principio constitucional de mérito.",
+      "key_articles": "",
+      "applies_to": "Clasificación de empleos públicos",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 49,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional C-588 de 2009",
+      "title": "Inexequibilidad del Acto Legislativo 01 de 2008 — Inscripción extraordinaria en carrera",
+      "year": 2009,
+      "summary": "Declaró INEXEQUIBLE en su totalidad el Acto Legislativo 01 de 2008 que permitía inscripción extraordinaria en carrera sin concurso. La Corte determinó que constituía una sustitución parcial y temporal de la Constitución al suspender el artículo 125. Tuvo efectos retroactivos.",
+      "key_articles": "",
+      "applies_to": "Carrera administrativa — todas las entidades",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=67834"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 50,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional SU-917 de 2010",
+      "title": "Protección de derechos de empleados provisionales — Sentencia de unificación",
+      "year": 2010,
+      "summary": "Sentencia de unificación sobre la protección de derechos de empleados en provisionalidad. Estableció que el retiro de empleados provisionales requiere motivación del acto administrativo. Ordenó reintegros y pago de salarios dejados de percibir.",
+      "key_articles": "",
+      "applies_to": "Empleados provisionales en carrera administrativa",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=67736"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 51,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional C-288 de 2014",
+      "title": "Provisionalidad en cargos de carrera — Temporalidad y continuidad del servicio",
+      "year": 2014,
+      "summary": "Analiza la constitucionalidad de la provisionalidad en cargos de carrera. Establece que se requieren estrictamente dos elementos: temporalidad del nombramiento y continuidad del servicio. Reitera que el mérito es la regla general para el acceso a cargos de carrera.",
+      "key_articles": "",
+      "applies_to": "Provisionalidad en carrera administrativa",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=59496"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 52,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional C-285 de 2015",
+      "title": "Carrera administrativa como pilar esencial de la Constitución",
+      "year": 2015,
+      "summary": "Estableció que la carrera administrativa es un principio fundamental y pilar esencial de la estructura básica de la Constitución de 1991. La transparencia, eficiencia y eficacia de la función administrativa se logran mediante el concurso público de méritos. Analizó los sistemas específicos de carrera.",
+      "key_articles": "",
+      "applies_to": "Carrera administrativa — todas las entidades",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=67240"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 53,
+    "fields": {
+      "kind": "SENTENCIA_CC",
+      "reference": "Corte Constitucional C-197 de 2025",
+      "title": "Constitucionalidad del sistema específico de carrera de la DIAN",
+      "year": 2025,
+      "summary": "Analizó la constitucionalidad del sistema específico de carrera de la DIAN establecido por el Decreto 927 de 2023. Abordó el régimen de mérito, los sistemas especiales de carrera y la estructura específica de carrera de esta entidad.",
+      "key_articles": "",
+      "applies_to": "DIAN — sistema específico de carrera",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 54,
+    "fields": {
+      "kind": "SENTENCIA_CE",
+      "reference": "Consejo de Estado Exp. 9336-05 de 2012",
+      "title": "Nulidad — Empleos de carrera en entidades del Estado",
+      "year": 2012,
+      "summary": "El Consejo de Estado (Sección Segunda) analizó la legalidad de disposiciones sobre empleos de carrera administrativa en entidades del Estado, el régimen de provisión de cargos y los derechos de los empleados de carrera frente a procesos de reestructuración.",
+      "key_articles": "",
+      "applies_to": "Carrera administrativa y reestructuración",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 55,
+    "fields": {
+      "kind": "SENTENCIA_CE",
+      "reference": "Consejo de Estado Sentencia 2012-00795 de 2021",
+      "title": "Derechos de empleados de carrera en reestructuración",
+      "year": 2021,
+      "summary": "Aborda los derechos de los empleados públicos de carrera administrativa frente a procesos de reestructuración de entidades. Analiza el derecho preferencial de incorporación cuando se suprimen cargos por liquidación, fusión o modificación de planta de personal.",
+      "key_articles": "",
+      "applies_to": "Procesos de reestructuración",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=172344"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 56,
+    "fields": {
+      "kind": "SENTENCIA_CE",
+      "reference": "Consejo de Estado Sentencia 2021-04664 de 2022",
+      "title": "Supresión de empleos como causal de retiro del servicio",
+      "year": 2022,
+      "summary": "Reitera jurisprudencia sobre supresión de empleos como causal de retiro del servicio. Establece que la supresión puede darse por fusión, liquidación, reestructuración, modificación de planta o políticas de modernización del Estado, pero debe respetar los derechos de los empleados de carrera.",
+      "key_articles": "",
+      "applies_to": "Procesos de supresión de empleos",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=190126"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 57,
+    "fields": {
+      "kind": "SENTENCIA_CE",
+      "reference": "Consejo de Estado Sentencia 2018-00136 de 2023",
+      "title": "Legalidad de procesos de reestructuración y garantías del servidor público",
+      "year": 2023,
+      "summary": "Analiza la legalidad de procesos de reestructuración de entidades públicas y su impacto en los derechos de los empleados de carrera administrativa, incluyendo el derecho de reincorporación y las garantías del servidor público afectado.",
+      "key_articles": "",
+      "applies_to": "Procesos de reestructuración",
+      "url": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=217410"
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 58,
+    "fields": {
+      "kind": "SENTENCIA_CE",
+      "reference": "Consejo de Estado — Sala de Consulta — Concepto 1208 de 1999",
+      "title": "Alcances y límites de la reestructuración de entidades del Estado",
+      "year": 1999,
+      "summary": "La Sala de Consulta y Servicio Civil emitió concepto sobre los alcances y límites de las facultades de reestructuración de entidades del Estado, incluyendo la modificación de plantas de personal y la supresión de cargos.",
+      "key_articles": "",
+      "applies_to": "Reestructuración de entidades",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 59,
+    "fields": {
+      "kind": "CONPES",
+      "reference": "CONPES 3248 de 2003",
+      "title": "Renovación de la Administración Pública (PRAP)",
+      "year": 2003,
+      "summary": "Presenta los lineamientos generales, alcance y mecanismos de evaluación del Programa de Renovación de la Administración Pública (PRAP). Busca adecuar la administración pública a las exigencias de un Estado Comunitario, racionalizando funciones, reduciendo estructuras administrativas y fortaleciendo la capacidad estatal.",
+      "key_articles": "",
+      "applies_to": "Administración Pública Nacional",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 60,
+    "fields": {
+      "kind": "CONPES",
+      "reference": "CONPES 3649 de 2010",
+      "title": "Política Nacional de Servicio al Ciudadano",
+      "year": 2010,
+      "summary": "Establece lineamientos de la Política Nacional de Servicio al Ciudadano. Busca mejorar la confianza y satisfacción ciudadana respecto de los servicios de la Administración Pública. Dota a las entidades de herramientas conceptuales, protocolos y metodologías para mejorar canales de atención.",
+      "key_articles": "",
+      "applies_to": "Administración Pública Nacional",
+      "url": ""
+    }
+  },
+  {
+    "model": "legal.legalnorm",
+    "pk": 61,
+    "fields": {
+      "kind": "CONPES",
+      "reference": "CONPES 3785 de 2013",
+      "title": "Política Nacional de Eficiencia Administrativa al Servicio del Ciudadano",
+      "year": 2013,
+      "summary": "Adopta la Política Nacional de Eficiencia Administrativa al Servicio del Ciudadano. Busca mejorar la efectividad, colaboración y eficiencia de las entidades de la Rama Ejecutiva nacional para atender oportunamente los requerimientos ciudadanos con calidad. Integra el Modelo de Gestión Pública Eficiente.",
+      "key_articles": "",
+      "applies_to": "Rama Ejecutiva Nacional",
       "url": ""
     }
   }

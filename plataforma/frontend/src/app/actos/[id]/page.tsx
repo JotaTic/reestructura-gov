@@ -153,6 +153,7 @@ function Inner() {
           <ExportBar
             xlsxPath={`/actos/${draftId}/export/xlsx/`}
             docxPath={`/actos/${draftId}/export/docx/`}
+            pdfPath={`/actos/${draftId}/export-pdf/`}
           />
           {draft.template && (
             <button

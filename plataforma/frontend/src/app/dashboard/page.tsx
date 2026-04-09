@@ -13,6 +13,16 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import { api } from "@/lib/api";
 import { useContextStore } from "@/stores/contextStore";
 import type {
@@ -183,30 +193,24 @@ export default function DashboardPage() {
 
       {/* By status — horizontal bar chart */}
       {Object.keys(summary.by_status).length > 0 && (() => {
-        const maxCount = Math.max(...Object.values(summary.by_status), 1);
+        const statusData = Object.entries(summary.by_status).map(([status, count]) => ({
+          name: status.replace(/_/g, " "),
+          cantidad: count,
+        }));
         return (
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <h2 className="mb-3 text-sm font-semibold text-slate-700">
               Reestructuraciones por estado
             </h2>
-            <div className="space-y-2">
-              {Object.entries(summary.by_status).map(([status, count]) => (
-                <div key={status} className="flex items-center gap-3">
-                  <span className="w-40 truncate text-xs text-slate-600">
-                    {status.replace(/_/g, " ")}
-                  </span>
-                  <div className="flex-1 h-5 rounded-full bg-slate-100 overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${
-                        STATUS_COLORS[status]?.replace("text-", "bg-").split(" ")[0] || "bg-brand-500"
-                      }`}
-                      style={{ width: `${(count / maxCount) * 100}%`, minWidth: count > 0 ? "12px" : "0" }}
-                    />
-                  </div>
-                  <span className="w-8 text-right text-xs font-bold text-slate-700">{count}</span>
-                </div>
-              ))}
-            </div>
+            <ResponsiveContainer width="100%" height={Math.max(statusData.length * 40, 200)}>
+              <BarChart data={statusData} layout="vertical" margin={{ left: 120, right: 30, top: 5, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11 }} />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} width={110} />
+                <Tooltip formatter={(value) => [value, "Cantidad"]} />
+                <Bar dataKey="cantidad" fill="#94a3b8" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         );
       })()}
@@ -298,38 +302,25 @@ export default function DashboardPage() {
             <h2 className="mb-3 text-sm font-semibold text-slate-700">
               Comparación de costos anuales
             </h2>
-            <div className="space-y-3">
-              {per_restructuring.map((d) => {
-                const maxCost = Math.max(d.cost_current, d.cost_proposed, 1);
-                return (
-                  <div key={d.restructuring_id}>
-                    <p className="text-[10px] font-medium text-slate-600 mb-1 truncate">{d.name}</p>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="w-14 text-[10px] text-slate-500">Actual</span>
-                        <div className="flex-1 h-4 rounded bg-slate-100 overflow-hidden">
-                          <div
-                            className="h-full rounded bg-slate-400"
-                            style={{ width: `${(d.cost_current / maxCost) * 100}%` }}
-                          />
-                        </div>
-                        <span className="w-24 text-right text-[10px] text-slate-600">${d.cost_current.toLocaleString()}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-14 text-[10px] text-slate-500">Propuesto</span>
-                        <div className="flex-1 h-4 rounded bg-slate-100 overflow-hidden">
-                          <div
-                            className={`h-full rounded ${d.cost_delta <= 0 ? "bg-emerald-500" : "bg-red-400"}`}
-                            style={{ width: `${(d.cost_proposed / maxCost) * 100}%` }}
-                          />
-                        </div>
-                        <span className="w-24 text-right text-[10px] text-slate-600">${d.cost_proposed.toLocaleString()}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <ResponsiveContainer width="100%" height={Math.max(per_restructuring.length * 60, 200)}>
+              <BarChart
+                data={per_restructuring.map((d) => ({
+                  name: d.name.length > 20 ? d.name.slice(0, 20) + "…" : d.name,
+                  Actual: d.cost_current,
+                  Propuesto: d.cost_proposed,
+                }))}
+                layout="vertical"
+                margin={{ left: 100, right: 30, top: 5, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                <XAxis type="number" tickFormatter={(v: number) => `$${v.toLocaleString()}`} tick={{ fontSize: 10 }} />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} width={90} />
+                <Tooltip formatter={(value) => [`$${Number(value).toLocaleString()}`, undefined]} />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Bar dataKey="Actual" fill="#94a3b8" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="Propuesto" fill="#10b981" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
           {/* Law 617 compliance indicator */}

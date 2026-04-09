@@ -29,6 +29,8 @@ import { getContextHeaders } from "@/stores/contextStore";
 export interface ExportBarProps {
   xlsxPath?: string;
   docxPath?: string;
+  /** Ruta del backend para descarga de PDF nativo (sin prefijo API_URL). */
+  pdfPath?: string;
   disabled?: boolean;
   onPrint?: () => void;
   className?: string;
@@ -39,12 +41,13 @@ export interface ExportBarProps {
 export function ExportBar({
   xlsxPath,
   docxPath,
+  pdfPath,
   disabled,
   onPrint,
   className,
   label,
 }: ExportBarProps) {
-  const [busy, setBusy] = useState<"xlsx" | "docx" | null>(null);
+  const [busy, setBusy] = useState<"xlsx" | "docx" | "pdf" | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const triggerPrint = () => {
@@ -56,19 +59,21 @@ export function ExportBar({
     }
   };
 
-  const download = async (path: string, kind: "xlsx" | "docx") => {
+  const download = async (path: string, kind: "xlsx" | "docx" | "pdf") => {
     if (!path || disabled || busy) return;
     setError(null);
     setBusy(kind);
+    const acceptMap: Record<string, string> = {
+      xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      pdf: "application/pdf",
+    };
     try {
       const res = await fetch(`${API_URL}${path}`, {
         method: "GET",
         credentials: "include",
         headers: {
-          Accept:
-            kind === "xlsx"
-              ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          Accept: acceptMap[kind] || "application/octet-stream",
           ...getContextHeaders(),
         },
       });
@@ -93,11 +98,12 @@ export function ExportBar({
       URL.revokeObjectURL(url);
     } catch (err) {
       console.error(err);
-      setError(
-        kind === "xlsx"
-          ? "No fue posible generar el Excel."
-          : "No fue posible generar el Word.",
-      );
+      const errorMessages: Record<string, string> = {
+        xlsx: "No fue posible generar el Excel.",
+        docx: "No fue posible generar el Word.",
+        pdf: "No fue posible generar el PDF.",
+      };
+      setError(errorMessages[kind] || "Error al descargar.");
     } finally {
       setBusy(null);
     }
@@ -126,12 +132,12 @@ export function ExportBar({
 
       <button
         type="button"
-        onClick={triggerPrint}
-        disabled={disabled}
-        title='Abre el diálogo de impresión: elige "Guardar como PDF" como destino'
+        onClick={pdfPath ? () => download(pdfPath, "pdf") : triggerPrint}
+        disabled={disabled || (pdfPath ? busy !== null : false)}
+        title={pdfPath ? "Descargar PDF generado por el servidor" : 'Abre el diálogo de impresión: elige "Guardar como PDF" como destino'}
         className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
       >
-        <FileText size={14} /> PDF
+        <FileText size={14} /> {busy === "pdf" ? "Generando…" : "PDF"}
       </button>
 
       {docxPath && (

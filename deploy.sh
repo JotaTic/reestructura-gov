@@ -102,9 +102,9 @@ echo "[5/10] Construyendo frontend (puede tardar 2-3 min)..."
 cd "$APP_DIR/plataforma/frontend"
 npm install --legacy-peer-deps 2>&1 | tail -3
 
-# Configurar API URL para producción
+# Configurar API URL para producción (HTTPS)
 cat > .env.production << 'ENVEOF'
-NEXT_PUBLIC_API_URL=http://reestructuracion.corpofuturo.org/api
+NEXT_PUBLIC_API_URL=https://reestructuracion.corpofuturo.org/api
 ENVEOF
 
 npm run build 2>&1 | tail -10
@@ -209,7 +209,7 @@ rm -f /etc/nginx/sites-enabled/default 2>/dev/null
 nginx -t 2>&1
 
 # --- 9. Arrancar servicios ---
-echo "[9/10] Arrancando servicios..."
+echo "[9/11] Arrancando servicios..."
 systemctl daemon-reload
 systemctl enable reestructura-backend reestructura-frontend nginx
 systemctl restart reestructura-backend
@@ -218,8 +218,19 @@ systemctl restart nginx
 
 sleep 3
 
-# --- 10. Verificar ---
-echo "[10/10] Verificando..."
+# --- 10. SSL con Let's Encrypt ---
+echo "[10/11] Configurando HTTPS (Let's Encrypt)..."
+if certbot certificates 2>/dev/null | grep -q "$DOMAIN"; then
+    echo "Certificado SSL ya existe. Aplicando a nginx..."
+    certbot --nginx -d "$DOMAIN" --redirect --non-interactive 2>&1 | tail -5
+else
+    echo "Obteniendo certificado SSL nuevo..."
+    certbot --nginx -d "$DOMAIN" --redirect --non-interactive --agree-tos --register-unsafely-without-email 2>&1 | tail -5
+fi
+echo "HTTPS configurado."
+
+# --- 11. Verificar ---
+echo "[11/11] Verificando..."
 echo ""
 echo "Backend:"
 curl -s -o /dev/null -w "  HTTP %{http_code}" http://127.0.0.1:8000/api/auth/login/ || echo "  ERROR"
@@ -227,8 +238,16 @@ echo ""
 echo "Frontend:"
 curl -s -o /dev/null -w "  HTTP %{http_code}" http://127.0.0.1:3000/ || echo "  ERROR"
 echo ""
-echo "Nginx:"
-curl -s -o /dev/null -w "  HTTP %{http_code}" http://64.23.248.47/ || echo "  ERROR"
+echo "Nginx (HTTPS):"
+curl -s -o /dev/null -w "  HTTP %{http_code}" https://$DOMAIN/ || echo "  ERROR"
+echo ""
+echo "Login test:"
+LOGIN_CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://$DOMAIN/api/auth/login/" -H "Content-Type: application/json" -d '{"username":"admin","password":"admin123"}')
+if [ "$LOGIN_CODE" = "200" ]; then
+    echo "  Login OK (HTTP $LOGIN_CODE)"
+else
+    echo "  LOGIN FAILED (HTTP $LOGIN_CODE) — verificar cookies/CSRF/SSL"
+fi
 echo ""
 
 echo ""
@@ -236,13 +255,10 @@ echo "=========================================="
 echo " DEPLOY COMPLETO"
 echo "=========================================="
 echo ""
-echo " URL:      http://reestructuracion.corpofuturo.org"
-echo " API:      http://reestructuracion.corpofuturo.org/api/"
-echo " Admin:    http://reestructuracion.corpofuturo.org/admin/"
+echo " URL:      https://reestructuracion.corpofuturo.org"
+echo " API:      https://reestructuracion.corpofuturo.org/api/"
+echo " Admin:    https://reestructuracion.corpofuturo.org/admin/"
 echo ""
 echo " Login:    admin / admin123"
-echo ""
-echo " Para HTTPS (SSL gratuito):"
-echo "   certbot --nginx -d reestructuracion.corpofuturo.org"
 echo ""
 echo "=========================================="

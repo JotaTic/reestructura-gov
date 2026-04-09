@@ -16,6 +16,7 @@ from .services import (
     build_functions_manual,
 )
 from .import_service import import_workload_xlsx
+from .gap_analysis import analyze_gaps
 
 
 class WorkloadMatrixViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
@@ -84,6 +85,19 @@ class WorkloadMatrixViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
             return response
         title, meta, sections, base, ctx = export_matrix_docx(matrix)
         return export_response(fmt, title, meta, sections, base, ctx)
+
+    @action(detail=True, methods=['get'], url_path='brechas')
+    def gap_analysis(self, request, pk=None):
+        """Análisis de brechas: cargas vs planta actual vs contratistas."""
+        matrix = self.get_object()
+        plan_id = request.query_params.get('plan_id')
+        include_contractors = request.query_params.get('include_contractors', 'true') == 'true'
+        result = analyze_gaps(
+            matrix.id,
+            current_plan_id=int(plan_id) if plan_id else None,
+            include_contractors=include_contractors,
+        )
+        return Response(result)
 
     @action(detail=True, methods=['get'], url_path=r'manual-funciones/export/(?P<fmt>xlsx|docx)',
             renderer_classes=EXPORT_RENDERERS)

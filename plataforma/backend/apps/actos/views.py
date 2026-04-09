@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -9,6 +10,7 @@ from apps.core.models import Entity, Restructuring
 from .models import ActTemplate, ActDraft
 from .serializers import ActTemplateSerializer, ActDraftSerializer
 from .services import build_context, create_draft_from_template, render_template, render_act_content
+from .pdf_service import generate_act_pdf
 
 
 class ActTemplateViewSet(viewsets.ModelViewSet):
@@ -64,6 +66,16 @@ class ActDraftViewSet(RestructuringScopedMixin, viewsets.ModelViewSet):
         draft.content = render_template(draft.template, ctx)
         draft.save(update_fields=['content', 'updated_at'])
         return Response(ActDraftSerializer(draft).data)
+
+    @action(detail=True, methods=['get'], url_path='export-pdf')
+    def export_pdf(self, request, pk=None):
+        """Generate and return a native PDF for this act draft."""
+        draft = self.get_object()
+        pdf_bytes = generate_act_pdf(draft)
+        filename = f"{draft.get_kind_display()}_{draft.act_number or draft.pk}.pdf"
+        response = HttpResponse(pdf_bytes, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
 
     @action(
         detail=True,
