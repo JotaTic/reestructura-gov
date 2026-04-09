@@ -1,14 +1,26 @@
 "use client";
 
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import type { Department, Paginated, PayrollPosition, PayrollPlan } from "@/types";
-import { ChevronRight, GitBranch, Plus, X, Circle } from "lucide-react";
+import {
+  ChevronRight,
+  GitBranch,
+  Plus,
+  X,
+  Circle,
+  Image as ImageIcon,
+  FileText,
+  FileType,
+  Printer,
+  FileSpreadsheet,
+} from "lucide-react";
 import { RequireContext } from "@/components/context/RequireContext";
 import { useContextStore } from "@/stores/contextStore";
 import { ExportBar } from "@/components/ui/ExportBar";
+import { useExportOrganigrama } from "@/hooks/useExportOrganigrama";
 import {
   ReactFlow,
   Background,
@@ -25,14 +37,18 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 
+/* ─── Tipos ─── */
+
 interface TreeNode extends Department {
   children: TreeNode[];
 }
 
 interface DeptStats {
   hasPositions: boolean;
-  // Could expand later with hasFunctions etc.
+  positionCount: number;
 }
+
+/* ─── Construcción del árbol ─── */
 
 function buildTree(depts: Department[]): TreeNode[] {
   const map = new Map<number, TreeNode>();
@@ -53,6 +69,8 @@ function buildTree(depts: Department[]): TreeNode[] {
   return roots;
 }
 
+/* ─── Página principal ─── */
+
 export default function EstructuraPage() {
   return (
     <RequireContext need="entity">
@@ -71,16 +89,36 @@ function Inner() {
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>("tree");
 
-  // Position stats for color indicators
+  // Estadísticas de cargos por dependencia
   const [deptPositionCounts, setDeptPositionCounts] = useState<Map<number, number>>(new Map());
 
-  // Add subdependencia form
+  // Formulario agregar subdependencia
   const [showAddForm, setShowAddForm] = useState(false);
   const [addParentId, setAddParentId] = useState<number | null>(null);
   const [addName, setAddName] = useState("");
   const [addCode, setAddCode] = useState("");
   const [addSaving, setAddSaving] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
+
+  // Ref para exportación del organigrama
+  const orgchartRef = useRef<HTMLDivElement>(null);
+  const entityAcronym = activeEntity.acronym || activeEntity.name.substring(0, 20);
+  const { exportPNG, exportPDF, exportWord } = useExportOrganigrama(
+    orgchartRef,
+    `organigrama_${entityAcronym}`,
+  );
+  const [exporting, setExporting] = useState<string | null>(null);
+
+  const handleExport = async (type: "png" | "pdf" | "word") => {
+    setExporting(type);
+    try {
+      if (type === "png") await exportPNG();
+      else if (type === "pdf") await exportPDF();
+      else await exportWord();
+    } finally {
+      setExporting(null);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -90,15 +128,17 @@ function Inner() {
       .finally(() => setLoading(false));
   }, [activeEntity.id, version]);
 
-  // Load position counts per department
+  // Cargar cargos por dependencia
   useEffect(() => {
     api
       .get<Paginated<PayrollPlan>>("/plantas/", { page_size: 20 })
       .then((plans) => {
         if (plans.results.length === 0) return;
-        // Load positions from the first plan (or all)
         const promises = plans.results.map((plan) =>
-          api.get<Paginated<PayrollPosition>>("/posiciones-planta/", { plan: plan.id, page_size: 1000 })
+          api.get<Paginated<PayrollPosition>>("/posiciones-planta/", {
+            plan: plan.id,
+            page_size: 1000,
+          }),
         );
         return Promise.all(promises);
       })
@@ -115,16 +155,18 @@ function Inner() {
         });
         setDeptPositionCounts(counts);
       })
-      .catch(() => {
-        // Silently handle if positions endpoints are not available
-      });
+      .catch(() => {});
   }, [activeEntity.id, version]);
 
   const tree = useMemo(() => buildTree(depts), [depts]);
 
-  const getDeptStats = (deptId: number): DeptStats => ({
-    hasPositions: (deptPositionCounts.get(deptId) || 0) > 0,
-  });
+  const getDeptStats = useCallback(
+    (deptId: number): DeptStats => ({
+      hasPositions: (deptPositionCounts.get(deptId) || 0) > 0,
+      positionCount: deptPositionCounts.get(deptId) || 0,
+    }),
+    [deptPositionCounts],
+  );
 
   const openAddSubdept = (parentId: number | null) => {
     setAddParentId(parentId);
@@ -157,12 +199,13 @@ function Inner() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-5">
+      {/* Encabezado */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Estructura orgánica</h1>
           <p className="text-sm text-slate-600">
-            {activeEntity.name} · {activeEntity.order_display}. Administra las
-            dependencias desde{" "}
+            {activeEntity.name} · {activeEntity.order_display}. Administra las dependencias
+            desde{" "}
             <Link href="/dependencias" className="font-medium text-brand-700 hover:underline">
               Dependencias
             </Link>
@@ -176,19 +219,61 @@ function Inner() {
           >
             <Plus size={14} /> Agregar dependencia
           </button>
-          <ExportBar
-            xlsxPath={`/entidades/${activeEntity.id}/export-estructura/xlsx/`}
-            docxPath={`/entidades/${activeEntity.id}/export-estructura/docx/`}
-            disabled={loading}
-          />
+
+          {/* Exportación condicional según modo de vista */}
+          {viewMode === "tree" ? (
+            <ExportBar
+              xlsxPath={`/entidades/${activeEntity.id}/export-estructura/xlsx/`}
+              docxPath={`/entidades/${activeEntity.id}/export-estructura/docx/`}
+              disabled={loading}
+            />
+          ) : (
+            <div className="flex flex-wrap items-center gap-2 print:hidden">
+              <button
+                onClick={() => window.print()}
+                disabled={loading}
+                className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+              >
+                <Printer size={14} /> Imprimir
+              </button>
+              <button
+                onClick={() => handleExport("pdf")}
+                disabled={loading || exporting !== null}
+                className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+              >
+                <FileText size={14} />
+                {exporting === "pdf" ? "Generando…" : "PDF"}
+              </button>
+              <button
+                onClick={() => handleExport("word")}
+                disabled={loading || exporting !== null}
+                className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+              >
+                <FileType size={14} />
+                {exporting === "word" ? "Generando…" : "Word"}
+              </button>
+              <button
+                onClick={() => handleExport("png")}
+                disabled={loading || exporting !== null}
+                className="inline-flex items-center gap-1 rounded-md border border-cyan-300 bg-cyan-50 px-3 py-2 text-sm font-medium text-cyan-700 hover:bg-cyan-100 disabled:opacity-50"
+              >
+                <ImageIcon size={14} />
+                {exporting === "png" ? "Generando…" : "PNG"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* View mode tabs + Color legend */}
+      {/* Leyenda de colores + Toggle de vista */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 text-xs text-slate-500">
-          <span className="flex items-center gap-1"><Circle size={10} className="fill-green-500 text-green-500" /> Con cargos asignados</span>
-          <span className="flex items-center gap-1"><Circle size={10} className="fill-amber-400 text-amber-400" /> Sin cargos</span>
+          <span className="flex items-center gap-1">
+            <Circle size={10} className="fill-green-500 text-green-500" /> Con cargos
+          </span>
+          <span className="flex items-center gap-1">
+            <Circle size={10} className="fill-amber-400 text-amber-400" /> Sin cargos
+          </span>
         </div>
         <div className="flex rounded-md border border-slate-200 bg-slate-50 p-0.5">
           <button
@@ -214,11 +299,11 @@ function Inner() {
         </div>
       </div>
 
-      {/* Add subdependencia modal */}
+      {/* Modal agregar subdependencia */}
       {showAddForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-4">
+            <div className="mb-4 flex items-center justify-between">
               <h2 className="text-base font-semibold text-slate-800">
                 {addParentId
                   ? `Agregar subdependencia de "${depts.find((d) => d.id === addParentId)?.name}"`
@@ -233,7 +318,7 @@ function Inner() {
             )}
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Nombre</label>
+                <label className="mb-1 block text-xs font-medium text-slate-600">Nombre</label>
                 <input
                   value={addName}
                   onChange={(e) => setAddName(e.target.value)}
@@ -243,7 +328,7 @@ function Inner() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">Código (opcional)</label>
+                <label className="mb-1 block text-xs font-medium text-slate-600">Código (opcional)</label>
                 <input
                   value={addCode}
                   onChange={(e) => setAddCode(e.target.value)}
@@ -271,6 +356,7 @@ function Inner() {
         </div>
       )}
 
+      {/* Vista: Árbol o Organigrama */}
       {viewMode === "tree" ? (
         <section className="rounded-lg border border-slate-200 bg-white p-4">
           {loading ? (
@@ -299,6 +385,7 @@ function Inner() {
         </section>
       ) : (
         <OrgChartView
+          ref={orgchartRef}
           tree={tree}
           depts={depts}
           loading={loading}
@@ -310,7 +397,7 @@ function Inner() {
               prev.map((d) => {
                 const u = updated.find((x) => x.id === d.id);
                 return u ? { ...d, parent: u.parent, order: u.order } : d;
-              })
+              }),
             );
           }}
         />
@@ -318,6 +405,8 @@ function Inner() {
     </div>
   );
 }
+
+/* ─── Vista de Árbol (listado) ─── */
 
 function TreeNodeView({
   node,
@@ -366,9 +455,14 @@ function TreeNodeView({
             {node.code}
           </span>
         )}
+        {stats.positionCount > 0 && (
+          <span className="ml-1 text-[10px] text-slate-400">
+            ({stats.positionCount} cargo{stats.positionCount > 1 ? "s" : ""})
+          </span>
+        )}
         <button
           onClick={() => onAddChild(node.id)}
-          className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-brand-600"
+          className="ml-2 text-slate-400 opacity-0 transition-opacity hover:text-brand-600 group-hover:opacity-100"
           title="Agregar subdependencia"
         >
           <Plus size={13} />
@@ -392,11 +486,12 @@ function TreeNodeView({
   );
 }
 
-/* ─── Hierarchical layout helper ─── */
-const NODE_WIDTH = 200;
-const NODE_HEIGHT = 70;
-const H_GAP = 30;
-const V_GAP = 80;
+/* ─── Layout jerárquico para ReactFlow ─── */
+
+const NODE_WIDTH = 220;
+const NODE_HEIGHT = 72;
+const H_GAP = 32;
+const V_GAP = 90;
 
 interface LayoutResult {
   nodes: Node[];
@@ -409,8 +504,6 @@ function layoutTree(
 ): LayoutResult {
   const nodes: Node[] = [];
   const edges: Edge[] = [];
-
-  // Measure subtree widths first, then position
   const widthCache = new Map<number, number>();
 
   function measureWidth(node: TreeNode): number {
@@ -438,6 +531,7 @@ function layoutTree(
         code: node.code,
         deptId: node.id,
         hasPositions: stats.hasPositions,
+        positionCount: stats.positionCount,
         childCount: node.children.length,
       },
     });
@@ -466,10 +560,7 @@ function layoutTree(
     }
   }
 
-  // Measure all roots
   tree.forEach((root) => measureWidth(root));
-
-  // Place roots side by side
   let rx = 0;
   for (const root of tree) {
     place(root, rx, 0);
@@ -479,12 +570,14 @@ function layoutTree(
   return { nodes, edges };
 }
 
-/* ─── Custom ReactFlow node ─── */
+/* ─── Nodo personalizado del organigrama ─── */
+
 type DeptNodeData = {
   label: string;
   code: string;
   deptId: number;
   hasPositions: boolean;
+  positionCount: number;
   childCount: number;
   onNavigate?: (id: number) => void;
   onAddChild?: (id: number) => void;
@@ -492,20 +585,25 @@ type DeptNodeData = {
 
 function DeptNodeComponent({ data }: NodeProps<Node<DeptNodeData>>) {
   const borderColor = data.hasPositions ? "#22c55e" : "#f59e0b";
+  const bgGradient = data.hasPositions
+    ? "linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)"
+    : "linear-gradient(135deg, #fffbeb 0%, #ffffff 100%)";
+
   return (
     <div
-      className="rounded-lg bg-white px-3 py-2 shadow-md transition-shadow hover:shadow-lg"
+      className="rounded-lg px-3 py-2.5 shadow-md transition-all hover:shadow-lg"
       style={{
         border: `2px solid ${borderColor}`,
+        background: bgGradient,
         minWidth: NODE_WIDTH,
         cursor: "grab",
       }}
     >
-      <Handle type="target" position={Position.Top} className="!bg-slate-300 !w-2 !h-2" />
+      <Handle type="target" position={Position.Top} className="!h-2 !w-2 !bg-slate-300" />
       <div className="flex items-start justify-between gap-1">
         <div className="min-w-0 flex-1">
           <button
-            className="text-xs font-semibold text-slate-800 hover:text-brand-700 hover:underline text-left leading-tight truncate block max-w-[160px]"
+            className="block max-w-[170px] truncate text-left text-xs font-semibold leading-tight text-slate-800 hover:text-brand-700 hover:underline"
             onClick={(e) => {
               e.stopPropagation();
               data.onNavigate?.(data.deptId);
@@ -514,11 +612,23 @@ function DeptNodeComponent({ data }: NodeProps<Node<DeptNodeData>>) {
           >
             {data.label}
           </button>
-          {data.code && (
-            <span className="mt-0.5 inline-block rounded bg-slate-100 px-1 py-0.5 text-[9px] text-slate-500">
-              {data.code}
-            </span>
-          )}
+          <div className="mt-1 flex items-center gap-1.5">
+            {data.code && (
+              <span className="inline-block rounded bg-slate-100 px-1 py-0.5 text-[9px] text-slate-500">
+                {data.code}
+              </span>
+            )}
+            {data.positionCount > 0 && (
+              <span className="inline-block rounded bg-green-100 px-1 py-0.5 text-[9px] font-medium text-green-700">
+                {data.positionCount} cargo{data.positionCount > 1 ? "s" : ""}
+              </span>
+            )}
+            {data.childCount > 0 && (
+              <span className="text-[9px] text-slate-400">
+                {data.childCount} sub
+              </span>
+            )}
+          </div>
         </div>
         <button
           className="mt-0.5 flex-shrink-0 rounded p-0.5 text-slate-400 hover:bg-slate-100 hover:text-brand-600"
@@ -531,10 +641,7 @@ function DeptNodeComponent({ data }: NodeProps<Node<DeptNodeData>>) {
           <Plus size={12} />
         </button>
       </div>
-      {data.childCount > 0 && (
-        <div className="mt-1 text-[9px] text-slate-400">{data.childCount} sub</div>
-      )}
-      <Handle type="source" position={Position.Bottom} className="!bg-slate-300 !w-2 !h-2" />
+      <Handle type="source" position={Position.Bottom} className="!h-2 !w-2 !bg-slate-300" />
     </div>
   );
 }
@@ -543,30 +650,30 @@ const nodeTypes: NodeTypes = {
   deptNode: DeptNodeComponent,
 };
 
-/* ─── OrgChart View ─── */
-function OrgChartView({
-  tree,
-  depts,
-  loading,
-  getDeptStats,
-  onNavigate,
-  onAddChild,
-  onDeptsMoved,
-}: {
-  tree: TreeNode[];
-  depts: Department[];
-  loading: boolean;
-  getDeptStats: (id: number) => DeptStats;
-  onNavigate: (deptId: number) => void;
-  onAddChild: (parentId: number) => void;
-  onDeptsMoved: (updated: { id: number; parent: number | null; order: number }[]) => void;
-}) {
+/* ─── Vista de Organigrama (ReactFlow) ─── */
+
+import { forwardRef } from "react";
+
+const OrgChartView = forwardRef<
+  HTMLDivElement,
+  {
+    tree: TreeNode[];
+    depts: Department[];
+    loading: boolean;
+    getDeptStats: (id: number) => DeptStats;
+    onNavigate: (deptId: number) => void;
+    onAddChild: (parentId: number) => void;
+    onDeptsMoved: (updated: { id: number; parent: number | null; order: number }[]) => void;
+  }
+>(function OrgChartViewInner(
+  { tree, depts, loading, getDeptStats, onNavigate, onAddChild, onDeptsMoved },
+  ref,
+) {
   const { nodes: layoutNodes, edges: layoutEdges } = useMemo(
     () => layoutTree(tree, getDeptStats),
     [tree, getDeptStats],
   );
 
-  // Inject callbacks into node data
   const nodesWithCallbacks = useMemo(
     () =>
       layoutNodes.map((n) => ({
@@ -579,20 +686,18 @@ function OrgChartView({
   const [nodes, setNodes, onNodesChange] = useNodesState(nodesWithCallbacks);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutEdges);
 
-  // Sync when layout changes (new deps added, etc.)
   useEffect(() => {
     setNodes(nodesWithCallbacks);
     setEdges(layoutEdges);
   }, [nodesWithCallbacks, layoutEdges, setNodes, setEdges]);
 
-  // Handle drag end: detect reparenting via proximity
+  // Drag & drop para reparentar
   const onNodeDragStop = useCallback(
     async (_event: React.MouseEvent, draggedNode: Node) => {
       const draggedId = Number(draggedNode.id);
       const draggedCenterX = draggedNode.position.x + NODE_WIDTH / 2;
       const draggedCenterY = draggedNode.position.y + NODE_HEIGHT / 2;
 
-      // Find closest potential parent (node that is above and close to the dragged node)
       let closestParent: number | null = null;
       let closestDist = Infinity;
 
@@ -601,72 +706,44 @@ function OrgChartView({
         if (nId === draggedId) continue;
         const nCenterX = n.position.x + NODE_WIDTH / 2;
         const nBottomY = n.position.y + NODE_HEIGHT;
-
-        // Only consider nodes whose bottom is above dragged node's top
         if (nBottomY > draggedNode.position.y + NODE_HEIGHT / 2) continue;
-
         const dx = draggedCenterX - nCenterX;
         const dy = draggedCenterY - nBottomY;
         const dist = Math.sqrt(dx * dx + dy * dy);
-
         if (dist < closestDist && dist < 250) {
           closestDist = dist;
           closestParent = nId;
         }
       }
 
-      // If no parent found nearby, check if it was dragged to root level (top area)
       if (closestParent === null && draggedNode.position.y < V_GAP / 2) {
-        closestParent = null; // root
+        closestParent = null;
       } else if (closestParent === null) {
-        // Snap back: re-layout
         const { nodes: fresh, edges: freshEdges } = layoutTree(tree, getDeptStats);
-        const freshWithCb = fresh.map((n) => ({
-          ...n,
-          data: { ...n.data, onNavigate, onAddChild },
-        }));
-        setNodes(freshWithCb);
+        setNodes(fresh.map((n) => ({ ...n, data: { ...n.data, onNavigate, onAddChild } })));
         setEdges(freshEdges);
         return;
       }
 
       const dept = depts.find((d) => d.id === draggedId);
-      if (!dept) return;
-
-      // If parent unchanged, just snap back
-      if (dept.parent === closestParent) {
+      if (!dept || dept.parent === closestParent) {
         const { nodes: fresh, edges: freshEdges } = layoutTree(tree, getDeptStats);
-        const freshWithCb = fresh.map((n) => ({
-          ...n,
-          data: { ...n.data, onNavigate, onAddChild },
-        }));
-        setNodes(freshWithCb);
+        setNodes(fresh.map((n) => ({ ...n, data: { ...n.data, onNavigate, onAddChild } })));
         setEdges(freshEdges);
         return;
       }
 
-      // Compute new order: append at end of new siblings
-      const newSiblings = depts.filter(
-        (d) => d.parent === closestParent && d.id !== draggedId,
-      );
+      const newSiblings = depts.filter((d) => d.parent === closestParent && d.id !== draggedId);
       const newOrder = newSiblings.length > 0
         ? Math.max(...newSiblings.map((d) => d.order)) + 1
         : 1;
 
       try {
-        await api.patch(`/dependencias/${draggedId}/`, {
-          parent: closestParent,
-          order: newOrder,
-        });
+        await api.patch(`/dependencias/${draggedId}/`, { parent: closestParent, order: newOrder });
         onDeptsMoved([{ id: draggedId, parent: closestParent, order: newOrder }]);
       } catch {
-        // Revert on failure
         const { nodes: fresh, edges: freshEdges } = layoutTree(tree, getDeptStats);
-        const freshWithCb = fresh.map((n) => ({
-          ...n,
-          data: { ...n.data, onNavigate, onAddChild },
-        }));
-        setNodes(freshWithCb);
+        setNodes(fresh.map((n) => ({ ...n, data: { ...n.data, onNavigate, onAddChild } })));
         setEdges(freshEdges);
       }
     },
@@ -695,7 +772,11 @@ function OrgChartView({
   }
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white overflow-hidden" style={{ height: "70vh" }}>
+    <section
+      ref={ref}
+      className="overflow-hidden rounded-lg border border-slate-200 bg-white"
+      style={{ height: "70vh" }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -705,16 +786,19 @@ function OrgChartView({
         nodeTypes={nodeTypes}
         fitView
         fitViewOptions={{ padding: 0.2 }}
-        minZoom={0.2}
-        maxZoom={1.5}
+        minZoom={0.15}
+        maxZoom={2}
         proOptions={{ hideAttribution: true }}
       >
         <Background color="#e2e8f0" gap={20} size={1} />
         <Controls position="bottom-right" />
-        <Panel position="top-left" className="rounded bg-white/80 px-2 py-1 text-[10px] text-slate-400 backdrop-blur">
-          Arrastra los nodos para reorganizar la estructura
+        <Panel
+          position="top-left"
+          className="rounded bg-white/80 px-2 py-1 text-[10px] text-slate-400 backdrop-blur"
+        >
+          Arrastra los nodos para reorganizar · Rueda del mouse para zoom
         </Panel>
       </ReactFlow>
     </section>
   );
-}
+});
